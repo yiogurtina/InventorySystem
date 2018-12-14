@@ -1,0 +1,8 @@
+﻿@model IQueryable<Employee>
+
+<h2>Users list</h2>
+
+@foreach (Employee user in Model)
+{
+    <div>User Login: @user <a class="badge badge-pill badge-dark" asp-action="Lock" asp-route-id="@user.Id">Press to lockout user</a>    <a class="badge badge-pill badge-dark" asp-controller="Employes" asp-action="ChangeRole" asp-route-id="@user.Id">Change Role</a></div>
+}

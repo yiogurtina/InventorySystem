@@ -126,7 +126,7 @@ namespace inventory_accounting_system.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("inventory_accounting_system.Models.ApplicationUser", b =>
+            modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>
                 {
                     b.Property<string>("Id");
 
@@ -185,7 +185,7 @@ namespace inventory_accounting_system.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("inventory_accounting_system.Models.ApplicationUser")
+                    b.HasOne("inventory_accounting_system.Models.Employee")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -193,7 +193,7 @@ namespace inventory_accounting_system.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("inventory_accounting_system.Models.ApplicationUser")
+                    b.HasOne("inventory_accounting_system.Models.Employee")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -206,7 +206,7 @@ namespace inventory_accounting_system.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("inventory_accounting_system.Models.ApplicationUser")
+                    b.HasOne("inventory_accounting_system.Models.Employee")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

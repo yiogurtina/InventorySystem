@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Employee>
+@{
+    ViewData["Title"] = "GetAllEmplloyes";
+}
+
+<h2>GetAllEmplloyes</h2>
+
+@{
+    foreach (var employe in Model)
+    {
+        <div>Name @employe.Login</div>
+    }
+}

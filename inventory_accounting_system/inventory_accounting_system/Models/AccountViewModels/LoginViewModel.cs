@@ -9,6 +9,7 @@ namespace inventory_accounting_system.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
+        public string Login { get; set; }
         [EmailAddress]
         public string Email { get; set; }
 
