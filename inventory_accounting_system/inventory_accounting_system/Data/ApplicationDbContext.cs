@@ -10,6 +10,7 @@ namespace inventory_accounting_system.Data
 {
     public class ApplicationDbContext : IdentityDbContext<Employee>
     {
+        public DbSet<Supplier> Suppliers { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
