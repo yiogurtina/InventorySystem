@@ -16,8 +16,8 @@ namespace inventory_accounting_system.Models
 //        public string StorageId { get; set; }
 //        public Storage Storage { get; set; }
 //
-//        public string SupplierId { get; set; }
-//        public Supplier Supplier { get; set; }
+        public string SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
         public string EmployeeId{ get; set; }  
         public Employee Employee { get; set; }
         public string ImagesUrl { get; set; }
