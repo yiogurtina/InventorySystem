@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -104,7 +105,7 @@ namespace inventory_accounting_system.Controllers
                 return View();
             }
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRole(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -113,14 +114,14 @@ namespace inventory_accounting_system.Controllers
             ViewData["UserId"] = id;
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Users()
         {
             var user = await _userManager.GetUserAsync(User);
             var users = _context.Users.Where(u => u.Id != user.Id);
             return View(users);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateRole(string role, string id)
         {
             var user = await _userManager.FindByIdAsync(id);
