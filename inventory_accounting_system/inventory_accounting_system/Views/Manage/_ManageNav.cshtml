@@ -1,5 +1,5 @@
-﻿@using inventory_accounting_system.Views.Manage
-@inject SignInManager<ApplicationUser> SignInManager
+﻿@using AuthorizationAuthentication.Views.Manage
+@inject SignInManager<Employee> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

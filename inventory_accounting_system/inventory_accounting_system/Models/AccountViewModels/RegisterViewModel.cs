@@ -9,6 +9,7 @@ namespace inventory_accounting_system.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
+        public string Login { get; set; }
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

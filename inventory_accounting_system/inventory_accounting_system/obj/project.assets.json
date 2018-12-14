@@ -7039,7 +7039,7 @@
       ]
     },
     "Microsoft.Extensions.PlatformAbstractions/1.1.0": {
-      "sha512": "UMlN++q5qqzQ2HH+uOrKxN5fmBXMQDhrYkSaPJxhmyzfJaFPirrVr1raim/Ocq1psAZoB9+7JSAf0GDAX35wUg==",
+      "sha512": "H6ZsQzxYw/6k2DfEQRXdC+vQ6obd6Uba3uGJrnJ2vG4PRXjQZ7seB13JdCfE72abp8E6Fk3gGgDzfJiLZi5ZpQ==",
       "type": "package",
       "path": "microsoft.extensions.platformabstractions/1.1.0",
       "files": [
@@ -12868,11 +12868,10 @@
       ]
     },
     "System.ValueTuple/4.4.0": {
-      "sha512": "6FvjECwwsvwtdnm2uD91MlFEgId6C2SWsdZk23gFpynHQ9x5ruqjsfEadb0VNzpkEHDQ6cq31CXUv3ouT09EHA==",
+      "sha512": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ==",
       "type": "package",
       "path": "system.valuetuple/4.4.0",
       "files": [
-        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/MonoAndroid10/_._",
@@ -13261,23 +13260,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\evgen\\.nuget\\packages\\": {},
+    "C:\\Users\\User\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\evgen\\Git_Folder\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\InventoryAcoountSystem\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
       "projectName": "inventory_accounting_system",
-      "projectPath": "C:\\Users\\evgen\\Git_Folder\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
-      "packagesPath": "C:\\Users\\evgen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\evgen\\Git_Folder\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\",
+      "projectPath": "C:\\Users\\User\\Desktop\\InventoryAcoountSystem\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\InventoryAcoountSystem\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\evgen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

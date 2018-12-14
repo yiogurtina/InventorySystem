@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace inventory_accounting_system.Views.Manage
+namespace AuthorizationAuthentication.Views.Manage
 {
     public static class ManageNavPages
     {

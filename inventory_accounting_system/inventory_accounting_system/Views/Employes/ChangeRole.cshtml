@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "ChangeRole";
+    string userId = (string)ViewData["UserId"];
+}
+
+<h2>Change Role</h2>
+<form asp-action="CreateRole" method="post">
+    <select class="custom-select" asp-items="ViewBag.Roles" name="role"></select>
+    <input type="hidden" name="id" value="@userId"/>
+    <input class="btn btn-success" type="submit"/>
+</form>

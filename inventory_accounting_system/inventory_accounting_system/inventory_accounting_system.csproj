@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-inventory_accounting_system-B857F6B0-59C5-4908-8672-DE9EC6D45526</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Manage\_Layout.cshtml" />
+    <Content Remove="Views\Manage\_ManageNav.cshtml" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
