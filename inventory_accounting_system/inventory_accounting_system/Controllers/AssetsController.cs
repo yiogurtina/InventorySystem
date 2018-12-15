@@ -22,7 +22,8 @@ namespace inventory_accounting_system.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Assets.Include(a => a.Category)
+            var applicationDbContext = _context.Assets
+                .Include(a => a.Category)
                 .Include(a => a.Employee)
                 .Include(a => a.Office)
                 .Include(a => a.Storage)
@@ -56,11 +57,11 @@ namespace inventory_accounting_system.Controllers
         // GET: Assets/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Id");
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Id");
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login");
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title");
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
             return View();
         }
 
@@ -77,11 +78,11 @@ namespace inventory_accounting_system.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", asset.CategoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id", asset.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Id", asset.OfficeId);
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Id", asset.StorageId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", asset.SupplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", asset.EmployeeId);
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", asset.OfficeId);
+            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title", asset.StorageId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);
         }
 
