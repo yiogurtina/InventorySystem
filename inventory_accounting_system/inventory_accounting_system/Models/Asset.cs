@@ -2,7 +2,7 @@
 
 namespace inventory_accounting_system.Models
 {
-    public class Asset
+    public class Asset : Entity
     {
         public string Name { get;set; }
         public string CategoryId { get; set; }
