@@ -10,11 +10,11 @@ namespace inventory_accounting_system.Models
         public string InventNumber { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
 
-//        public string OfficesId { get; set; }
-//        public Offices Offices { get; set; }
-//
-//        public string StorageId { get; set; }
-//        public Storage Storage { get; set; }
+        public string OfficeId { get; set; }
+        public Office Office { get; set; }
+
+        public string StorageId { get; set; }
+        public Storage Storage { get; set; }
 //
         public string SupplierId { get; set; }
         public Supplier Supplier { get; set; }
