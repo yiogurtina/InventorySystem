@@ -35,6 +35,8 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("InventNumber");
 
+                    b.Property<string>("InventPrefix");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("OfficeId");

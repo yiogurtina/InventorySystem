@@ -22,7 +22,11 @@ namespace inventory_accounting_system.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Assets.Include(a => a.Category).Include(a => a.Employee).Include(a => a.Office).Include(a => a.Storage).Include(a => a.Supplier);
+            var applicationDbContext = _context.Assets.Include(a => a.Category)
+                .Include(a => a.Employee)
+                .Include(a => a.Office)
+                .Include(a => a.Storage)
+                .Include(a => a.Supplier);
             return View(await applicationDbContext.ToListAsync());
         }
 

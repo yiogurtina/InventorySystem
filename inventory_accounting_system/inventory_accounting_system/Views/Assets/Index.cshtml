@@ -50,7 +50,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InventNumber)
+                <strong>@await Component.InvokeAsync("AssetVM")</strong>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
@@ -59,19 +59,19 @@
                 @Html.DisplayFor(modelItem => item.ImagesUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Employee.Id)
+                @Html.DisplayFor(modelItem => item.Employee.Login)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Office.Id)
+                @Html.DisplayFor(modelItem => item.Office.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Storage.Id)
+                @Html.DisplayFor(modelItem => item.Storage.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Supplier.Id)
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -8,6 +8,7 @@ namespace inventory_accounting_system.Models
         public string CategoryId { get; set; }
         public Category  Category{ get; set; }
         public string InventNumber { get; set; }
+        public string InventPrefix { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
 
         public string OfficeId { get; set; }
