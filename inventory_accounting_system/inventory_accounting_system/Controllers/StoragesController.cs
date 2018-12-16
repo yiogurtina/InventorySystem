@@ -48,7 +48,7 @@ namespace inventory_accounting_system.Controllers
         // GET: Storages/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace inventory_accounting_system.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id", storage.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", storage.EmployeeId);
             return View(storage);
         }
 
@@ -82,7 +82,7 @@ namespace inventory_accounting_system.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id", storage.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", storage.EmployeeId);
             return View(storage);
         }
 
@@ -118,7 +118,7 @@ namespace inventory_accounting_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id", storage.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", storage.EmployeeId);
             return View(storage);
         }
 

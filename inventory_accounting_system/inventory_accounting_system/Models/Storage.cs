@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace inventory_accounting_system.Models
 {
     public class Storage : Entity
     {
-        public string Title { get; set; }
-        public IEnumerable<Asset> Assets { get; set; }
-        public IEnumerable<Supplier> Suppliers { get; set; }
+        [Display(Name = "Название")] public string Title { get; set; }
+        [Display(Name = "Имущество")] public IEnumerable<Asset> Assets { get; set; }
+        [Display(Name = "Поставщики")] public IEnumerable<Supplier> Suppliers { get; set; }
         public string EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        [Display(Name = "Сотрудник")] public Employee Employee { get; set; }
     }
 }

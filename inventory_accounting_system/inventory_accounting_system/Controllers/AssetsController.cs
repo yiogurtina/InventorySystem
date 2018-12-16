@@ -117,11 +117,11 @@ namespace inventory_accounting_system.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", asset.CategoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id", asset.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Id", asset.OfficeId);
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Id", asset.StorageId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", asset.SupplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", asset.EmployeeId);
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", asset.OfficeId);
+            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title", asset.StorageId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);
         }
 
@@ -154,11 +154,11 @@ namespace inventory_accounting_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", asset.CategoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Id", asset.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Id", asset.OfficeId);
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Id", asset.StorageId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", asset.SupplierId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", asset.EmployeeId);
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", asset.OfficeId);
+            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title", asset.StorageId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);
         }
         #endregion
