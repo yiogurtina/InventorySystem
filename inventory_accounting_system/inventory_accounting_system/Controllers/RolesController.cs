@@ -2,17 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using inventory_accounting_system.Data;
+using inventory_accounting_system.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inventory_accounting_system.Controllers
 {
     public class RolesController : Controller
     {
-        // GET: Roles
-        public ActionResult Index()
+        private readonly UserManager<Employee> _userManager;
+        private readonly ApplicationDbContext _context;
+
+        public RolesController(UserManager<Employee> userManager, ApplicationDbContext context)
         {
-            return View();
+            _userManager = userManager;
+            _context = context;
+        }
+        public async Task<ActionResult> Index()
+        {
+            var roles = _context.Roles;
+
+            if (roles.Count() == 0)
+            {
+                var adminRole = new IdentityRole() { Name = "Admin" };
+                var userRole = new IdentityRole() { Name = "User" };
+                var managerRole = new IdentityRole() { Name = "Manager" };
+                _context.Add(adminRole);
+                _context.Add(userRole);
+                _context.Add(managerRole);
+                await _context.SaveChangesAsync();
+                var adminUser = new Employee { Login = "admin", UserName = "admin" };
+                await _userManager.CreateAsync(adminUser, "admin");
+
+                var addToRole = new IdentityUserRole<string>() { UserId = adminUser.Id, RoleId = adminRole.Id };
+                _context.Add(addToRole);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Roles/Details/5

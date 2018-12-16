@@ -5,14 +5,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using inventory_accounting_system.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace inventory_accounting_system.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly SignInManager<Employee> _signInManager;
+
+        public HomeController(SignInManager<Employee> signInManager)
+        {
+            _signInManager = signInManager;
+        }
         public IActionResult Index()
         {
-            return View();
+            if (_signInManager.IsSignedIn(User))
+            {
+                return View();
+            }
+
+            return RedirectToAction("Login", "Account");
         }
 
         public IActionResult About()
