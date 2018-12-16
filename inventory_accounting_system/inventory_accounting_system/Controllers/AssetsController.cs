@@ -13,6 +13,7 @@ namespace inventory_accounting_system.Controllers
     public class AssetsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        static Random generator = new Random();
 
         public AssetsController(ApplicationDbContext context)
         {
@@ -70,10 +71,13 @@ namespace inventory_accounting_system.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset)
+        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset)
         {
+            var categoryPrefix = _context.Categories.SingleOrDefaultAsync(c => c.Id == asset.CategoryId);
+
             if (ModelState.IsValid)
             {
+                asset.InventNumber = generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

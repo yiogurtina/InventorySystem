@@ -17,7 +17,7 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.InventNumber)
+            @Html.DisplayNameFor(model => model.InventPrefix)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
@@ -51,7 +51,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @await Component.InvokeAsync("AssetVM")
+                @Html.DisplayFor(modelItem => item.InventNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
