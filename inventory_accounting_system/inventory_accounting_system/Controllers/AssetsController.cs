@@ -12,6 +12,8 @@ namespace inventory_accounting_system.Controllers
 {
     public class AssetsController : Controller
     {
+        #region Dependency Injection
+
         private readonly ApplicationDbContext _context;
         static Random generator = new Random();
 
@@ -20,7 +22,10 @@ namespace inventory_accounting_system.Controllers
             _context = context;
         }
 
-        // GET: Assets
+        #endregion
+
+        #region Index
+
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Assets
@@ -32,7 +37,10 @@ namespace inventory_accounting_system.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Assets/Details/5
+        #endregion
+
+        #region Details
+
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -55,7 +63,10 @@ namespace inventory_accounting_system.Controllers
             return View(asset);
         }
 
-        // GET: Assets/Create
+        #endregion
+
+        #region Create
+
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
@@ -66,18 +77,18 @@ namespace inventory_accounting_system.Controllers
             return View();
         }
 
-        // POST: Assets/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset)
         {
-            var categoryPrefix = _context.Categories.SingleOrDefaultAsync(c => c.Id == asset.CategoryId);
+            var categoryPrefix = _context.Categories
+                .Where(c => c.Id == asset.CategoryId)
+                .Select(c => c.Prefix)
+                .FirstOrDefaultAsync();
 
             if (ModelState.IsValid)
             {
-                asset.InventNumber = generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
+                asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,7 +101,10 @@ namespace inventory_accounting_system.Controllers
             return View(asset);
         }
 
-        // GET: Assets/Edit/5
+        #endregion
+        
+        #region Edit
+
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -111,9 +125,6 @@ namespace inventory_accounting_system.Controllers
             return View(asset);
         }
 
-        // POST: Assets/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset)
@@ -150,8 +161,10 @@ namespace inventory_accounting_system.Controllers
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Id", asset.SupplierId);
             return View(asset);
         }
+        #endregion
 
-        // GET: Assets/Delete/5
+        #region Delete
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -174,7 +187,6 @@ namespace inventory_accounting_system.Controllers
             return View(asset);
         }
 
-        // POST: Assets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -185,9 +197,15 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region AssetExists
+
         private bool AssetExists(string id)
         {
             return _context.Assets.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }
