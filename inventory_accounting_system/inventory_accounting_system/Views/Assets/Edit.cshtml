@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string serialNum = Model.SerialNum;
 }
 
 <h2>Edit</h2>
@@ -59,6 +60,7 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
+            <input type="hidden" id="passingToJs" value=@serialNum>
         </form>
     </div>
 </div>
@@ -89,6 +91,8 @@
                 document.getElementById('catSelect').appendChild(input);
 
                 document.getElementById("labelId").innerHTML = "Серийный номер";
+                var serialNum = $('#passingToJs').val()
+                document.getElementById("inputId").value = serialNum;
 
             } else {
                 var input = document.getElementById("inputId");
@@ -116,9 +120,9 @@
             input.setAttribute("name", "serialNum");
             document.getElementById('catSelect').appendChild(label);
             document.getElementById('catSelect').appendChild(input);
-
             document.getElementById("labelId").innerHTML = "Серийный номер";
-
+            var serialNum = $('#passingToJs').val()
+            document.getElementById("inputId").value = serialNum;
         }
     </script>
 }

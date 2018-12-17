@@ -17,6 +17,15 @@
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
+        @if (Model.SerialNum != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.SerialNum)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SerialNum)
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.InventNumber)
         </dt>
