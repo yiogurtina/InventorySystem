@@ -79,7 +79,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset)
+        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset, string serialNum)
         {
             var categoryPrefix = _context.Categories
                 .Where(c => c.Id == asset.CategoryId)
@@ -89,6 +89,7 @@ namespace inventory_accounting_system.Controllers
             if (ModelState.IsValid)
             {
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
+                asset.SerialNum = serialNum;
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -24,7 +24,9 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Сотрудник")] public Employee Employee { get; set; }
 
         [Display(Name = "Изображение")] public string ImagesUrl { get; set; }
-//        public string EventId { get; set; }
-//        public Event Event { get; set; }
+
+        //        public string EventId { get; set; }
+        //        public Event Event { get; set; }
+        public string SerialNum { get; set; }
     }
 }

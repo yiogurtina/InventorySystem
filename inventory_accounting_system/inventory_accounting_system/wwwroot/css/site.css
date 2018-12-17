@@ -9,7 +9,9 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.catInput {
+    margin-top: 20px;
+}
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
