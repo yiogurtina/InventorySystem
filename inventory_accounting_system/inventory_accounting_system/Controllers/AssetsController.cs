@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using inventory_accounting_system.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -16,10 +20,15 @@ namespace inventory_accounting_system.Controllers
 
         private readonly ApplicationDbContext _context;
         static Random generator = new Random();
+        private readonly IHostingEnvironment _appEnvironment;
+        private readonly FileUploadService _fileUploadService;
 
-        public AssetsController(ApplicationDbContext context)
+        public AssetsController(ApplicationDbContext context, IHostingEnvironment appEnvironment,
+            FileUploadService fileUploadService)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
+            _fileUploadService = fileUploadService;
         }
 
         #endregion
@@ -79,7 +88,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset, string serialNum)
+        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image")] Asset asset, string serialNum)
         {
             var categoryPrefix = _context.Categories
                 .Where(c => c.Id == asset.CategoryId)
@@ -90,6 +99,7 @@ namespace inventory_accounting_system.Controllers
             {
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
+                UploadPhoto(asset);
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -128,7 +138,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,ImagesUrl,Id")] Asset asset)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset, string serialNum)
         {
             if (id != asset.Id)
             {
@@ -139,6 +149,12 @@ namespace inventory_accounting_system.Controllers
             {
                 try
                 {
+                    asset.SerialNum = serialNum;
+                    if (asset.Image != null)
+                    {
+                        UploadPhoto(asset);
+                    }
+
                     _context.Update(asset);
                     await _context.SaveChangesAsync();
                 }
@@ -208,5 +224,12 @@ namespace inventory_accounting_system.Controllers
         }
 
         #endregion
+
+        private void UploadPhoto(Asset asset)
+        {
+            var path = Path.Combine(_appEnvironment.WebRootPath, $"images\\{asset.Name}\\avatar");
+            _fileUploadService.Upload(path, asset.Image.FileName, asset.Image);
+            asset.ImagePath = $"images/{asset.Name}/avatar/{asset.Image.FileName}";
+        }
     }
 }

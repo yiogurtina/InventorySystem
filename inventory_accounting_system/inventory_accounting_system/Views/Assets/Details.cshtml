@@ -30,10 +30,10 @@
             @Html.DisplayFor(model => model.Date)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ImagesUrl)
+            @Html.DisplayNameFor(model => model.ImagePath)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ImagesUrl)
+            <img src="../@Model.ImagePath" width="100" height="100" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Category)

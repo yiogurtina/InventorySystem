@@ -40,6 +40,7 @@ namespace inventory_accounting_system
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<FileUploadService>();
             services.AddMvc();
         }
 

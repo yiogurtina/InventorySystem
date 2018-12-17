@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace inventory_accounting_system.Models
 {
@@ -19,14 +21,15 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Склад")] public Storage Storage { get; set; }
 
         public string SupplierId { get; set; }
-        [Display(Name = "Пастовщик")] public Supplier Supplier { get; set; }
+        [Display(Name = "Поставщик")] public Supplier Supplier { get; set; }
         public string EmployeeId { get; set; }
         [Display(Name = "Сотрудник")] public Employee Employee { get; set; }
-
-        [Display(Name = "Изображение")] public string ImagesUrl { get; set; }
 
         //        public string EventId { get; set; }
         //        public Event Event { get; set; }
         public string SerialNum { get; set; }
+        [NotMapped]
+        [Display(Name = "Изображение")] public IFormFile Image { get; set; }
+        public string ImagePath { get; set; }
     }
 }

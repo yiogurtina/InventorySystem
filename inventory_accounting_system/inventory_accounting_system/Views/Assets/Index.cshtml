@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.ImagesUrl)
+                @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th class="text-left">
                 @Html.DisplayNameFor(model => model.Category)
@@ -57,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td class="text-left">
-                @Html.DisplayFor(modelItem => item.ImagesUrl)
+                <img src="@item.ImagePath" width="100" height="100" />
             </td>
             <td class="text-left col-sm-1">
                 @Html.DisplayFor(modelItem => item.Category.Name)
