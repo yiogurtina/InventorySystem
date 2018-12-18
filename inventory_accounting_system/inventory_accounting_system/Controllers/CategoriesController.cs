@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
+using inventory_accounting_system.Interface;
 using inventory_accounting_system.Models;
+using Moq;
 
 namespace inventory_accounting_system.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        Mock<ICategoryReposytory> mock = new Mock<ICategoryReposytory>();
 
         public CategoriesController(ApplicationDbContext context)
         {
@@ -24,6 +27,20 @@ namespace inventory_accounting_system.Controllers
         {
             return View(await _context.Categories.ToListAsync());
         }
+
+
+//        // GET: Categories
+//        public async Task<IActionResult> Index()
+//        {
+//            mock.Setup(m => m.Categories).Returns(new List<Category>
+//            {
+//                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Мебель", Prefix = "F_"},
+//                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Компутеры", Prefix = "F_"},
+//                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Машины", Prefix = "Fльвытдм_"}
+//            });
+//
+//            return View(mock.Object.Categories.ToList());
+//        }
 
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(string id)
@@ -62,6 +79,7 @@ namespace inventory_accounting_system.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(category);
         }
 
@@ -78,6 +96,7 @@ namespace inventory_accounting_system.Controllers
             {
                 return NotFound();
             }
+
             return View(category);
         }
 
@@ -111,8 +130,10 @@ namespace inventory_accounting_system.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(category);
         }
 
