@@ -10,5 +10,8 @@ namespace inventory_accounting_system.Models
     public class Employee : IdentityUser
     {
         [Display(Name = "Имя")] public string Login { get; set; }
+        public Office Office { get; set; }
+        [Display(Name="Оффис")]public string OfficeId { get; set; }
+
     }
 }

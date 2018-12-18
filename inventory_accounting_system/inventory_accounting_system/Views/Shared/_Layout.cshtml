@@ -30,18 +30,18 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    
+
                     <li><a asp-area="" asp-controller="Categories" asp-action="Index">Категории</a></li>
 
                     <li><a asp-area="" asp-controller="Storages" asp-action="Index">Склад</a></li>
                     <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщик</a></li>
                     <li><a asp-area="" asp-controller="Assets" asp-action="Index">Имущество</a></li>
-
                     <li><a asp-area="" asp-controller="Offices" asp-action="Index">Офис</a></li>
 
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
                     {
-                        <li><a asp-area="" asp-controller="Employes" asp-action="Users">Employes</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a></li>
+                        <li><a asp-area="" asp-controller="Employes" asp-action="Users">Сотрудники</a></li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

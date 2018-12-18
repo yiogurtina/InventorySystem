@@ -26,9 +26,9 @@ namespace inventory_accounting_system.Controllers
 
             if (roles.Count() == 0)
             {
-                var adminRole = new IdentityRole() { Name = "Admin" };
-                var userRole = new IdentityRole() { Name = "User" };
-                var managerRole = new IdentityRole() { Name = "Manager" };
+                var adminRole = new IdentityRole() { Name = "Admin", NormalizedName = "ADMIN"};
+                var userRole = new IdentityRole() { Name = "User", NormalizedName = "USER"};
+                var managerRole = new IdentityRole() { Name = "Manager" , NormalizedName = "MANAGER"};
                 _context.Add(adminRole);
                 _context.Add(userRole);
                 _context.Add(managerRole);

@@ -114,13 +114,22 @@ namespace inventory_accounting_system.Controllers
             ViewData["UserId"] = id;
             return View();
         }
-        [Authorize(Roles = "Admin")]
+
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> Users()
         {
             var user = await _userManager.GetUserAsync(User);
-            var users = _context.Users.Where(u => u.Id != user.Id);
-            return View(users);
+            if (User.IsInRole("Admin"))
+            {
+                return View(_context.Users.Where(u => u.Id != user.Id));
+            }
+            else
+
+            {
+                return View(_context.Users.Where(u => u.OfficeId == user.OfficeId).Where(u=>u.Id!=user.Id));
+            }
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateRole(string role, string id)
         {

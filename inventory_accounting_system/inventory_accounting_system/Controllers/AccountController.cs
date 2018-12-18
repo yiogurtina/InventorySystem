@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using inventory_accounting_system.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,17 +25,20 @@ namespace inventory_accounting_system.Controllers
         private readonly SignInManager<Employee> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
             IEmailSender emailSender,
+            ApplicationDbContext context,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -203,36 +207,47 @@ namespace inventory_accounting_system.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            List<string> roles = new List<string>();
+            if (User.IsInRole("Admin"))
+            {
+                roles.Add("Manager");
+                roles.Add("User");
+            }
+
+            ViewData["Roles"] = new SelectList(roles);
             return View();
         }
-
+        [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model, string role)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new Employee { UserName = model.Login, Email = model.Email };
+                var user = new Employee { UserName = model.Login, Login = model.Login, OfficeId = model.OfficeId};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    if (role == null)
+                    {
+                        role = "User";
+                    }
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    _logger.LogInformation("You created a new User");
+                    
+                    //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    //    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    await _userManager.AddToRoleAsync(user, role.ToUpper());
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
@@ -240,7 +255,6 @@ namespace inventory_accounting_system.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()

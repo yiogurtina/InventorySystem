@@ -24,5 +24,10 @@ namespace inventory_accounting_system.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public Office Office { get; set; }
+        [Required]
+        [Display(Name = "Оффис")]
+        public string OfficeId { get; set; }
     }
 }
