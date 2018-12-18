@@ -99,7 +99,15 @@ namespace inventory_accounting_system.Controllers
             {
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
-                UploadPhoto(asset);
+                if (asset.Image != null)
+                {
+                    UploadPhoto(asset);
+                }
+                else
+                {
+                    asset.ImagePath = "images/default-image.jpg";
+                }
+
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -138,7 +146,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset, string serialNum)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset, string serialNum, string currentPath)
         {
             if (id != asset.Id)
             {
@@ -153,6 +161,10 @@ namespace inventory_accounting_system.Controllers
                     if (asset.Image != null)
                     {
                         UploadPhoto(asset);
+                    }
+                    else
+                    {
+                        asset.ImagePath = currentPath;
                     }
 
                     _context.Update(asset);
@@ -227,9 +239,9 @@ namespace inventory_accounting_system.Controllers
 
         private void UploadPhoto(Asset asset)
         {
-            var path = Path.Combine(_appEnvironment.WebRootPath, $"images\\{asset.Name}\\avatar");
+            var path = Path.Combine(_appEnvironment.WebRootPath, $"images\\{asset.Name}\\image");
             _fileUploadService.Upload(path, asset.Image.FileName, asset.Image);
-            asset.ImagePath = $"images/{asset.Name}/avatar/{asset.Image.FileName}";
+            asset.ImagePath = $"images/{asset.Name}/image/{asset.Image.FileName}";
         }
     }
 }
