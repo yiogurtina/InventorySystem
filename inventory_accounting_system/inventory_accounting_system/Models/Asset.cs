@@ -31,5 +31,6 @@ namespace inventory_accounting_system.Models
         [NotMapped]
         [Display(Name = "Изображение")] public IFormFile Image { get; set; }
         public string ImagePath { get; set; }
+        public bool IsActive { get; set; }
     }
 }

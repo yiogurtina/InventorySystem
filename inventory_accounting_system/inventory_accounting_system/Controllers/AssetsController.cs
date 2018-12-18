@@ -37,13 +37,14 @@ namespace inventory_accounting_system.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Assets
+            var assets = _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.Employee)
                 .Include(a => a.Office)
                 .Include(a => a.Storage)
-                .Include(a => a.Supplier);
-            return View(await applicationDbContext.ToListAsync());
+                .Include(a => a.Supplier)
+                .Where(a => a.IsActive == true);
+            return View(await assets.ToListAsync());
         }
 
         #endregion
@@ -99,6 +100,7 @@ namespace inventory_accounting_system.Controllers
             {
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
+                asset.IsActive = true;
                 if (asset.Image != null)
                 {
                     UploadPhoto(asset);
@@ -221,7 +223,8 @@ namespace inventory_accounting_system.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Assets.Remove(asset);
+            asset.IsActive = false;
+            _context.Update(asset);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
