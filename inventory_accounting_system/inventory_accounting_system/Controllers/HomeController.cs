@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using inventory_accounting_system.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -17,6 +18,8 @@ namespace inventory_accounting_system.Controllers
         {
             _signInManager = signInManager;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             if (_signInManager.IsSignedIn(User))
@@ -27,6 +30,7 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [Authorize]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -34,6 +38,7 @@ namespace inventory_accounting_system.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";

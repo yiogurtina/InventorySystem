@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Hosting;
 using inventory_accounting_system.Services;
 using Microsoft.AspNetCore.Http;
 using inventory_accounting_system.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace inventory_accounting_system.Controllers
 {
+    [Authorize]
     public class AssetsController : Controller
     {
         #region Dependency Injection

@@ -1,9 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using inventory_accounting_system.Models
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - inventory_accounting_system</title>
+    <title>@ViewData["Title"] - Inventory Accounting System</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -17,43 +22,55 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">inventory_accounting_system</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">inventory_accounting_system</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
 
-                    <li><a asp-area="" asp-controller="Categories" asp-action="Index">Категории</a></li>
-                    <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщик</a></li>
-                    <li><a asp-area="" asp-controller="Assets" asp-action="Index">Имущество</a></li>
-                    <li><a asp-area="" asp-controller="Offices" asp-action="Index">Офис</a></li>
+                        <li><a asp-area="" asp-controller="Categories" asp-action="Index">Категории</a></li>
+                        <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщик</a></li>
+                        <li><a asp-area="" asp-controller="Assets" asp-action="Index">Имущество</a></li>
+                        <li><a asp-area="" asp-controller="Offices" asp-action="Index">Офис</a></li>
 
-                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                    {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a></li>
-                        <li><a asp-area="" asp-controller="Employes" asp-action="Users">Сотрудники</a></li>
-                    }
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
+                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                        {
+                            <li><a asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a></li>
+                            <li><a asp-area="" asp-controller="Employes" asp-action="Users">Сотрудники</a></li>
+                        }
+                    </ul>
+                    @await Html.PartialAsync("_LoginPartial")
+                </div>
             </div>
+        </nav>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; 2018 - Inventory Accounting System</p>
+            </footer>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - inventory_accounting_system</p>
-        </footer>
-    </div>
-
+    }
+    else
+    {
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; 2018 - Inventory Accounting System</p>
+            </footer>
+        </div>
+    }
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
