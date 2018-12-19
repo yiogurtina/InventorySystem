@@ -12,9 +12,9 @@ namespace inventory_accounting_system.Models.AccountViewModels
         [Display(Name = "Логин")]
         public string Login { get; set; }
 
-        [Required]
-        [Display(Name = "Пароль")]
+        [Required]        
         [DataType(DataType.Password)]
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
         [Display(Name = "Запомнить?")]

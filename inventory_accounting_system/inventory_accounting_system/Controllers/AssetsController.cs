@@ -125,6 +125,7 @@ namespace inventory_accounting_system.Controllers
             }
 
             var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
+
             if (asset == null)
             {
                 return NotFound();
@@ -156,7 +157,7 @@ namespace inventory_accounting_system.Controllers
                     {
                         asset.ImagePath = currentPath;
                     }
-
+                    asset.IsActive = true;
                     _context.Update(asset);
                     await _context.SaveChangesAsync();
                 }
