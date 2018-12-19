@@ -28,15 +28,7 @@
             <th class="text-left">
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th  class="text-left">
-                @Html.DisplayNameFor(model => model.Employee)
-            </th>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.Office)
-            </th>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.Storage)
-            </th>
+
             <th class="text-left">
                 @Html.DisplayNameFor(model => model.Supplier)
             </th>
@@ -44,45 +36,38 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.InventNumber)
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td class="text-left">
-                <img src="@item.ImagePath" width="100" height="100" />
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Employee.Login)
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Office.Title)
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Storage.Title)
-            </td>
-            <td class="text-left col-sm-1">
-                @Html.DisplayFor(modelItem => item.Supplier.Name)
-            </td>
-            <td  class="col-sm-3">
-                <div>
-                    <a class="btn btn-default" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-default" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </div>
-            </td>
-        </tr>
-       
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left col-sm-1">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="text-left col-sm-1">
+                    @Html.DisplayFor(modelItem => item.InventNumber)
+                </td>
+                <td class="text-left col-sm-1">
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td class="text-left">
+                    <img src="@item.ImagePath" width="100" height="100" />
+                </td>
+                <td class="text-left col-sm-1">
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+
+                <td class="text-left col-sm-1">
+                    @Html.DisplayFor(modelItem => item.Supplier.Name)
+                </td>
+                <td class="col-sm-3">
+                    <div>
+                        <a class="btn btn-default" asp-action="Move" asp-route-id="@item.Id">Move</a>
+                        <a class="btn btn-default" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-default" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
+                </td>
+            </tr>
+
+        }
     </tbody>
 </table>

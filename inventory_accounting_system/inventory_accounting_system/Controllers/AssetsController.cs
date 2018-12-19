@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using inventory_accounting_system.Services;
 using Microsoft.AspNetCore.Http;
+using inventory_accounting_system.ViewModel;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -39,9 +40,6 @@ namespace inventory_accounting_system.Controllers
         {
             var assets = _context.Assets
                 .Include(a => a.Category)
-                .Include(a => a.Employee)
-                .Include(a => a.Office)
-                .Include(a => a.Storage)
                 .Include(a => a.Supplier)
                 .Where(a => a.IsActive == true);
             return View(await assets.ToListAsync());
@@ -60,9 +58,6 @@ namespace inventory_accounting_system.Controllers
 
             var asset = await _context.Assets
                 .Include(a => a.Category)
-                .Include(a => a.Employee)
-                .Include(a => a.Office)
-                .Include(a => a.Storage)
                 .Include(a => a.Supplier)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (asset == null)
@@ -80,9 +75,6 @@ namespace inventory_accounting_system.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login");
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title");
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
             return View();
         }
@@ -115,9 +107,6 @@ namespace inventory_accounting_system.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", asset.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", asset.OfficeId);
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title", asset.StorageId);
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);
         }
@@ -139,9 +128,6 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", asset.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", asset.OfficeId);
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title", asset.StorageId);
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);
         }
@@ -186,9 +172,6 @@ namespace inventory_accounting_system.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", asset.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", asset.OfficeId);
-            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Title", asset.StorageId);
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);
         }
@@ -205,9 +188,6 @@ namespace inventory_accounting_system.Controllers
 
             var asset = await _context.Assets
                 .Include(a => a.Category)
-                .Include(a => a.Employee)
-                .Include(a => a.Office)
-                .Include(a => a.Storage)
                 .Include(a => a.Supplier)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (asset == null)
@@ -229,6 +209,74 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+
+        #region Move
+
+        public async Task<IActionResult> Move(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
+            if (asset == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
+            ViewData["AssetId"] = id;
+
+            var assetsMoveStory = new AssetsMoveStory();
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login");
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+
+
+
+            return View("Move", new MoveViewModel()
+            {
+                Asset = asset,
+                AssetsMoveStory = assetsMoveStory,
+                AssetsMoveStories = _context.AssetsMoveStories
+                                    .Where(f => f.AssetId == id)
+                                    .Include(t => t.Employee)
+                                    .Include(t => t.Office)
+            });
+            //return View(asset);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Move(AssetsMoveStory assetsMoveStory)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(assetsMoveStory);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AssetExists(assetsMoveStory.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Move));
+            }
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeId);
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeId);
+            return View(assetsMoveStory);
+        }
         #endregion
 
         #region AssetExists
