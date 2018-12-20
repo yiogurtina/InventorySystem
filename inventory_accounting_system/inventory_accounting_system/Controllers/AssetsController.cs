@@ -143,12 +143,7 @@ namespace inventory_accounting_system.Controllers
             {
                 return NotFound();
             }
-
-            /*var inventNumSearch = _context.Assets
-                .Where(i => i.InventNumber == inventNumber)
-                .Select(i => i.InventNumber)
-                .FirstOrDefaultAsync();*/
-
+            
             var inventNumSearch = _context.Assets
                 .FirstOrDefault(i => i.InventNumber == inventNumber);
 
