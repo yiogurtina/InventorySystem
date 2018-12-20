@@ -137,11 +137,24 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset, string serialNum, string currentPath)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset, string serialNum, string currentPath, string inventNumber)
         {
             if (id != asset.Id)
             {
                 return NotFound();
+            }
+
+            /*var inventNumSearch = _context.Assets
+                .Where(i => i.InventNumber == inventNumber)
+                .Select(i => i.InventNumber)
+                .FirstOrDefaultAsync();*/
+
+            var inventNumSearch = _context.Assets
+                .FirstOrDefault(i => i.InventNumber == inventNumber);
+
+            if (inventNumSearch != null)
+            {
+                ModelState.AddModelError("InventNumber", "Такой номер уже существует");
             }
 
             if (ModelState.IsValid)
@@ -157,6 +170,8 @@ namespace inventory_accounting_system.Controllers
                     {
                         asset.ImagePath = currentPath;
                     }
+
+                    asset.InventNumber = inventNumber;
                     asset.IsActive = true;
                     _context.Update(asset);
                     await _context.SaveChangesAsync();
@@ -213,7 +228,6 @@ namespace inventory_accounting_system.Controllers
         }
 
         #endregion
-
 
         #region Move
 
