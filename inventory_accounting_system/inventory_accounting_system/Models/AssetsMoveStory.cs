@@ -13,13 +13,21 @@ namespace inventory_accounting_system.Models
         public string AssetId { get; set; }
         public Asset Asset { get; set; }
 
-        public string OfficeId { get; set; }
-        [Display(Name = "Офис")]
-        public Office Office { get; set; }
+        public string OfficeFromId { get; set; }
+        [Display(Name = "Офис от")]
+        public Office OfficeFrom { get; set; }
 
-        public string EmployeeId { get; set; }
-        [Display(Name = "Сотрудник")]
-        public Employee Employee { get; set; }
+        public string OfficeToId { get; set; }
+        [Display(Name = "Офис куда")]
+        public Office OfficeTo { get; set; }
+
+        public string EmployeeFromId { get; set; }
+        [Display(Name = "Сотрудник от")]
+        public Employee EmployeeFrom { get; set; }
+
+        public string EmployeeToId { get; set; }
+        [Display(Name = "Сотрудник кому")]
+        public Employee EmployeeTo { get; set; }
 
         [Display(Name = "Дата начало")]
         public DateTime DateStart { get; set; }
@@ -27,6 +35,6 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Дата конец")]
         public DateTime DateEnd { get; set; }
 
-        
+
     }
 }

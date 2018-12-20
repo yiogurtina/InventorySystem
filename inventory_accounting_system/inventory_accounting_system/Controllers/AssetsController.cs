@@ -243,8 +243,11 @@ namespace inventory_accounting_system.Controllers
             ViewData["AssetId"] = id;
 
             var assetsMoveStory = new AssetsMoveStory();
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login");
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["EmployeeFromId"] = new SelectList(_context.Users, "Id", "Login");
+            ViewData["OfficeFromId"] = new SelectList(_context.Offices, "Id", "Title");
+
+            ViewData["EmployeeToId"] = new SelectList(_context.Users, "Id", "Login");
+            ViewData["OfficeToId"] = new SelectList(_context.Offices, "Id", "Title");
 
 
 
@@ -254,8 +257,10 @@ namespace inventory_accounting_system.Controllers
                 AssetsMoveStory = assetsMoveStory,
                 AssetsMoveStories = _context.AssetsMoveStories
                                     .Where(f => f.AssetId == id)
-                                    .Include(t => t.Employee)
-                                    .Include(t => t.Office)
+                                    .Include(t => t.EmployeeFrom)
+                                    .Include(t => t.OfficeFrom)
+                                    .Include(t => t.EmployeeTo)
+                                    .Include(t => t.OfficeTo)
             });
             //return View(asset);
         }
@@ -283,10 +288,13 @@ namespace inventory_accounting_system.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Move));
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeId);
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeId);
+            ViewData["EmployeeFromId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeFromId);
+            ViewData["OfficeFromId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeFromId);
+
+            ViewData["EmployeeToId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeToId);
+            ViewData["OfficeToId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeToId);
             return View(assetsMoveStory);
         }
         #endregion

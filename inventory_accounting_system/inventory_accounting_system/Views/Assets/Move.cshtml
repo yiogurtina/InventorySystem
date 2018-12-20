@@ -82,15 +82,21 @@
     </thead>
     @foreach (AssetsMoveStory Story in Model.AssetsMoveStories)
     {
-        <tr>
-            <td>
-                @Story.Employee.Login
-            </td>
-            <td>
-                @Story.Office.Title
-            </td>
-            <td>@Story.DateStart</td>
-        </tr>
+    <tr>
+        <td>
+            @Story.EmployeeFrom.Login
+        </td>
+        <td>
+            @Story.OfficeFrom.Title
+        </td>
+        <td>
+            @Story.EmployeeTo.Login
+        </td>
+        <td>
+            @Story.OfficeTo.Title
+        </td>
+        <td>@Story.DateStart</td>
+    </tr>
     }
 </table>
 
@@ -98,28 +104,37 @@
 {
     @using (Html.BeginForm("Move", "Assets", FormMethod.Post, true))
     {
-        <div style="width: 700px; border-radius: 5px;  padding: 10px;box-shadow: 0px 3px 18px -1px rgba(0,0,0,0.75); left: 20%; ">
-            <div>
-                <label asp-for="AssetsMoveStory.OfficeId" class="control-label"></label>
-                <select asp-for="AssetsMoveStory.OfficeId" class="target form-control" asp-items="ViewBag.OfficeId" id="onChangeText"></select>
-            </div>
-            <div>
-                <label asp-for="AssetsMoveStory.EmployeeId" class="control-label"></label>
-                <select asp-for="AssetsMoveStory.EmployeeId" class="target form-control" asp-items="ViewBag.EmployeeId" id="onChangeText"></select>
-            </div>
-            <div>
-                <label asp-for="AssetsMoveStory.DateStart" class="control-label"></label>
-                <input asp-for="AssetsMoveStory.DateStart" class="form-control" />
-                <span asp-validation-for="AssetsMoveStory.DateStart" class="text-danger"></span>
-            </div>
-            <div>
-                <input type="hidden" name="DateEnd" value="2100-01-01 00" />
-                <input type="hidden" name="AssetId" value="@ViewBag.AssetId" />
-            </div>
-            <div>
-                <input style="margin-top: 10px;" type="submit" class="btn btn-success form-control" />
-            </div>
-        </div>
+<div style="width: 700px; border-radius: 5px;  padding: 10px;box-shadow: 0px 3px 18px -1px rgba(0,0,0,0.75); left: 20%; ">
+    <div>
+        <label asp-for="AssetsMoveStory.OfficeFromId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.OfficeFromId" class="target form-control" asp-items="ViewBag.OfficeFromId" id="onChangeText"></select>
+    </div>
+    <div>
+        <label asp-for="AssetsMoveStory.EmployeeFromId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.EmployeeFromId" class="target form-control" asp-items="ViewBag.EmployeeFromId" id="onChangeText"></select>
+    </div>
+
+    <div>
+        <label asp-for="AssetsMoveStory.OfficeToId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.OfficeToId" class="target form-control" asp-items="ViewBag.OfficeToId" id="onChangeText"></select>
+    </div>
+    <div>
+        <label asp-for="AssetsMoveStory.EmployeeToId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.EmployeeToId" class="target form-control" asp-items="ViewBag.EmployeeToId" id="onChangeText"></select>
+    </div>
+    <div>
+        <label asp-for="AssetsMoveStory.DateStart" class="control-label"></label>
+        <input asp-for="AssetsMoveStory.DateStart" class="form-control" />
+        <span asp-validation-for="AssetsMoveStory.DateStart" class="text-danger"></span>
+    </div>
+    <div>
+        <input type="hidden" name="DateEnd" value="2100-01-01 00" />
+        <input type="hidden" name="AssetId" value="@ViewBag.AssetId" />
+    </div>
+    <div>
+        <input style="margin-top: 10px;" type="submit" class="btn btn-success form-control" />
+    </div>
+</div>
     }
     ///await Html.RenderPartialAsync("_MoveAssetView", Model.AssetsMoveStory);
 }

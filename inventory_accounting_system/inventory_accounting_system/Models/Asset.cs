@@ -15,6 +15,14 @@ namespace inventory_accounting_system.Models
         public string CategoryId { get; set; }
         public Category Category { get; set; }
 
+        public string OfficeId { get; set; }
+        [Display(Name = "Офис")]
+        public Office Office { get; set; }
+
+        public string EmployeeId { get; set; }
+        [Display(Name = "Сотрудник")]
+        public Employee Employee { get; set; }
+
         [Display(Name = "Инвентарный номер")]
         public string InventNumber { get; set; }
 
