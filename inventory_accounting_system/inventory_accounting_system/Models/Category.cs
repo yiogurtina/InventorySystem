@@ -10,5 +10,9 @@ namespace inventory_accounting_system.Models
 
         [Display(Name = "Префикс")]
         public string Prefix { get; set; }
+
+        public Event Event { get; set; }
+        [Display(Name = "Событие")]
+        public string EventId { get; set; }
     }
 }

@@ -27,5 +27,7 @@ namespace inventory_accounting_system.Data
             base.OnModelCreating(builder);
 
         }
+
+        public DbSet<inventory_accounting_system.Models.Event> Event { get; set; }
     }
 }
