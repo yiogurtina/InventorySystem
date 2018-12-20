@@ -15,7 +15,7 @@ namespace inventory_accounting_system.Controllers
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        Mock<ICategoryReposytory> mock = new Mock<ICategoryReposytory>();
+//        Mock<ICategoryReposytory> mock = new Mock<ICategoryReposytory>();
 
         public CategoriesController(ApplicationDbContext context)
         {
