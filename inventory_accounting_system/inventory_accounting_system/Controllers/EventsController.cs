@@ -19,14 +19,12 @@ namespace inventory_accounting_system.Controllers
             _context = context;
         }
 
-        // GET: Events
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Event.Include(@ => @.EventType);
-            return View(await applicationDbContext.ToListAsync());
+            var events = _context.Event.Include(e=>e.EventCategory);
+            return View(await events.ToListAsync());
         }
 
-        // GET: Events/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +32,37 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Event
-                .Include(@ => @.EventType)
+            var _event = await _context.Event
+                .Include(a=>a.EventCategory)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            if (_event == null)
             {
                 return NotFound();
             }
 
-            return View(@event);
+            return View(_event);
         }
 
-        // GET: Events/Create
         public IActionResult Create()
         {
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventType>(), "Id", "Id");
+            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title");
             return View();
         }
 
-        // POST: Events/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,EventTypeId,Id")] Event @event)
+        public async Task<IActionResult> Create([Bind("Title,EventTypeId,Id")] Event _event)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@event);
+                _context.Add(_event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventType>(), "Id", "Id", @event.EventTypeId);
-            return View(@event);
+            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title", _event.EventCategoryId);
+            return View(_event);
         }
 
-        // GET: Events/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +70,20 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Event.SingleOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            var _event = await _context.Event.SingleOrDefaultAsync(m => m.Id == id);
+            if (_event == null)
             {
                 return NotFound();
             }
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventType>(), "Id", "Id", @event.EventTypeId);
-            return View(@event);
+            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title", _event.EventCategoryId);
+            return View(_event);
         }
 
-        // POST: Events/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Title,EventTypeId,Id")] Event @event)
+        public async Task<IActionResult> Edit(string id, [Bind("Title,EventTypeId,Id")] Event _event)
         {
-            if (id != @event.Id)
+            if (id != _event.Id)
             {
                 return NotFound();
             }
@@ -102,12 +92,12 @@ namespace inventory_accounting_system.Controllers
             {
                 try
                 {
-                    _context.Update(@event);
+                    _context.Update(_event);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EventExists(@event.Id))
+                    if (!EventExists(_event.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +108,10 @@ namespace inventory_accounting_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventType>(), "Id", "Id", @event.EventTypeId);
-            return View(@event);
+            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title", _event.EventCategoryId);
+            return View(_event);
         }
 
-        // GET: Events/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -130,24 +119,23 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Event
-                .Include(@ => @.EventType)
+            var _event = await _context.Event
+                .Include(a=>a.EventCategory)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            if (_event == null)
             {
                 return NotFound();
             }
 
-            return View(@event);
+            return View(_event);
         }
 
-        // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var @event = await _context.Event.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Event.Remove(@event);
+            var _event = await _context.Event.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Event.Remove(_event);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

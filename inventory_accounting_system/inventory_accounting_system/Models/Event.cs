@@ -9,8 +9,8 @@ namespace inventory_accounting_system.Models
     public class Event : Entity
     {
         public string Title { get; set; }
-        public EventType EventType { get; set; }
+        public EventCategory EventCategory { get; set; }
         [Display(Name = "Тип события")]
-        public string EventTypeId { get; set; }
+        public string EventCategoryId { get; set; }
     }
 }

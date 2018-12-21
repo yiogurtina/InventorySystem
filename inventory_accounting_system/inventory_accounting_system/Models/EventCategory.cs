@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace inventory_accounting_system.Models
 {
-    public class EventType : Entity
+    public class EventCategory : Entity
     {
-        public string Type { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
     }
 }
