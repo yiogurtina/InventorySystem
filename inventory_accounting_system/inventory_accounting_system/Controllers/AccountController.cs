@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.Models.AccountViewModels;
 using inventory_accounting_system.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -26,7 +27,6 @@ namespace inventory_accounting_system.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _context;
-
         public AccountController(
             UserManager<Employee> userManager,
             SignInManager<Employee> signInManager,
@@ -230,27 +230,41 @@ namespace inventory_accounting_system.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string role)
         {
+            EmailService emailService = new EmailService();
             if (ModelState.IsValid)
             {
+<<<<<<< HEAD
                 var user = new Employee
                 {
                     UserName = model.Login, Login = model.Login, OfficeId = model.OfficeId, Name = model.Name,
                     Surname = model.Surname, Number = model.Number
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
+=======
+                var user = new Employee { UserName = model.Login, Login = model.Login, Email = model.Email, OfficeId = model.OfficeId};
+
+                var result = await _userManager.CreateAsync(user, model.Password = GenerateRandomPassword());
+                string sendEmail = "Ваш логин: " + "<h4>" + user.Login + "</h4>" + 
+                                   "Ваш пароль: " + "<h4>" + model.Password + "</h4>" + 
+                                   "<br/>С Уважением Администрация.";
+
+>>>>>>> f097e781a0c2810db7519f94727f111c0aede9c6
                 if (result.Succeeded)
                 {
+
                     if (role == null)
                     {
                         role = "User";
                     }
-
+                    
                     _logger.LogInformation("You created a new User");
                     
                     //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                     await _userManager.AddToRoleAsync(user, role.ToUpper());
+
+                    await emailService.SendEmailAsync(model.Email, "Ваши данные для входа в систему", sendEmail);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -476,6 +490,58 @@ namespace inventory_accounting_system.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
+        }
+
+        #endregion
+
+        #region GeneratePassword
+
+        public static string GenerateRandomPassword(PasswordOptions opts = null)
+        {
+            if (opts == null) opts = new PasswordOptions()
+            {
+                RequiredLength = 8,
+                RequiredUniqueChars = 4,
+                RequireDigit = true,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = true,
+                RequireUppercase = true
+            };
+
+            string[] randomChars = new[] {
+                "ABCDEFGHJKLMNOPQRSTUVWXYZ",    // uppercase 
+                "abcdefghijkmnopqrstuvwxyz",    // lowercase
+                "0123456789",                   // digits
+                "!@$?_-"                        // non-alphanumeric
+            };
+            Random rand = new Random(Environment.TickCount);
+            List<char> chars = new List<char>();
+
+            if (opts.RequireUppercase)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[0][rand.Next(0, randomChars[0].Length)]);
+
+            if (opts.RequireLowercase)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[1][rand.Next(0, randomChars[1].Length)]);
+
+            if (opts.RequireDigit)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[2][rand.Next(0, randomChars[2].Length)]);
+
+            if (opts.RequireNonAlphanumeric)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[3][rand.Next(0, randomChars[3].Length)]);
+
+            for (int i = chars.Count; i < opts.RequiredLength
+                                      || chars.Distinct().Count() < opts.RequiredUniqueChars; i++)
+            {
+                string rcs = randomChars[rand.Next(0, randomChars.Length)];
+                chars.Insert(rand.Next(0, chars.Count),
+                    rcs[rand.Next(0, rcs.Length)]);
+            }
+
+            return new string(chars.ToArray());
         }
 
         #endregion

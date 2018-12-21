@@ -30,12 +30,12 @@ namespace inventory_accounting_system
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<Employee, IdentityRole>(options => {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 3;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = true;
                     options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                })
+                    options.Password.RequiredLength = 8;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
