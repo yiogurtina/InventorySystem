@@ -124,7 +124,6 @@ namespace inventory_accounting_system.Controllers
                 return View(_context.Users.Where(u => u.Id != user.Id));
             }
             else
-
             {
                 return View(_context.Users.Where(u => u.OfficeId == user.OfficeId).Where(u=>u.Id!=user.Id));
             }

@@ -12,6 +12,9 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Имя")] public string Login { get; set; }
         public Office Office { get; set; }
         [Display(Name="Оффис")]public string OfficeId { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Number { get; set; }
 
     }
 }

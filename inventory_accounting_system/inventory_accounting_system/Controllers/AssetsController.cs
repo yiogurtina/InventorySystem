@@ -13,6 +13,7 @@ using inventory_accounting_system.Services;
 using Microsoft.AspNetCore.Http;
 using inventory_accounting_system.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -25,13 +26,15 @@ namespace inventory_accounting_system.Controllers
         static Random generator = new Random();
         private readonly IHostingEnvironment _appEnvironment;
         private readonly FileUploadService _fileUploadService;
+        private readonly UserManager<Employee> _userManager;
 
         public AssetsController(ApplicationDbContext context, IHostingEnvironment appEnvironment,
-            FileUploadService fileUploadService)
+            FileUploadService fileUploadService, UserManager<Employee> userManager)
         {
             _context = context;
             _appEnvironment = appEnvironment;
             _fileUploadService = fileUploadService;
+            _userManager = userManager;
         }
 
         #endregion
@@ -76,8 +79,11 @@ namespace inventory_accounting_system.Controllers
 
         public IActionResult Create()
         {
+            string usrId =_userManager.GetUserId(User);
+            var user = _context.Users.Find(usrId);
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
+            ViewData["EmployeeId"] = new SelectList(_userManager.Users.Where(u=>u.OfficeId==user.OfficeId), "Id", "Name");
             return View();
         }
 

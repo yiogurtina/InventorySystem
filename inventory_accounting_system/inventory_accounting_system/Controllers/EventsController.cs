@@ -21,8 +21,7 @@ namespace inventory_accounting_system.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var events = _context.Event.Include(e=>e.EventCategory);
-            return View(await events.ToListAsync());
+            return View(await _context.Events.ToListAsync());
         }
 
         public async Task<IActionResult> Details(string id)
@@ -32,8 +31,7 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            var _event = await _context.Event
-                .Include(a=>a.EventCategory)
+            var _event = await _context.Events
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (_event == null)
             {
@@ -45,13 +43,13 @@ namespace inventory_accounting_system.Controllers
 
         public IActionResult Create()
         {
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,EventTypeId,Id")] Event _event)
+        public async Task<IActionResult> Create([Bind("Title,Name,Description,TimeLast,Id,CategoryId")] Event _event)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +57,6 @@ namespace inventory_accounting_system.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title", _event.EventCategoryId);
             return View(_event);
         }
 
@@ -70,18 +67,17 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            var _event = await _context.Event.SingleOrDefaultAsync(m => m.Id == id);
+            var _event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
             if (_event == null)
             {
                 return NotFound();
             }
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title", _event.EventCategoryId);
             return View(_event);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Title,EventTypeId,Id")] Event _event)
+        public async Task<IActionResult> Edit(string id, [Bind("Title,Name,Description,TimeLast,Id")] Event _event)
         {
             if (id != _event.Id)
             {
@@ -108,7 +104,6 @@ namespace inventory_accounting_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventTypeId"] = new SelectList(_context.Set<EventCategory>(), "Id", "Title", _event.EventCategoryId);
             return View(_event);
         }
 
@@ -119,8 +114,7 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            var _event = await _context.Event
-                .Include(a=>a.EventCategory)
+            var _event = await _context.Events
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (_event == null)
             {
@@ -134,15 +128,15 @@ namespace inventory_accounting_system.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var _event = await _context.Event.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Event.Remove(_event);
+            var _event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Events.Remove(_event);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EventExists(string id)
         {
-            return _context.Event.Any(e => e.Id == id);
+            return _context.Events.Any(e => e.Id == id);
         }
     }
 }

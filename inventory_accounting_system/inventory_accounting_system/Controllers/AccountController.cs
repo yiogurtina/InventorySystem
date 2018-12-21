@@ -212,6 +212,8 @@ namespace inventory_accounting_system.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            string usrId = _userManager.GetUserId(User);
+            var user = _context.Users.Find(usrId);
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
             List<string> roles = new List<string>();
             if (User.IsInRole("Admin"))
@@ -219,7 +221,6 @@ namespace inventory_accounting_system.Controllers
                 roles.Add("Manager");
                 roles.Add("User");
             }
-
             ViewData["Roles"] = new SelectList(roles);
             return View();
         }
@@ -231,7 +232,11 @@ namespace inventory_accounting_system.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new Employee { UserName = model.Login, Login = model.Login, OfficeId = model.OfficeId};
+                var user = new Employee
+                {
+                    UserName = model.Login, Login = model.Login, OfficeId = model.OfficeId, Name = model.Name,
+                    Surname = model.Surname, Number = model.Number
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

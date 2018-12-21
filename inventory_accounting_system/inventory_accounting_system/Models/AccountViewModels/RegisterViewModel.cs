@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 
 namespace inventory_accounting_system.Models.AccountViewModels
@@ -29,5 +30,9 @@ namespace inventory_accounting_system.Models.AccountViewModels
         [Required]
         [Display(Name = "Оффис")]
         public string OfficeId { get; set; }
+
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Number { get; set; }
     }
 }

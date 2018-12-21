@@ -46,5 +46,6 @@ namespace inventory_accounting_system.Models
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
 
         public bool IsActive { get; set; }
+
     }
 }
