@@ -40,11 +40,11 @@ namespace inventory_accounting_system.Services
                 {
                     var user = new Employee
                     {
-                        UserName = "admin",
+                        UserName = "admin", // login admin
                         Email = "admin@admin.com",
                         Login = "admin"
                     };
-                    var result = await userManager.CreateAsync(user, "Adminadmin123");
+                    var result = await userManager.CreateAsync(user, "admin"); // pass: admin
                     if (result.Succeeded)
                     {
                         await userManager.AddToRoleAsync(user, "Admin");
