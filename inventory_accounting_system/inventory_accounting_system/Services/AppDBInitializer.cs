@@ -44,7 +44,7 @@ namespace inventory_accounting_system.Services
                         Email = "admin@admin.com",
                         Login = "admin"
                     };
-                    var result = await userManager.CreateAsync(user, "Fendertelecaster123");
+                    var result = await userManager.CreateAsync(user, "Adminadmin123");
                     if (result.Succeeded)
                     {
                         await userManager.AddToRoleAsync(user, "Admin");
