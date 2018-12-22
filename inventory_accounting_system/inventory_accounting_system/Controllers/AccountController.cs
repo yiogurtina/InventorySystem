@@ -233,22 +233,24 @@ namespace inventory_accounting_system.Controllers
             EmailService emailService = new EmailService();
             if (ModelState.IsValid)
             {
-<<<<<<< HEAD
+
                 var user = new Employee
                 {
-                    UserName = model.Login, Login = model.Login, OfficeId = model.OfficeId, Name = model.Name,
-                    Surname = model.Surname, Number = model.Number
+                    UserName = model.Login,
+                    Login = model.Login,
+                    Email = model.Email,
+                    OfficeId = model.OfficeId,
+                    Name = model.Name,
+                    Surname = model.Surname
+                    
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
-=======
-                var user = new Employee { UserName = model.Login, Login = model.Login, Email = model.Email, OfficeId = model.OfficeId};
-
                 var result = await _userManager.CreateAsync(user, model.Password = GenerateRandomPassword());
-                string sendEmail = "Ваш логин: " + "<h4>" + user.Login + "</h4>" + 
+                string sendEmail = "Уважаемый(ая) " + model.Name + " " + model.Surname + "<br/>" +
+                                    "<br/>Ваш логин: " + "<h4>" + user.Login + "</h4>" + 
                                    "Ваш пароль: " + "<h4>" + model.Password + "</h4>" + 
                                    "<br/>С Уважением Администрация.";
 
->>>>>>> f097e781a0c2810db7519f94727f111c0aede9c6
+
                 if (result.Succeeded)
                 {
 
