@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181221051001_DropEventCategoryTable")]
-    partial class DropEventCategoryTable
+    [Migration("20181222092059_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,15 +100,11 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("EventId");
-
                     b.Property<string>("Name");
 
                     b.Property<string>("Prefix");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
 
                     b.ToTable("Categories");
                 });
@@ -134,11 +130,15 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("Login");
 
+                    b.Property<string>("Name");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("Number");
 
                     b.Property<string>("OfficeId");
 
@@ -149,6 +149,8 @@ namespace inventory_accounting_system.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Surname");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -168,24 +170,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasIndex("OfficeId");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("TimeLast");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
@@ -378,13 +362,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "OfficeTo")
                         .WithMany()
                         .HasForeignKey("OfficeToId");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.Category", b =>
-                {
-                    b.HasOne("inventory_accounting_system.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>

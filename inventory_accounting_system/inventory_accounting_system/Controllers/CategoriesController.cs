@@ -24,7 +24,7 @@ namespace inventory_accounting_system.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.Include(c=>c.Events).ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
 
@@ -60,7 +60,6 @@ namespace inventory_accounting_system.Controllers
 
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Events, "Id", "Title");
             return View();
         }
 

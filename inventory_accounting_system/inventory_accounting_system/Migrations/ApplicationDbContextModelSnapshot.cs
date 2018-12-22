@@ -171,28 +171,6 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CategoryId");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("TimeLast");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Events");
-                });
-
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
                 {
                     b.Property<string>("Id")
@@ -390,13 +368,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany("Employees")
                         .HasForeignKey("OfficeId");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
-                {
-                    b.HasOne("inventory_accounting_system.Models.Category", "Category")
-                        .WithMany("Events")
-                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>

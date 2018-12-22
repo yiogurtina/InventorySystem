@@ -209,7 +209,6 @@ namespace inventory_accounting_system.Controllers
         }
         [Authorize(Roles = "Admin, Manager")]
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
             string usrId = _userManager.GetUserId(User);
@@ -226,7 +225,6 @@ namespace inventory_accounting_system.Controllers
         }
         [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string role)
         {

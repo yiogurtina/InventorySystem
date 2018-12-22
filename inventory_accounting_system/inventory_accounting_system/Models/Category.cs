@@ -13,6 +13,5 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Префикс")]
         public string Prefix { get; set; }
 
-        public IEnumerable<Event> Events { get; set; }
     }
 }

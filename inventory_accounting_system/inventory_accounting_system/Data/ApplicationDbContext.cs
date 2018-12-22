@@ -16,7 +16,6 @@ namespace inventory_accounting_system.Data
         public DbSet<Asset> Assets { get; set; }
         public DbSet<AssetsMoveStory> AssetsMoveStories { get; set; }
         public DbSet<OfficeType> OfficeType { get; set; }
-        public DbSet<Event> Events { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
