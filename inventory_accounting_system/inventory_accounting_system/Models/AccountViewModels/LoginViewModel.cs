@@ -19,5 +19,8 @@ namespace inventory_accounting_system.Models.AccountViewModels
 
         [Display(Name = "Запомнить?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Показать пароль")]
+        public bool ShowPassword { get; set; }
     }
 }
