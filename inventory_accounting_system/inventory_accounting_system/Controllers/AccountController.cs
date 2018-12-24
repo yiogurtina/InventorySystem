@@ -249,9 +249,17 @@ namespace inventory_accounting_system.Controllers
         [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string role)
+        public async Task<IActionResult> Register(RegisterViewModel model, string role, string email)
         {
             EmailService emailService = new EmailService();
+
+            var userManager = _context.Users.FirstOrDefault(u => u.Email == email);
+
+            if (userManager != null)
+            {
+                ModelState.AddModelError("Email", "Это email уже занят");
+            }
+
             if (ModelState.IsValid)
             {
 
