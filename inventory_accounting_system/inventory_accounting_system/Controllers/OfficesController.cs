@@ -12,12 +12,18 @@ namespace inventory_accounting_system.Controllers
 {
     public class OfficesController : Controller
     {
+        #region Dependency Injection
+
         private readonly ApplicationDbContext _context;
 
         public OfficesController(ApplicationDbContext context)
         {
             _context = context;
         }
+
+        #endregion
+
+        #region Index
 
         // GET: Offices
         public async Task<IActionResult> Index()
@@ -43,6 +49,10 @@ namespace inventory_accounting_system.Controllers
             return View(office);
         }
 
+        #endregion
+
+        #region Create
+
         // GET: Offices/Create
         public IActionResult Create()
         {
@@ -64,6 +74,10 @@ namespace inventory_accounting_system.Controllers
             }
             return View(office);
         }
+
+        #endregion
+
+        #region Edit
 
         // GET: Offices/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -116,6 +130,10 @@ namespace inventory_accounting_system.Controllers
             return View(office);
         }
 
+        #endregion
+
+        #region Delete
+
         // GET: Offices/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
@@ -145,9 +163,15 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region OfficeExists
+
         private bool OfficeExists(string id)
         {
             return _context.Offices.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }
