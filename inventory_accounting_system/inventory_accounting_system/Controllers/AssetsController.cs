@@ -83,7 +83,7 @@ namespace inventory_accounting_system.Controllers
             var user = _context.Users.Find(usrId);
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
-            ViewData["EmployeeId"] = new SelectList(_userManager.Users.Where(u=>u.OfficeId==user.OfficeId), "Id", "Name");
+            
             return View();
         }
 
