@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +27,14 @@ namespace inventory_accounting_system.Controllers
         #region Index
 
         // GET: Offices
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string officeId)
         {
-            return View(await _context.Offices.ToListAsync());
+            ViewData["Offices"] = new SelectList(_context.Offices, "Id", "Title");
+            if (officeId.IsNullOrEmpty())
+            {
+                return View();
+            }
+            return View(_context.Assets.Include(a=>a.Category).Include(a=>a.Employee).Where(a=>a.OfficeId==officeId));
         }
 
         // GET: Offices/Details/5

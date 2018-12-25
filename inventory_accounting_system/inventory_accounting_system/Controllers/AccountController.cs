@@ -262,7 +262,6 @@ namespace inventory_accounting_system.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var user = new Employee
                 {
                     UserName = model.Login,

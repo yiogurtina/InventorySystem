@@ -1,4 +1,4 @@
-﻿@model IEnumerable<inventory_accounting_system.Models.Office>
+﻿@model IEnumerable<Asset>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,33 +6,55 @@
 }
 
 <h2>Офисы</h2>
-
+<form>
+    <div class="form-group" id="catSelect">
+        <select name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
+    </div>
+    <button id="officeButton" class="btn btn-primary" style="margin-bottom: 20px">Get</button>
+</form>
 <p>
-    <a class="btn btn-primary" asp-action="Create">Создать</a>
+    <a class="btn btn-primary" asp-action="Create">Создать офис</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <a class="btn-default" asp-route-id="@item.Id" asp-action="Details">@item.Title</a>
-                </td>
-                <td class="col-sm-3">
-                    <div>
-                        <a class="btn btn-default" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@{
+    if (Model != null)
+    {
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Prefix</th>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.Category.Name</th>
+                        <td>@item.InventPrefix</td>
+                        <td>@item.Employee.Name</td>
+                        <td></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+    }
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#officeButton').click(function(e) {
+            e.preventDefault();
+            var val = document.getElementById("onChangeText").value
+
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Index", "Employes")',
+                data: { officeId: val },
+                dataType: 'json',
+                success: console.log('ok')
+            }
+        });
+    })
+</script>

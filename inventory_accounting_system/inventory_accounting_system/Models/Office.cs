@@ -17,9 +17,5 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Имущество")]
         public IEnumerable<Asset> Assets { get; set; }
 
-        [Display(Name = "Тип")]
-        public string OfficeTypeId { get; set; }
-        public OfficeType OfficeType { get; set; }
-
     }
 }
