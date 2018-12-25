@@ -325,16 +325,13 @@ namespace inventory_accounting_system.Controllers
             _fileUploadService.Upload(path, asset.Image.FileName, asset.Image);
             asset.ImagePath = $"images/{asset.Name}/image/{asset.Image.FileName}";
         }
-<<<<<<< refs/remotes/origin/develop
-
         #endregion
-=======
+
         private void UploadDocument(Asset asset)
         {
             var path = Path.Combine(_appEnvironment.WebRootPath, $"documents\\{asset.Name}\\document");
             _fileUploadService.Upload(path, asset.Document.FileName, asset.Document);
             ///*asset.DocumentPath = $"documents/{asset.Name}/document/{asset.Document.FileName*/}"
         }
->>>>>>> Add possibility to upload asset documents
     }
 }
