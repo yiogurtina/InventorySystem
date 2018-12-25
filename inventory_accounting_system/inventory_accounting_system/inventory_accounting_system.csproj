@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="ViewModel\" />
+    <Folder Include="wwwroot\documents\" />
+    <Folder Include="wwwroot\images\ddd\image\" />
   </ItemGroup>
 
 </Project>

@@ -89,7 +89,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image")] Asset asset, string serialNum)
+        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset, string serialNum)
         {
             var categoryPrefix = _context.Categories
                 .Where(c => c.Id == asset.CategoryId)
@@ -109,7 +109,10 @@ namespace inventory_accounting_system.Controllers
                 {
                     asset.ImagePath = "images/default-image.jpg";
                 }
-
+                if (asset.Document != null)
+                {
+                    UploadDocument(asset);
+                }
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -322,7 +325,16 @@ namespace inventory_accounting_system.Controllers
             _fileUploadService.Upload(path, asset.Image.FileName, asset.Image);
             asset.ImagePath = $"images/{asset.Name}/image/{asset.Image.FileName}";
         }
+<<<<<<< refs/remotes/origin/develop
 
         #endregion
+=======
+        private void UploadDocument(Asset asset)
+        {
+            var path = Path.Combine(_appEnvironment.WebRootPath, $"documents\\{asset.Name}\\document");
+            _fileUploadService.Upload(path, asset.Document.FileName, asset.Document);
+            ///*asset.DocumentPath = $"documents/{asset.Name}/document/{asset.Document.FileName*/}"
+        }
+>>>>>>> Add possibility to upload asset documents
     }
 }
