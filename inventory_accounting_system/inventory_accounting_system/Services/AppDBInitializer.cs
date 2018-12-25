@@ -44,12 +44,11 @@ namespace inventory_accounting_system.Services
                         Email = "admin@admin.com",
                         Login = "admin"
                     };
-                    var result = await userManager.CreateAsync(user, "Adminadmin123");
+                    var result = await userManager.CreateAsync(user, "admin");
                     if (result.Succeeded)
                     {
                         await userManager.AddToRoleAsync(user, "Admin");
                     }
-
                 }
             }
         }
