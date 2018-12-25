@@ -14,6 +14,8 @@ namespace inventory_accounting_system.Controllers
 {
     public class CategoriesController : Controller
     {
+        #region Dependency Injection
+
         private readonly ApplicationDbContext _context;
 //        Mock<ICategoryReposytory> mock = new Mock<ICategoryReposytory>();
 
@@ -22,24 +24,35 @@ namespace inventory_accounting_system.Controllers
             _context = context;
         }
 
+        #endregion
+
+        #region Index
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
         }
 
+        #endregion
 
-//        // GET: Categories
-//                public async Task<IActionResult> Index()
-//        {
-//            mock.Setup(m => m.Categories).Returns(new List<Category>
-//            {
-//                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Мебель", Prefix = "F_"},
-//                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Компутеры", Prefix = "F_"},
-//                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Машины", Prefix = "Fльвытдм_"}
-//            });
-//
-//            return View(mock.Object.Categories.ToList());
-//        }
+        #region Test Mock
+
+        //        // GET: Categories
+        //                public async Task<IActionResult> Index()
+        //        {
+        //            mock.Setup(m => m.Categories).Returns(new List<Category>
+        //            {
+        //                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Мебель", Prefix = "F_"},
+        //                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Компутеры", Prefix = "F_"},
+        //                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Машины", Prefix = "Fльвытдм_"}
+        //            });
+        //
+        //            return View(mock.Object.Categories.ToList());
+        //        }
+
+        #endregion
+
+        #region Details
 
         public async Task<IActionResult> Details(string id)
         {
@@ -62,6 +75,11 @@ namespace inventory_accounting_system.Controllers
         {
             return View();
         }
+
+
+        #endregion
+
+        #region Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -92,6 +110,12 @@ namespace inventory_accounting_system.Controllers
 
             return View(category);
         }
+
+
+
+        #endregion
+
+        #region Edit
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -126,6 +150,11 @@ namespace inventory_accounting_system.Controllers
 
             return View(category);
         }
+
+        #endregion
+
+        #region Delete
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -153,9 +182,15 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region CategoryExists
+
         private bool CategoryExists(string id)
         {
             return _context.Categories.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }

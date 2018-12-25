@@ -12,12 +12,18 @@ namespace inventory_accounting_system.Controllers
 {
     public class HomeController : Controller
     {
+        #region Dependency Injection
+
         private readonly SignInManager<Employee> _signInManager;
 
         public HomeController(SignInManager<Employee> signInManager)
         {
             _signInManager = signInManager;
         }
+
+        #endregion
+
+        #region Index
 
         [Authorize]
         public IActionResult Index()
@@ -30,6 +36,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        #endregion
+
+        #region About
+
         [Authorize]
         public IActionResult About()
         {
@@ -37,6 +47,10 @@ namespace inventory_accounting_system.Controllers
 
             return View();
         }
+
+        #endregion
+
+        #region Contact
 
         [Authorize]
         public IActionResult Contact()
@@ -46,9 +60,15 @@ namespace inventory_accounting_system.Controllers
             return View();
         }
 
+        #endregion
+
+        #region Error
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #endregion
     }
 }

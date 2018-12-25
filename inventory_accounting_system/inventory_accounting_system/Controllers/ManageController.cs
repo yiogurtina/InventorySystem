@@ -20,6 +20,8 @@ namespace inventory_accounting_system.Controllers
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {
+        #region Dependency Injection
+
         private readonly UserManager<Employee> _userManager;
         private readonly SignInManager<Employee> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -31,12 +33,12 @@ namespace inventory_accounting_system.Controllers
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
         public ManageController(
-          UserManager<Employee> userManager,
-          SignInManager<Employee> signInManager,
-          IEmailSender emailSender,
-          ILogger<ManageController> logger,
-          ApplicationDbContext context,
-          UrlEncoder urlEncoder)
+            UserManager<Employee> userManager,
+            SignInManager<Employee> signInManager,
+            IEmailSender emailSender,
+            ILogger<ManageController> logger,
+            ApplicationDbContext context,
+            UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -48,6 +50,10 @@ namespace inventory_accounting_system.Controllers
 
         [TempData]
         public string StatusMessage { get; set; }
+
+        #endregion
+
+        #region Index
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -109,6 +115,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region SendVerificationEmail
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendVerificationEmail(IndexViewModel model)
@@ -131,6 +141,10 @@ namespace inventory_accounting_system.Controllers
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToAction(nameof(Index));
         }
+
+        #endregion
+
+        #region ChangePassword
 
         [HttpGet]
         public async Task<IActionResult> ChangePassword()
@@ -180,6 +194,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(ChangePassword));
         }
 
+        #endregion
+
+        #region SetPassword
+
         [HttpGet]
         public async Task<IActionResult> SetPassword()
         {
@@ -228,6 +246,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(SetPassword));
         }
 
+        #endregion
+
+        #region ExternalLogins
+
         [HttpGet]
         public async Task<IActionResult> ExternalLogins()
         {
@@ -246,6 +268,10 @@ namespace inventory_accounting_system.Controllers
 
             return View(model);
         }
+
+        #endregion
+
+        #region LinkLogin
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -288,6 +314,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(ExternalLogins));
         }
 
+        #endregion
+
+        #region RemoveLogin
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel model)
@@ -309,6 +339,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(ExternalLogins));
         }
 
+        #endregion
+
+        #region TwoFactorAuthentication
+
         [HttpGet]
         public async Task<IActionResult> TwoFactorAuthentication()
         {
@@ -327,6 +361,10 @@ namespace inventory_accounting_system.Controllers
 
             return View(model);
         }
+
+        #endregion
+
+        #region Disable2faWarning
 
         [HttpGet]
         public async Task<IActionResult> Disable2faWarning()
@@ -364,6 +402,10 @@ namespace inventory_accounting_system.Controllers
             _logger.LogInformation("User with ID {UserId} has disabled 2fa.", user.Id);
             return RedirectToAction(nameof(TwoFactorAuthentication));
         }
+
+        #endregion
+
+        #region EnableAuthenticator
 
         [HttpGet]
         public async Task<IActionResult> EnableAuthenticator()
@@ -417,6 +459,10 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(ShowRecoveryCodes));
         }
 
+        #endregion
+
+        #region ShowRecoveryCodes
+
         [HttpGet]
         public IActionResult ShowRecoveryCodes()
         {
@@ -429,6 +475,11 @@ namespace inventory_accounting_system.Controllers
             var model = new ShowRecoveryCodesViewModel { RecoveryCodes = recoveryCodes };
             return View(model);
         }
+
+
+        #endregion
+
+        #region ResetAuthenticatorWarning
 
         [HttpGet]
         public IActionResult ResetAuthenticatorWarning()
@@ -452,6 +503,10 @@ namespace inventory_accounting_system.Controllers
 
             return RedirectToAction(nameof(EnableAuthenticator));
         }
+
+        #endregion
+
+        #region GenerateRecoveryCodesWarning
 
         [HttpGet]
         public async Task<IActionResult> GenerateRecoveryCodesWarning()
@@ -527,6 +582,10 @@ namespace inventory_accounting_system.Controllers
                 unformattedKey);
         }
 
+        #endregion
+
+        #region LoadSharedKeyAndQrCodeUriAsync
+
         private async Task LoadSharedKeyAndQrCodeUriAsync(Employee user, EnableAuthenticatorViewModel model)
         {
             var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
@@ -544,5 +603,7 @@ namespace inventory_accounting_system.Controllers
         {
             return View(_context.Users);
         }
+
+        #endregion
     }
 }

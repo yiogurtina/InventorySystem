@@ -40,11 +40,13 @@ namespace inventory_accounting_system.Services
                 {
                     var user = new Employee
                     {
-                        UserName = "admin",
+                        UserName = "admin", 
                         Email = "admin@admin.com",
                         Login = "admin"
                     };
+
                     var result = await userManager.CreateAsync(user, "admin");
+
                     if (result.Succeeded)
                     {
                         await userManager.AddToRoleAsync(user, "Admin");

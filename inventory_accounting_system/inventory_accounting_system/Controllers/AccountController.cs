@@ -22,6 +22,8 @@ namespace inventory_accounting_system.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        #region Dependency injection
+
         private readonly UserManager<Employee> _userManager;
         private readonly SignInManager<Employee> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -43,6 +45,10 @@ namespace inventory_accounting_system.Controllers
 
         [TempData]
         public string ErrorMessage { get; set; }
+
+        #endregion
+
+        #region Login
 
         [HttpGet]
         [AllowAnonymous]
@@ -90,6 +96,10 @@ namespace inventory_accounting_system.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        #endregion
+
+        #region LoginWith2fa
 
         [HttpGet]
         [AllowAnonymous]
@@ -147,6 +157,10 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region LoginWithRecoveryCode
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> LoginWithRecoveryCode(string returnUrl = null)
@@ -201,6 +215,10 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region Lockout
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Lockout()
@@ -223,12 +241,25 @@ namespace inventory_accounting_system.Controllers
             ViewData["Roles"] = new SelectList(roles);
             return View();
         }
+
+        #endregion
+
+        #region Register
+
         [Authorize(Roles = "Admin, Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string role)
+        public async Task<IActionResult> Register(RegisterViewModel model, string role, string email)
         {
             EmailService emailService = new EmailService();
+
+            var userManager = _context.Users.FirstOrDefault(u => u.Email == email);
+
+            if (userManager != null)
+            {
+                ModelState.AddModelError("Email", "Это email уже занят");
+            }
+
             if (ModelState.IsValid)
             {
 
@@ -244,7 +275,7 @@ namespace inventory_accounting_system.Controllers
                 };
                 var result = await _userManager.CreateAsync(user, model.Password = GenerateRandomPassword());
                 string sendEmail = "Уважаемый(ая) " + model.Name + " " + model.Surname + "<br/>" +
-                                    "<br/>Ваш логин: " + "<h4>" + user.Login + "</h4>" + 
+                                   "<br/>Ваш логин: " + "<h4>" + user.Login + "</h4>" + 
                                    "Ваш пароль: " + "<h4>" + model.Password + "</h4>" + 
                                    "<br/>С Уважением Администрация.";
 
@@ -274,6 +305,11 @@ namespace inventory_accounting_system.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        #endregion
+
+        #region Logout
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -293,6 +329,11 @@ namespace inventory_accounting_system.Controllers
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
         }
+
+
+        #endregion
+
+        #region ExternalLoginCallback
 
         [HttpGet]
         [AllowAnonymous]
@@ -330,6 +371,11 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+
+        #endregion
+
+        #region ExternalLoginConfirmation
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -362,6 +408,11 @@ namespace inventory_accounting_system.Controllers
             return View(nameof(ExternalLogin), model);
         }
 
+
+        #endregion
+
+        #region ConfirmEmail
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -386,6 +437,11 @@ namespace inventory_accounting_system.Controllers
             return View();
         }
 
+
+        #endregion
+
+        #region ForgotPassword
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -405,7 +461,7 @@ namespace inventory_accounting_system.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 
@@ -419,6 +475,10 @@ namespace inventory_accounting_system.Controllers
         {
             return View();
         }
+
+        #endregion
+
+        #region ResetPassword
 
         [HttpGet]
         [AllowAnonymous]
@@ -463,12 +523,17 @@ namespace inventory_accounting_system.Controllers
             return View();
         }
 
+        #endregion
+
+        #region AccessDenied
 
         [HttpGet]
         public IActionResult AccessDenied()
         {
             return View();
         }
+
+        #endregion
 
         #region Helpers
 

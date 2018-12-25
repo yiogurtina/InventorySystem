@@ -314,11 +314,15 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region UploadPhoto
+
         private void UploadPhoto(Asset asset)
         {
             var path = Path.Combine(_appEnvironment.WebRootPath, $"images\\{asset.Name}\\image");
             _fileUploadService.Upload(path, asset.Image.FileName, asset.Image);
             asset.ImagePath = $"images/{asset.Name}/image/{asset.Image.FileName}";
         }
+
+        #endregion
     }
 }

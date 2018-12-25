@@ -14,6 +14,8 @@ namespace inventory_accounting_system.Controllers
 {
     public class EmployesController : Controller
     {
+        #region Dependency Injection
+
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<Employee> _userManager;
@@ -25,17 +27,30 @@ namespace inventory_accounting_system.Controllers
 
         }
 
+        #endregion
+
+        #region Index
+
         // GET: Employes
         public ActionResult Index()
         {
             return View();
         }
 
+        #endregion
+
+        #region Details
+
         // GET: Employes/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var user = _context.Users.Find(id);
+            return View(user);
         }
+
+        #endregion
+
+        #region Create
 
         // GET: Employes/Create
         public ActionResult Create()
@@ -60,6 +75,10 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region Edit
+
         // GET: Employes/Edit/5
         public ActionResult Edit(int id)
         {
@@ -83,6 +102,10 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region Delete
+
         // GET: Employes/Delete/5
         public ActionResult Delete(int id)
         {
@@ -105,6 +128,11 @@ namespace inventory_accounting_system.Controllers
                 return View();
             }
         }
+
+        #endregion
+
+        #region ChangeRole
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRole(string id)
         {
@@ -129,6 +157,10 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region CreateRole
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateRole(string role, string id)
         {
@@ -145,5 +177,7 @@ namespace inventory_accounting_system.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        #endregion
     }
 }
