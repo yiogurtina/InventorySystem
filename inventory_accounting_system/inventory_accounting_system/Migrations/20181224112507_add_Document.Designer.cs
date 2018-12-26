@@ -11,9 +11,10 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181224112507_add_Document")]
+    partial class add_Document
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,9 +179,13 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("OfficeTypeId");
+
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OfficeTypeId");
 
                     b.ToTable("Offices");
                 });
@@ -326,7 +331,7 @@ namespace inventory_accounting_system.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
-                        .WithMany("Assets")
+                        .WithMany()
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
@@ -366,6 +371,13 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany("Employees")
                         .HasForeignKey("OfficeId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.OfficeType", "OfficeType")
+                        .WithMany()
+                        .HasForeignKey("OfficeTypeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

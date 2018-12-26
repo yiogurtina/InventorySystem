@@ -43,6 +43,11 @@ namespace inventory_accounting_system.Models
         public IFormFile Image { get; set; }
         public string ImagePath { get; set; }
 
+        [NotMapped]
+        [Display(Name = "Технические документы")]
+        public IFormFile Document { get; set; }
+        //public string DocumentPath { get; set; }
+
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
 
         public bool IsActive { get; set; }
