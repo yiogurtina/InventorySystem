@@ -15,6 +15,7 @@ namespace inventory_accounting_system.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Number { get; set; }
+        public IEnumerable<Asset> Assets { get; set; }
 
     }
 }

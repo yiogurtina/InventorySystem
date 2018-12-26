@@ -17,7 +17,6 @@ namespace inventory_accounting_system.Controllers
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;
-//        Mock<ICategoryReposytory> mock = new Mock<ICategoryReposytory>();
 
         public CategoriesController(ApplicationDbContext context)
         {
