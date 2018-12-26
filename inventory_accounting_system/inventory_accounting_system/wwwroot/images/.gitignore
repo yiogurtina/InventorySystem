@@ -1,0 +1,8 @@
+# игнорировать всё в этой папке
+*
+# кроме этого файла
+!.gitignore
+!banner1.svg
+!banner2.svg
+!banner3.svg
+!banner4.svg

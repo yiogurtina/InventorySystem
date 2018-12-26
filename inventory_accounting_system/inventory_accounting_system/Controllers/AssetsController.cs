@@ -327,11 +327,15 @@ namespace inventory_accounting_system.Controllers
         }
         #endregion
 
+        #region UploadDocument
+
         private void UploadDocument(Asset asset)
         {
             var path = Path.Combine(_appEnvironment.WebRootPath, $"documents\\{asset.Name}\\document");
             _fileUploadService.Upload(path, asset.Document.FileName, asset.Document);
             ///*asset.DocumentPath = $"documents/{asset.Name}/document/{asset.Document.FileName*/}"
         }
+
+        #endregion
     }
 }
