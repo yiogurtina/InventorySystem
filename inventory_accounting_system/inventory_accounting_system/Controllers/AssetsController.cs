@@ -40,7 +40,7 @@ namespace inventory_accounting_system.Controllers
         #endregion
 
         #region Index
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var assets = _context.Assets
