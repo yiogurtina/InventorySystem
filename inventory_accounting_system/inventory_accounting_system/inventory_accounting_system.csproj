@@ -31,4 +31,10 @@
     <Folder Include="wwwroot\images\ddd\image\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Employes\Delete.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

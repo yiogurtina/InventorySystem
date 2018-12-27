@@ -16,6 +16,7 @@ namespace inventory_accounting_system.Models
         public string Surname { get; set; }
         public string Number { get; set; }
         public IEnumerable<Asset> Assets { get; set; }
+        public bool IsDelete { get; set; }
 
     }
 }

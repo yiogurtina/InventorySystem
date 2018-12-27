@@ -13827,23 +13827,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Users\\ilgiz\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\IAS\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
+      "projectUniqueName": "E:\\ProjectNET\\Inventory_dev2\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
       "projectName": "inventory_accounting_system",
-      "projectPath": "C:\\Users\\User\\Desktop\\IAS\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\IAS\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\",
+      "projectPath": "E:\\ProjectNET\\Inventory_dev2\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
+      "packagesPath": "C:\\Users\\ilgiz\\.nuget\\packages\\",
+      "outputPath": "E:\\ProjectNET\\Inventory_dev2\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ilgiz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
