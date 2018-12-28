@@ -108,21 +108,31 @@ namespace inventory_accounting_system.Controllers
         #region Delete
 
         // GET: Employes/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
         {
+            var user = await _userManager.FindByIdAsync(id);
+            ViewData["Name"] = user.Name;
+            ViewData["Surname"] = user.Surname;
+            ViewData["UserId"] = id;
             return View();
         }
 
         // POST: Employes/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             try
             {
                 // TODO: Add delete logic here
+                var user = await _userManager.FindByIdAsync(id);
+                user.IsDelete = true;
 
-                return RedirectToAction(nameof(Index));
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Users));
             }
             catch
             {
@@ -150,11 +160,11 @@ namespace inventory_accounting_system.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (User.IsInRole("Admin"))
             {
-                return View(_context.Users.Where(u => u.Id != user.Id));
+                return View(_context.Users.Where(u => u.Id != user.Id).Where(u => !u.IsDelete));
             }
             else
             {
-                return View(_context.Users.Where(u => u.OfficeId == user.OfficeId).Where(u=>u.Id!=user.Id));
+                return View(_context.Users.Where(u => u.OfficeId == user.OfficeId).Where(u=>u.Id!=user.Id).Where(u => !u.IsDelete));
             }
         }
 

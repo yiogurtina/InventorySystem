@@ -4,5 +4,10 @@
 
 @foreach (Employee user in Model)
 {
-    <div>User: <a asp-action="Details" asp-route-id="@user.Id">@user.Name @user.Surname</a><a class="badge badge-pill badge-dark" asp-action="Lock" asp-route-id="@user.Id">Press to lockout user</a>    <a class="badge badge-pill badge-dark" asp-controller="Employes" asp-action="ChangeRole" asp-route-id="@user.Id">Change Role</a></div>
+    <div>User: 
+        <a asp-action="Details" asp-route-id="@user.Id">@user.Name @user.Surname</a>
+        <a class="badge badge-pill badge-dark" asp-action="Lock" asp-route-id="@user.Id">Press to lockout user</a>   
+        <a class="badge badge-pill badge-dark" asp-controller="Employes" asp-action="ChangeRole" asp-route-id="@user.Id">Change Role</a>
+        <a class="badge badge-pill badge-dark" asp-controller="Employes" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+    </div>
 }

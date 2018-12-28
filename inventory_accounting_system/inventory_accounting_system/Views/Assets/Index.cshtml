@@ -85,5 +85,53 @@
 </table>
 
 <div>
-    <a class="btn btn-primary" asp-action="Fasten">Закрепить</a>
+    <a class="btn btn-primary" onclick="addAssetFasten()">Закрепить</a>
 </div>
+
+
+@*Modal window*@
+
+<div class="modal fade" id="newAssetModal">
+    <div class="modal-dialog modal-lg" style=" width: 300px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Закрепить</h4>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <form >
+                            <div class="form-group" id="officeSelect">
+                                <label class="control-label">Офисы</label>
+                                <select class="form-control"  style=" width: 270px !important;"></select>
+                            </div>
+                            <div class="form-group" id="EmployeeSelect">
+                                <label class="control-label">Сотрудники</label>
+                                <select class="form-control"  style=" width: 270px !important;"></select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <form id="NewAssetForm">
+                
+                <div class="modal-footer">
+                    <div>
+                        <button id="CreateMethod" type="submit" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function addAssetFasten() {
+            $("#newAssetModal").modal();
+        }
+    </script>
+}
