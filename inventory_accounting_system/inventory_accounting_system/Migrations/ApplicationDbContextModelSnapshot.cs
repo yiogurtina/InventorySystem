@@ -29,6 +29,8 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<string>("DocumentPath");
+
                     b.Property<string>("EmployeeId");
 
                     b.Property<string>("ImagePath");

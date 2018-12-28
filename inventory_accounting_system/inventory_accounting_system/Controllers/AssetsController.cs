@@ -345,5 +345,23 @@ namespace inventory_accounting_system.Controllers
         }
 
         #endregion
+
+        public ActionResult Download(string id)
+        {
+            var assetA = _context.Assets.FirstOrDefault(x => x.Id == id);
+
+            byte[] b;
+            if (assetA.DocumentPath != null)
+            {
+                b = System.IO.File.ReadAllBytes(assetA.DocumentPath);
+                string fileName = "myfile.ext";
+                return File(b, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+            }
+            else
+            {
+                return View("Error"); ;
+            }
+        }
+
     }
 }

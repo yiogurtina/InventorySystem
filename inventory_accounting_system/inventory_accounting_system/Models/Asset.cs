@@ -46,7 +46,8 @@ namespace inventory_accounting_system.Models
         [NotMapped]
         [Display(Name = "Технические документы")]
         public IFormFile Document { get; set; }
-        //public string DocumentPath { get; set; }
+        [Display(Name = "Технические документы")]
+        public string DocumentPath { get; set; }
 
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
 

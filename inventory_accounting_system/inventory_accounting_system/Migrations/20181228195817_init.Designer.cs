@@ -11,7 +11,7 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181223170234_init")]
+    [Migration("20181228195817_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,8 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("CategoryId");
 
                     b.Property<DateTime>("Date");
+
+                    b.Property<string>("DocumentPath");
 
                     b.Property<string>("EmployeeId");
 
@@ -124,6 +126,8 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("IsDelete");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -177,13 +181,9 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("OfficeTypeId");
-
                     b.Property<string>("Title");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfficeTypeId");
 
                     b.ToTable("Offices");
                 });
@@ -329,7 +329,7 @@ namespace inventory_accounting_system.Migrations
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("Assets")
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
@@ -369,13 +369,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany("Employees")
                         .HasForeignKey("OfficeId");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
-                {
-                    b.HasOne("inventory_accounting_system.Models.OfficeType", "OfficeType")
-                        .WithMany()
-                        .HasForeignKey("OfficeTypeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

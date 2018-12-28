@@ -37,6 +37,18 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Offices",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Offices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OfficeType",
                 columns: table => new
                 {
@@ -83,25 +95,6 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offices",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    OfficeTypeId = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Offices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Offices_OfficeType_OfficeTypeId",
-                        column: x => x.OfficeTypeId,
-                        principalTable: "OfficeType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -110,6 +103,7 @@ namespace inventory_accounting_system.Migrations
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
+                    IsDelete = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     Login = table.Column<string>(nullable: true),
@@ -229,6 +223,7 @@ namespace inventory_accounting_system.Migrations
                     Id = table.Column<string>(nullable: false),
                     CategoryId = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
+                    DocumentPath = table.Column<string>(nullable: true),
                     EmployeeId = table.Column<string>(nullable: true),
                     ImagePath = table.Column<string>(nullable: true),
                     InventNumber = table.Column<string>(nullable: true),
@@ -404,11 +399,6 @@ namespace inventory_accounting_system.Migrations
                 name: "IX_AssetsMoveStories_OfficeToId",
                 table: "AssetsMoveStories",
                 column: "OfficeToId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Offices_OfficeTypeId",
-                table: "Offices",
-                column: "OfficeTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -432,6 +422,9 @@ namespace inventory_accounting_system.Migrations
                 name: "AssetsMoveStories");
 
             migrationBuilder.DropTable(
+                name: "OfficeType");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -448,9 +441,6 @@ namespace inventory_accounting_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "Offices");
-
-            migrationBuilder.DropTable(
-                name: "OfficeType");
         }
     }
 }
