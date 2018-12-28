@@ -8,6 +8,11 @@
 
 <h2>Офисы</h2>
 
+<p>
+    <a class="btn btn-primary" href="/Account/Register">Добавить сотрудника</a>
+</p>
+
+
     <div class="form-group" id="catSelect">
         <select selected="@offices[1].Title" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
@@ -43,8 +48,8 @@
                         <td><a asp-controller="Employes" asp-action="UserAssets" asp-route-id="@item.Employee.Id">@item.Employee.Name</a></td>
                     </tr>
                 }
-                </tbody>
-            </table>
+            </tbody>
+        </table>
     }
 }
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
