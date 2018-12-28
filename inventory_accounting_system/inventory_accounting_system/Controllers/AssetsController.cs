@@ -43,6 +43,7 @@ namespace inventory_accounting_system.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
             var assets = _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.Supplier)
