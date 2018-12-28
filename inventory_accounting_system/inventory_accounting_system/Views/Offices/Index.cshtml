@@ -12,11 +12,12 @@
     <a class="btn btn-primary" href="/Account/Register">Добавить сотрудника</a>
 </p>
 
-
+<form>
     <div class="form-group" id="catSelect">
         <select selected="@offices[1].Title" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
-
+    <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button>
+</form>
 <p>
     <a class="btn btn-primary" asp-action="Create">Создать офис</a>
 </p>
@@ -54,18 +55,20 @@
 }
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-<script type="text/javascript">
+<script>
     function onChangeFunc() {
         var selectText = document.getElementById("onChangeText");
         var selectedText = selectText.options[selectText.selectedIndex].text;
-        var officeId = selectText.options[selectText.selectedIndex].value;
+
         document.getElementById("officeName").innerHTML = selectedText;
+        var val = document.getElementById('onChangeText').value;
         $.ajax({
+            type: 'GET',
             url: '@Url.Action("Index", "Offices")',
-
-            type: 'Get',
-
-            data: { 'officeId': officeId }  
+            data: { officeId: val },
+            dataType: 'json',
+            success: console.log('ok')
         });
+        var button = document.getElementById('officeButton').click();
     }
 </script>
