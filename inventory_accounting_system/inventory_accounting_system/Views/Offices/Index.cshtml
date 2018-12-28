@@ -7,12 +7,11 @@
 }
 
 <h2>Офисы</h2>
-<form>
+
     <div class="form-group" id="catSelect">
         <select selected="@offices[1].Title" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
-    <button id="officeButton" class="btn btn-primary" style="margin-bottom: 20px">Get</button>
-</form>
+
 <p>
     <a class="btn btn-primary" asp-action="Create">Создать офис</a>
 </p>
@@ -30,20 +29,18 @@
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
+                        <th scope="col">Name</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Prefix</th>
-                        <th scope="col">Employee</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Employee name</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <th scope="row">@item.Category.Name</th>
-                        <td>@item.InventPrefix</td>
+                        <th scope="row">@item.Name</th>
+                        <td>@item.Category.Name</td>
                         <td><a asp-controller="Employes" asp-action="UserAssets" asp-route-id="@item.Employee.Id">@item.Employee.Name</a></td>
-                        <td></td>
                     </tr>
                 }
                 </tbody>
@@ -56,6 +53,14 @@
     function onChangeFunc() {
         var selectText = document.getElementById("onChangeText");
         var selectedText = selectText.options[selectText.selectedIndex].text;
+        var officeId = selectText.options[selectText.selectedIndex].value;
         document.getElementById("officeName").innerHTML = selectedText;
+        $.ajax({
+            url: '@Url.Action("Index", "Offices")',
+
+            type: 'Get',
+
+            data: { 'officeId': officeId }  
+        });
     }
 </script>

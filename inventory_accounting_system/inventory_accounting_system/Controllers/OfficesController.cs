@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Castle.Core.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -16,10 +18,12 @@ namespace inventory_accounting_system.Controllers
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Employee> _userManager;
 
-        public OfficesController(ApplicationDbContext context)
+        public OfficesController(ApplicationDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         #endregion
@@ -28,11 +32,14 @@ namespace inventory_accounting_system.Controllers
 
         public async Task<IActionResult> Index(string officeId)
         {
-            ViewData["Offices"] = new SelectList(_context.Offices, "Id", "Title");
+            var offices = _context.Offices.Include(o=>o.Employees).ToList();
+            ViewData["Offices"] = new SelectList(offices, "Id", "Title");
             ViewData["OfficeList"] = _context.Offices.ToList();
             if (officeId.IsNullOrEmpty())
-            {
-                return View();
+            {                
+                var defaultOffice = offices[0];
+
+                return View(_context.Assets.Include(a => a.Category).Include(a => a.Employee).Where(a => a.OfficeId == defaultOffice.Id));
             }
             return View(_context.Assets.Include(a=>a.Category).Include(a=>a.Employee).Where(a=>a.OfficeId==officeId));
         }
