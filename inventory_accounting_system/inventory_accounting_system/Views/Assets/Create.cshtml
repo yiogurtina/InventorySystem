@@ -41,7 +41,7 @@
 
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input type="file" asp-for="Image" class="form-control" />
+                <input type="file" asp-for="Image" class="form-control" id="asd"/>
             </div>
             <div class="form-group">
                 <label asp-for="Document" class="control-label"></label>
@@ -60,13 +60,14 @@
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
     <script>
         $(".target").change(function () {
 
             var selectText = document.getElementById("onChangeText");
-            var selectedText = selectText.options[selectText.selectedIndex].value;
+            var selectedText = selectText.options[selectText.selectedIndex].text;
 
-            if (selectedText === "3b7a65bf-7ca3-456c-a703-52c104d5ad76") {
+            if (selectedText === "Компьютеры") {
                 var input = document.createElement('input');
                 var label = document.createElement('label');
 

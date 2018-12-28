@@ -26,10 +26,10 @@ namespace inventory_accounting_system.Controllers
 
         #region Index
 
-        // GET: Offices
         public async Task<IActionResult> Index(string officeId)
         {
             ViewData["Offices"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["OfficeList"] = _context.Offices.ToList();
             if (officeId.IsNullOrEmpty())
             {
                 return View();
@@ -37,7 +37,6 @@ namespace inventory_accounting_system.Controllers
             return View(_context.Assets.Include(a=>a.Category).Include(a=>a.Employee).Where(a=>a.OfficeId==officeId));
         }
 
-        // GET: Offices/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)

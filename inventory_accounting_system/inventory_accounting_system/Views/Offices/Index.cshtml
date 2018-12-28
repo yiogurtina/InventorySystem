@@ -2,30 +2,39 @@
 
 @{
     ViewData["Title"] = "Index";
+    List<Office> offices = (List<Office>)ViewData["OfficeList"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Офисы</h2>
 <form>
     <div class="form-group" id="catSelect">
-        <select name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
+        <select selected="@offices[1].Title" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
     <button id="officeButton" class="btn btn-primary" style="margin-bottom: 20px">Get</button>
 </form>
 <p>
     <a class="btn btn-primary" asp-action="Create">Создать офис</a>
 </p>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th id="officeName" scope="col">Office name</th>
+        <th scope="col"><a>Вася Пупкин</a></th>
+    </tr>
+    </thead>
+</table>
 @{
     if (Model != null)
     {
             <table class="table">
                 <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Category</th>
-                    <th scope="col">Prefix</th>
-                    <th scope="col">Employee</th>
-                    <th scope="col">Handle</th>
-                </tr>
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Prefix</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Handle</th>
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach (var item in Model)
@@ -42,19 +51,11 @@
     }
 }
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#officeButton').click(function(e) {
-            e.preventDefault();
-            var val = document.getElementById("onChangeText").value
 
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("Index", "Employes")',
-                data: { officeId: val },
-                dataType: 'json',
-                success: console.log('ok')
-            }
-        });
-    })
+<script type="text/javascript">
+    function onChangeFunc() {
+        var selectText = document.getElementById("onChangeText");
+        var selectedText = selectText.options[selectText.selectedIndex].text;
+        document.getElementById("officeName").innerHTML = selectedText;
+    }
 </script>
