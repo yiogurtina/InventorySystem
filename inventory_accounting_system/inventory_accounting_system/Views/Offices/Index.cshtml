@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    List<Office> offices = (List<Office>)ViewData["OfficeList"];
+    string curTitle = (string)ViewData["OfficeTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +14,7 @@
 
 <form>
     <div class="form-group" id="catSelect">
-        <select selected="@offices[1].Title" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
+        <select selected="@curTitle" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
     <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button>
 </form>
@@ -23,44 +23,46 @@
 </p>
 <table class="table">
     <thead class="thead-dark">
-    <tr>
-        <th id="officeName" scope="col">Office name</th>
-        <th scope="col"><a>Вася Пупкин</a></th>
-    </tr>
+        <tr>
+            <th id="officeName" scope="col">Office name</th>
+            <th scope="col"><a>Вася Пупкин</a></th>
+        </tr>
     </thead>
 </table>
 @{
     if (Model != null)
     {
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Employee name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <th scope="row">@item.Name</th>
-                        <td>@item.Category.Name</td>
-                        <td><a asp-controller="Employes" asp-action="UserAssets" asp-route-id="@item.Employee.Id">@item.Employee.Name</a></td>
-                    </tr>
-                }
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Employee name</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Name</th>
+                    <td>@item.Category.Name</td>
+
+                </tr>
+            }
             </tbody>
         </table>
     }
 }
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    var selectText = document.getElementById("onChangeText");
+    var selectedText = selectText.options[selectText.selectedIndex].text;
 
+    document.getElementById("officeName").innerHTML = selectedText;
+</script>
 <script>
     function onChangeFunc() {
-        var selectText = document.getElementById("onChangeText");
-        var selectedText = selectText.options[selectText.selectedIndex].text;
 
-        document.getElementById("officeName").innerHTML = selectedText;
         var val = document.getElementById('onChangeText').value;
         $.ajax({
             type: 'GET',
