@@ -11,9 +11,10 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190102100023_update-entities")]
+    partial class updateentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,6 +192,18 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("Offices");
                 });
 
+            modelBuilder.Entity("inventory_accounting_system.Models.OfficeType", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OfficeType");
+                });
+
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
                 {
                     b.Property<string>("Id")
@@ -204,7 +217,7 @@ namespace inventory_accounting_system.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Storages");
+                    b.ToTable("Storage");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Supplier", b =>

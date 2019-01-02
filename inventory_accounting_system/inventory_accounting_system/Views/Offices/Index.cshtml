@@ -37,7 +37,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Employee name</th>
+                    <th scope="col">Employee</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
                 <tr>
                     <th scope="row">@item.Name</th>
                     <td>@item.Category.Name</td>
-
+                    <td><a asp-controller="Employes" asp-action="UserAssets" asp-route-id="@item.EmployeeId">@item.Employee.Email</a></td>
                 </tr>
             }
             </tbody>
