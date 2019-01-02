@@ -33,15 +33,19 @@ namespace inventory_accounting_system.Controllers
         public async Task<IActionResult> Index(string officeId)
         {
             var offices = _context.Offices.Include(o=>o.Employees).ToList();
-            var office = await _context.Offices.FindAsync(officeId);
+            if (!offices.Any())
+            {
+                return View();
+            }
 
-            if (office == null)
+            if (string.IsNullOrEmpty(officeId))
             {
                 var defaultOffice = offices[0];
 
                 ViewData["Offices"] = new SelectList(offices, "Id", "Title");
                 return View(_context.Assets.Include(a => a.Category).Include(a => a.Employee).Where(a => a.OfficeId == defaultOffice.Id));
             }
+            var office = await _context.Offices.FindAsync(officeId);
 
             ViewData["Offices"] = new SelectList(offices, "Id", "Title", office.Id);
             return View(_context.Assets.Include(a => a.Category).Include(a => a.Employee).Where(a => a.OfficeId == officeId));
