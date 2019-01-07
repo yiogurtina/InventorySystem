@@ -36,9 +36,13 @@ namespace inventory_accounting_system.Controllers
             var offices = _context.Offices.ToList();
             ViewData["Offices"] = new SelectList(offices, "Id", "Title", officeId);
 
-            if (officeId.IsNullOrEmpty() || officeId.Length < 2)
+            if (officeId.IsNullOrEmpty())
             {
                 var defaultOffice = offices.FirstOrDefault();
+                if (defaultOffice == null)
+                {
+                    return View();
+                }
                 officeId = defaultOffice.Id;
             }
 

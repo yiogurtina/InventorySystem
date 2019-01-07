@@ -66,11 +66,14 @@
     <div class="col-md-4">
         <h4>Сотрудники</h4>
         <ul>
-            @foreach (var item in Model.Employees)
-            {
-                <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
-            }
-        </ul>
+            @if (Model != null)
+                {
+                    @foreach (var item in Model.Employees)
+                    {
+                        <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
+                    }                    
+                }
+            </ul>
 
     </div>
 </div>
