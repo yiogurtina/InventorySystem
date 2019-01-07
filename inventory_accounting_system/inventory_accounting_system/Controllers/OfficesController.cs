@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
 using Microsoft.AspNetCore.Identity;
+using inventory_accounting_system.ViewModel;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -32,23 +33,36 @@ namespace inventory_accounting_system.Controllers
 
         public async Task<IActionResult> Index(string officeId)
         {
-            var offices = _context.Offices.Include(o=>o.Employees).ToList();
-            if (!offices.Any())
+            var offices = _context.Offices.ToList();
+            ViewData["Offices"] = new SelectList(offices, "Id", "Title", officeId);
+
+            if (officeId.IsNullOrEmpty() || officeId.Length < 2)
             {
-                return View();
+                var defaultOffice = offices.FirstOrDefault();
+                officeId = defaultOffice.Id;
             }
 
-            if (string.IsNullOrEmpty(officeId))
+            List<Employee> employees = _context.Users.Where(e => e.OfficeId == officeId).ToList();
+
+            var categoryAssets = _context.Assets
+                //.Where(a => a.OfficeId == officeId) //Надо убрать комент после реализации привязки имущество-офиса. Для теста закрыл
+                .Include(a => a.Category)
+                .GroupBy(a => new { a.CategoryId, a.Category.Name })
+                .Select(g => new CategoryAssetCountViewModel
+                {
+                    Id = g.Key.CategoryId,
+                    CategoryName = g.Key.Name,
+                    AssetsCount = g.Count()
+                }).ToList();
+
+            OfficeIndexViewModel model = new OfficeIndexViewModel()
             {
-                var defaultOffice = offices[0];
+                CategoryAssetCountViewModels = categoryAssets,
+                Employees = employees,
+                Office = _context.Offices.FirstOrDefault(e => e.Id == officeId)
+            };
 
-                ViewData["Offices"] = new SelectList(offices, "Id", "Title");
-                return View(_context.Assets.Include(a => a.Category).Include(a => a.Employee).Where(a => a.OfficeId == defaultOffice.Id));
-            }
-            var office = await _context.Offices.FindAsync(officeId);
-
-            ViewData["Offices"] = new SelectList(offices, "Id", "Title", office.Id);
-            return View(_context.Assets.Include(a => a.Category).Include(a => a.Employee).Where(a => a.OfficeId == officeId));
+            return View(model);
         }
 
         public async Task<IActionResult> Details(string id)

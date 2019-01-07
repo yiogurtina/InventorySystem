@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Asset>
+﻿@using inventory_accounting_system.ViewModel
+@model OfficeIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
-    string curTitle = (string)ViewData["OfficeTitle"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +14,7 @@
 
 <form>
     <div class="form-group" id="catSelect">
-        <select selected="@curTitle" onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
+        <select onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
     <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button>
 </form>
@@ -24,35 +24,57 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th id="officeName" scope="col">Office name</th>
+            <th id="officeName" scope="col">
+                @{
+                    if (Model != null)
+                    {
+                        @Model.Office.Title }
+                }
+            </th>
             <th scope="col"><a>Вася Пупкин</a></th>
         </tr>
     </thead>
 </table>
-@{
-    if (Model != null)
-    {
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Employee</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model)
+<div class="row">
+    <div class="col-md-8">
+        @{
+            if (Model != null)
             {
-                <tr>
-                    <th scope="row">@item.Name</th>
-                    <td>@item.Category.Name</td>
-                    <td><a asp-controller="Employes" asp-action="UserAssets" asp-route-id="@item.EmployeeId">@item.Employee.Email</a></td>
-                </tr>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Категория</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Выбрать</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CategoryAssetCountViewModels)
+                        {
+                            <tr>
+                                <th scope="row"><a asp-controller="Offices" asp-action="CategoryAssets" asp-route-id="@item.Id">@item.CategoryName</a></th>
+                                <td>@item.AssetsCount</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
-            </tbody>
-        </table>
-    }
-}
+        }
+
+    </div>
+    <div class="col-md-4">
+        <h4>Сотрудники</h4>
+        <ul>
+            @foreach (var item in Model.Employees)
+            {
+                <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
+            }
+        </ul>
+
+    </div>
+</div>
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
     var selectText = document.getElementById("onChangeText");
