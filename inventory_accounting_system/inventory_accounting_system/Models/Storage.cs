@@ -11,5 +11,6 @@ namespace inventory_accounting_system.Models
         public IEnumerable<Asset> Assets { get; set; }
         public Employee Owner { get; set; }
         public string OwnerId { get; set; }
+        public bool IsMain { get; set; }
     }
 }
