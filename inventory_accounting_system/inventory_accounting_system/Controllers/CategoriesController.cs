@@ -17,7 +17,6 @@ namespace inventory_accounting_system.Controllers
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;
-
         public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
@@ -29,7 +28,7 @@ namespace inventory_accounting_system.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(_context.Categories.ToList());
         }
 
         #endregion

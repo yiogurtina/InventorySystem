@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using inventory_accounting_system.Data;
+using inventory_accounting_system.Interface;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.Services;
 
