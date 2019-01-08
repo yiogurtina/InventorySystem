@@ -16,7 +16,7 @@
     <div class="form-group" id="catSelect">
         <select onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
     </div>
-    <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button>
+    @* <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button> *@
 </form>
 <p>
     <a class="btn btn-primary" asp-action="Create">Создать офис</a>
@@ -87,15 +87,14 @@
 </script>
 <script>
     function onChangeFunc() {
-
-        var val = document.getElementById('onChangeText').value;
         $.ajax({
             type: 'GET',
             url: '@Url.Action("Index", "Offices")',
-            data: { officeId: val },
-            dataType: 'json',
-            success: console.log('ok')
+            data: { officeId: $("#onChangeText").val() },
+            success: function(data) { 
+                console.log('ok'); 
+                $("#onChangeText").closest("form").submit();
+            }
         });
-        var button = document.getElementById('officeButton').click();
     }
 </script>
