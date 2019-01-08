@@ -49,18 +49,6 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeType",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfficeType", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Suppliers",
                 columns: table => new
                 {
@@ -217,6 +205,26 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Storages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    IsMain = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    OwnerId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Storages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Storages_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Assets",
                 columns: table => new
                 {
@@ -229,9 +237,10 @@ namespace inventory_accounting_system.Migrations
                     InventNumber = table.Column<string>(nullable: true),
                     InventPrefix = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     OfficeId = table.Column<string>(nullable: true),
                     SerialNum = table.Column<string>(nullable: true),
+                    StorageId = table.Column<string>(nullable: true),
                     SupplierId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -253,6 +262,12 @@ namespace inventory_accounting_system.Migrations
                         name: "FK_Assets_Offices_OfficeId",
                         column: x => x.OfficeId,
                         principalTable: "Offices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Assets_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -371,6 +386,11 @@ namespace inventory_accounting_system.Migrations
                 column: "OfficeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Assets_StorageId",
+                table: "Assets",
+                column: "StorageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Assets_SupplierId",
                 table: "Assets",
                 column: "SupplierId");
@@ -399,6 +419,11 @@ namespace inventory_accounting_system.Migrations
                 name: "IX_AssetsMoveStories_OfficeToId",
                 table: "AssetsMoveStories",
                 column: "OfficeToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Storages_OwnerId",
+                table: "Storages",
+                column: "OwnerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -422,9 +447,6 @@ namespace inventory_accounting_system.Migrations
                 name: "AssetsMoveStories");
 
             migrationBuilder.DropTable(
-                name: "OfficeType");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -434,10 +456,13 @@ namespace inventory_accounting_system.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Storages");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Offices");

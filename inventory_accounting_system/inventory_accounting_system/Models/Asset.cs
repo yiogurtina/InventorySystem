@@ -8,6 +8,8 @@ namespace inventory_accounting_system.Models
 {
     public class Asset : Entity
     {
+        [Required(ErrorMessage = "Название актива не должно быть пустым")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage="Название актива не должно быть короче 3 символов и длиннее 20")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
@@ -26,6 +28,8 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Инвентарный номер")]
         public string InventNumber { get; set; }
 
+        [Required(ErrorMessage = "Добавьте префикс категории")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "Префикс категории не должен быть короче 2 символов и длиннее 10")]
         [Display(Name = "Инвентарный префикс")]
         public string InventPrefix { get; set; }
 

@@ -41,7 +41,8 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<string>("OfficeId");
 

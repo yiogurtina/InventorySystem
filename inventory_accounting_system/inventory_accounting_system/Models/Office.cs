@@ -8,6 +8,8 @@ namespace inventory_accounting_system.Models
 {
     public class Office : Entity
     {
+        [Required(ErrorMessage = "Название офиса не должно быть пустым")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage="Название офиса не должно быть короче 3 символов и длиннее 20")]
         [Display(Name = "Название")]
         public string Title { get; set; }
 
