@@ -22,10 +22,11 @@ namespace inventory_accounting_system.Data
         {
         }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
+
         }
 
     }

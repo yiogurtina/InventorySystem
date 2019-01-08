@@ -44,10 +44,13 @@ namespace inventory_accounting_system.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            var mainStorage = _context.Storages.FirstOrDefault(s=>s.IsMain);
             var assets = _context.Assets
                 .Include(a => a.Category)
+                .Include(a=>a.Storage)
                 .Include(a => a.Supplier)
-                .Where(a => a.IsActive == true);
+                .Where(a => a.IsActive)
+                .Where(a => a.StorageId == mainStorage.Id);
             return View(await assets.ToListAsync());
         }
 
@@ -99,6 +102,7 @@ namespace inventory_accounting_system.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset, string serialNum)
         {
+            var storage = _context.Storages.FirstOrDefault(s => s.IsMain);
             var categoryPrefix = _context.Categories
                 .Where(c => c.Id == asset.CategoryId)
                 .Select(c => c.Prefix)
@@ -106,9 +110,9 @@ namespace inventory_accounting_system.Controllers
 
             if (ModelState.IsValid)
             {
-                var storage = _context.Storages.FirstOrDefault(s => s.Name == "Main storage");
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
+                
                 asset.IsActive = true;
                 if (storage != null)
                 {
