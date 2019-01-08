@@ -106,7 +106,7 @@ namespace inventory_accounting_system.Controllers
 
             if (ModelState.IsValid)
             {
-                var storage = _context.Storages.First(s => s.Name == "Main storage");
+                var storage = _context.Storages.FirstOrDefault(s => s.Name == "Main storage");
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
                 asset.IsActive = true;
