@@ -44,6 +44,7 @@ namespace inventory_accounting_system.Controllers
         public async Task<IActionResult> Index()
         {
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+
             var mainStorage = _context.Storages.FirstOrDefault(s=>s.IsMain);
             var assets = _context.Assets
                 .Include(a => a.Category)
@@ -51,10 +52,12 @@ namespace inventory_accounting_system.Controllers
                 .Include(a => a.Supplier)
                 .Where(a => a.IsActive)
                 .Where(a => a.StorageId == mainStorage.Id);
+
             return View(await assets.ToListAsync());
         }
 
         #endregion
+
 
         #region Details
 
