@@ -14,29 +14,45 @@
     <thead>
     <tr style="background-color: whitesmoke">
         <th class="text-left">
-           <strong>Выбрать</strong>
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.IsActiveSort">
+                <strong>Выбрать</strong>
+            </a>
         </th>
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.Name)
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
+                @Html.DisplayNameFor(model => model.Name)
+            </a>
         </th>
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.InventNumber)
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
+                @Html.DisplayNameFor(model => model.InventNumber)
+            </a>
         </th>
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.Date)
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DateSort">
+                 @Html.DisplayNameFor(model => model.Date)
+            </a>
         </th>
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.ImagePath)
+            <a asp-action="Index"  style="text-decoration: none;" asp-route-sorting="@ViewBag.ImageSort">
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </a>
         </th>
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.Document)
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DocumentSort">
+                @Html.DisplayNameFor(model => model.Document)
+            </a>
         </th>
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.Category)
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.CategorySort">
+                @Html.DisplayNameFor(model => model.Category)
+            </a>
         </th>
 
         <th class="text-center">
-            @Html.DisplayNameFor(model => model.Supplier)
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.SupplierSort">
+                @Html.DisplayNameFor(model => model.Supplier)
+            </a>
         </th>
     </tr>
     </thead>

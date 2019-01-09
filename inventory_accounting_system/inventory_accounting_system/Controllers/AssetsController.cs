@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
 using System.IO;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Hosting;
 using inventory_accounting_system.Services;
 using Microsoft.AspNetCore.Http;
@@ -41,7 +42,7 @@ namespace inventory_accounting_system.Controllers
 
         #region Index
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Sorting sorting = Sorting.NameAsc)
         {
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
 
@@ -53,11 +54,54 @@ namespace inventory_accounting_system.Controllers
                 .Where(a => a.IsActive)
                 .Where(a => a.StorageId == mainStorage.Id);
 
+            #region Sorting
+
+            ViewData["IsActiveSort"] = sorting == Sorting.IsActiveAsc ? Sorting.IsActiveDesc : Sorting.IsActiveAsc;
+            ViewData["NameSort"] = sorting == Sorting.NameAsc ? Sorting.NameDesc : Sorting.NameAsc;
+            ViewData["InventNumberSort"] = sorting == Sorting.InventNumberAsc ? Sorting.InventNumberDesc : Sorting.InventNumberAsc;
+            ViewData["DateSort"] = sorting == Sorting.DateAsc ? Sorting.DateDesc : Sorting.DateAsc;
+            ViewData["ImageSort"] = sorting == Sorting.ImageAsc ? Sorting.ImageDesc : Sorting.ImageAsc;
+            ViewData["DocumentSort"] = sorting == Sorting.DocumentAsc ? Sorting.DocumentDesc : Sorting.DocumentAsc;
+            ViewData["CategorySort"] = sorting == Sorting.CategoryAsc ? Sorting.CategoryDesc : Sorting.CategoryAsc;
+            ViewData["SupplierSort"] = sorting == Sorting.SupplierAsc ? Sorting.SupplierDesc : Sorting.SupplierAsc;
+
+            switch (sorting)
+            {
+                case Sorting.IsActiveDesc:
+                    assets = assets.OrderByDescending(s => s.IsActive.Equals(true));
+                    break;
+                case Sorting.NameDesc:
+                    assets = assets.OrderByDescending(s => s.Name);
+                    break;
+                case Sorting.InventNumberDesc:
+                    assets = assets.OrderByDescending(s => s.InventNumber.Length);
+                    break;
+                case Sorting.DateDesc:
+                    assets = assets.OrderByDescending(s => s.Date.Minute);
+                    break;
+                case Sorting.ImageDesc:
+                    assets = assets.OrderByDescending(s => s.Image.FileName);
+                    break;
+                case Sorting.DocumentDesc:
+                    assets = assets.OrderByDescending(s => s.Document);
+                    break;
+                case Sorting.CategoryDesc:
+                    assets = assets.OrderByDescending(s => s.Category.Name);
+                    break;
+                case Sorting.SupplierDesc:
+                    assets = assets.OrderByDescending(s => s.Supplier.Name);
+                    break;
+                default:
+                    assets = assets.OrderBy(s => s.Name);
+                    break;
+            }
+
+            #endregion
+
             return View(await assets.ToListAsync());
         }
 
         #endregion
-
 
         #region Details
 
@@ -360,6 +404,8 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region Download
+
         public ActionResult Download(string id)
         {
             var assetA = _context.Assets.FirstOrDefault(x => x.Id == id);
@@ -369,13 +415,15 @@ namespace inventory_accounting_system.Controllers
             {
                 b = System.IO.File.ReadAllBytes(assetA.DocumentPath);
                 string fileName = "myfile.ext";
-                return File(b, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                return File(b, MediaTypeNames.Application.Octet, fileName);
             }
             else
             {
                 return View("Error"); ;
             }
         }
+
+        #endregion
 
     }
 }
