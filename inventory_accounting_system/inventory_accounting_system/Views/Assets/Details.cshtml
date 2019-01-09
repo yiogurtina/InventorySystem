@@ -50,19 +50,32 @@
         <dd>
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
-   
-         <dt>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Supplier)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Supplier.Name)
         </dd>
-         <dt>
-            @Html.DisplayNameFor(model => model.Document)
-        </dt>
-        <dd>
-            <a asp-controller="Assets" asp-action="Download" asp-route-id="@Model.Id" class="not-filled recent">@Model.Name</a>
-        </dd>
+        @if (Model.DocumentPath != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Document)
+            </dt>
+            <dd>
+                <a style="color: dodgerblue;" asp-controller="Assets" asp-action="Download" asp-route-id="@Model.Id" class="not-filled recent">@Model.Name</a>
+            </dd>
+        }
+        else
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Document)
+            </dt>
+            <dd>
+                <a style="color: darkgrey;" asp-controller="Assets" asp-action="Download" asp-route-id="@Model.Id" class="not-filled recent">@Model.Name</a>
+            </dd>
+        }
+            
     </dl>
 </div>
 <div>
