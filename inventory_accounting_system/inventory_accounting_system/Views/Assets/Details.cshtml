@@ -57,6 +57,12 @@
         <dd>
             @Html.DisplayFor(model => model.Supplier.Name)
         </dd>
+         <dt>
+            @Html.DisplayNameFor(model => model.Document)
+        </dt>
+        <dd>
+            <a asp-controller="Assets" asp-action="Download" asp-route-id="@Model.Id" class="not-filled recent">@Model.Name</a>
+        </dd>
     </dl>
 </div>
 <div>
