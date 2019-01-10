@@ -202,6 +202,22 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region CategoryAssets
+
+        public async Task<IActionResult> CategoryAssets(string officeId, string categoryId)
+        {
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            var assets = _context.Assets
+                .Include(a => a.Category)
+                .Include(a => a.Supplier)
+                .Where(a => a.IsActive == true)
+                //.Where(a => a.OfficeId == officeId)
+                .Where(a => a.CategoryId == categoryId);
+            return View(await assets.ToListAsync());
+        }
+
+        #endregion
+
         #region OfficeExists
 
         private bool OfficeExists(string id)
