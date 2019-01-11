@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace inventory_accounting_system.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,8 +28,8 @@ namespace inventory_accounting_system.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(maxLength: 20, nullable: false),
-                    Prefix = table.Column<string>(maxLength: 10, nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    Prefix = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,7 +41,7 @@ namespace inventory_accounting_system.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Title = table.Column<string>(maxLength: 20, nullable: false)
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,7 +54,7 @@ namespace inventory_accounting_system.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 20, nullable: false)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,8 +94,8 @@ namespace inventory_accounting_system.Migrations
                     IsDelete = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    Login = table.Column<string>(maxLength: 20, nullable: false),
-                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    Login = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Number = table.Column<string>(nullable: true),
@@ -104,7 +104,7 @@ namespace inventory_accounting_system.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(maxLength: 20, nullable: false),
+                    Surname = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
@@ -235,9 +235,9 @@ namespace inventory_accounting_system.Migrations
                     EmployeeId = table.Column<string>(nullable: true),
                     ImagePath = table.Column<string>(nullable: true),
                     InventNumber = table.Column<string>(nullable: true),
-                    InventPrefix = table.Column<string>(maxLength: 10, nullable: false),
+                    InventPrefix = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     OfficeId = table.Column<string>(nullable: true),
                     SerialNum = table.Column<string>(nullable: true),
                     StorageId = table.Column<string>(nullable: true),
