@@ -425,5 +425,27 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region Check
+
+        public ActionResult Check(string[] assetId, string officeId)
+        {
+            bool result = false;
+            foreach (var item in assetId)
+            {
+                var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
+                if (assetIdFind != null)
+                {
+                    assetIdFind.IsActive = false;
+                    assetIdFind.OfficeId = officeId;
+                    _context.Update(assetIdFind);
+                    _context.SaveChanges();
+                }
+            }
+            result = true;
+            return Json(data: new {success = result});
+        }
+
+        #endregion
+
     }
 }

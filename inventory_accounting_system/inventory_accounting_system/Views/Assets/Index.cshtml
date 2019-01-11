@@ -61,7 +61,7 @@
     {
         <tr>
             <td>
-                <input type="checkbox" />
+                <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
             </td>
             <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                 @Html.DisplayFor(modelItem => item.Name)
@@ -109,7 +109,7 @@
 </table>
 
 <div>
-    <a class="btn btn-primary" onclick="addAssetFasten()">Закрепить</a>
+    <a class="btn btn-primary" onclick="modalShowHendler()">Закрепить</a>
 </div>
 
 
@@ -127,7 +127,7 @@
                         <form >
                             <div class="form-group" id="officeSelect">
                                 <label class="control-label">Офисы</label>
-                                <select class="form-control"  style=" width: 270px !important;" asp-items="ViewBag.OfficeId"></select>
+                                <select class="form-control" id="officeIdSelect" onchange="OnChangeOfficeId(this)"  style=" width: 270px !important;" asp-items="ViewBag.OfficeId"></select>
                             </div>
                         </form>
                     </div>
@@ -138,7 +138,7 @@
                 
                 <div class="modal-footer">
                     <div>
-                        <button id="CreateMethod" type="submit" class="btn btn-primary">Ok</button>
+                        <button id="CreateMethod" type="submit" onclick="getCheckedCheckBoxes()" class="btn btn-primary">Ok</button>
                     </div>
                 </div>
 
@@ -150,8 +150,48 @@
 
 @section scripts{
     <script>
-        function addAssetFasten() {
+
+        var officeId;
+
+        function modalShowHendler() {
             $("#newAssetModal").modal();
+            officeId = document.getElementById('officeIdSelect').children[0].value;
         }
+
+        checkedCheckBox = [];
+
+        function OnChangeCheckBoxFunc(e) {
+            var assetId = e.value;
+            if (checkedCheckBox.indexOf(assetId) > -1) {
+                var elementIndex = checkedCheckBox.indexOf(assetId);
+                checkedCheckBox.splice(elementIndex, 1);
+            } else {
+                checkedCheckBox.push(assetId);
+            }
+        }
+
+        function OnChangeOfficeId(e) {
+            officeId = e.value;
+        }
+
+        function getCheckedCheckBoxes() {
+            console.log(checkedCheckBox);
+            console.log(officeId);
+            debugger;
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Check", "Assets")',
+                data: {
+                    officeId: officeId,
+                    assetId: checkedCheckBox
+                },
+                success: function (data) {
+                    console.log('ok');
+                    $("#onChangeText").closest("form").submit();
+                }
+            });
+        }
+
+
     </script>
 }
