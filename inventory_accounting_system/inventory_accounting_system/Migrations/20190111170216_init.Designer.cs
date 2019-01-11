@@ -11,9 +11,10 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190111170216_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,8 +35,6 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("EmployeeId");
 
                     b.Property<string>("ImagePath");
-
-                    b.Property<bool>("InStock");
 
                     b.Property<string>("InventNumber");
 
@@ -195,60 +194,10 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.EventAsset", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AssetId");
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<DateTime>("DeadLine");
-
-                    b.Property<string>("EmployeeId");
-
-                    b.Property<string>("EventId");
-
-                    b.Property<int>("Period");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("AssetEvents");
-                });
-
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("StorageId");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -257,38 +206,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Offices");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployee", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("DateFrom");
-
-                    b.Property<DateTime?>("DateTo");
-
-                    b.Property<string>("EmployeeFromId");
-
-                    b.Property<string>("EmployeeToId");
-
-                    b.Property<string>("OfficeId");
-
-                    b.Property<string>("Status");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeFromId");
-
-                    b.HasIndex("EmployeeToId");
-
-                    b.HasIndex("OfficeId");
-
-                    b.ToTable("OrderEmployees");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
@@ -300,15 +217,9 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("OfficeId");
-
                     b.Property<string>("OwnerId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfficeId")
-                        .IsUnique()
-                        .HasFilter("[OfficeId] IS NOT NULL");
 
                     b.HasIndex("OwnerId");
 
@@ -492,49 +403,8 @@ namespace inventory_accounting_system.Migrations
                         .HasForeignKey("OfficeId");
                 });
 
-            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
-                {
-                    b.HasOne("inventory_accounting_system.Models.Category", "Category")
-                        .WithMany("Events")
-                        .HasForeignKey("CategoryId");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.EventAsset", b =>
-                {
-                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
-                        .WithMany("AssetEvents")
-                        .HasForeignKey("AssetId");
-
-                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
-                        .WithMany("EventAssets")
-                        .HasForeignKey("EmployeeId");
-
-                    b.HasOne("inventory_accounting_system.Models.Event", "Event")
-                        .WithMany("EventAssets")
-                        .HasForeignKey("EventId");
-                });
-
-            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployee", b =>
-                {
-                    b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeFrom")
-                        .WithMany()
-                        .HasForeignKey("EmployeeFromId");
-
-                    b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeTo")
-                        .WithMany()
-                        .HasForeignKey("EmployeeToId");
-
-                    b.HasOne("inventory_accounting_system.Models.Office", "Office")
-                        .WithMany()
-                        .HasForeignKey("OfficeId");
-                });
-
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
                 {
-                    b.HasOne("inventory_accounting_system.Models.Office", "Office")
-                        .WithOne("Storage")
-                        .HasForeignKey("inventory_accounting_system.Models.Storage", "OfficeId");
-
                     b.HasOne("inventory_accounting_system.Models.Employee", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");

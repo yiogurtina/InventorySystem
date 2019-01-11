@@ -45,7 +45,7 @@ namespace inventory_accounting_system.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string searchString, Sorting sorting = Sorting.NameAsc)
         {
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["StorageId"] = new SelectList(_context.Storages, "Id", "Name");
 
             var mainStorage = _context.Storages.FirstOrDefault(s=>s.IsMain);
             var assets = _context.Assets
@@ -99,20 +99,7 @@ namespace inventory_accounting_system.Controllers
 
             #endregion
 
-            if (searchString != null)
-            {
-                var assets1 = from m in _context.Assets
-                    select m;
-
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    assets1 = assets1.Where(s => s.Name.Contains(searchString));
-                }
-                return View(await assets1.ToListAsync());
-            }
-
-            return View(await assets.ToListAsync());
-
+            return View(assets);
         }
 
         #endregion
@@ -376,32 +363,32 @@ namespace inventory_accounting_system.Controllers
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             ViewData["AssetId"] = id;
 
-            var assetsMoveStory = new AssetsMoveStory();
+            var assetAction = new AssetAction();
             ViewData["EmployeeFromId"] = new SelectList(_context.Users, "Id", "Login");
-            ViewData["OfficeFromId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["StorageFromId"] = new SelectList(_context.Storages, "Id", "Title");
 
             ViewData["EmployeeToId"] = new SelectList(_context.Users, "Id", "Login");
-            ViewData["OfficeToId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["StorageToId"] = new SelectList(_context.Storages, "Id", "Title");
 
 
 
-            return View("Move", new MoveViewModel()
+            return View("Move", new ActionMoveViewModel()
             {
                 Asset = asset,
-                AssetsMoveStory = assetsMoveStory,
-                AssetsMoveStories = _context.AssetsMoveStories
+                AssetAction = assetAction,
+                AssetActions = _context.AssetActions
                                     .Where(f => f.AssetId == id)
                                     .Include(t => t.EmployeeFrom)
-                                    .Include(t => t.OfficeFrom)
+                                    .Include(t => t.StorageFrom)
                                     .Include(t => t.EmployeeTo)
-                                    .Include(t => t.OfficeTo)
+                                    .Include(t => t.StorageTo)
             });
             //return View(asset);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Move(AssetsMoveStory assetsMoveStory)
+        public async Task<IActionResult> Move(Models.AssetAction assetsMoveStory)
         {
 
             if (ModelState.IsValid)
@@ -425,10 +412,10 @@ namespace inventory_accounting_system.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["EmployeeFromId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeFromId);
-            ViewData["OfficeFromId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeFromId);
+            ViewData["StorageFromId"] = new SelectList(_context.Storages, "Id", "Title", assetsMoveStory.StorageFromId);
 
             ViewData["EmployeeToId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeToId);
-            ViewData["OfficeToId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeToId);
+            ViewData["StorageToId"] = new SelectList(_context.Storages, "Id", "Title", assetsMoveStory.StorageToId);
             return View(assetsMoveStory);
         }
         #endregion
