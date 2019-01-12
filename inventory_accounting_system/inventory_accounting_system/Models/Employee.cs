@@ -9,8 +9,7 @@ namespace inventory_accounting_system.Models
 {
     public class Employee : IdentityUser
     {
-        [Required(ErrorMessage = "Логин не должно быть пустым")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Логинка пользователя не должна быть короче 3 символов и длиннее 20")]
+
         [Display(Name = "Пользователь")]
         public string Login { get; set; }
 
@@ -18,13 +17,11 @@ namespace inventory_accounting_system.Models
         [Display(Name="Офис")]
         public string OfficeId { get; set; }
 
-        [Required(ErrorMessage = "Строчка Имя не должна быть пустой")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Имя пользователя не должно быть короче 3 символов и длиннее 20")]
+
         [Display(Name = "Имя")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Строчка Фамилия не должна быть пустой")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "Фамилия пользователя не должна быть короче 2 символов и длиннее 20")]
+
         [Display(Name = "Фамилия")]
         public string Surname { get; set; }
 

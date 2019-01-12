@@ -12,7 +12,7 @@ namespace inventory_accounting_system.Services
 {
     public class AppDBInitializer
     {
-
+        private string UserId;
         public async Task SeedAsync(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -46,7 +46,7 @@ namespace inventory_accounting_system.Services
                         Email = "admin@admin.com",
                         Login = "admin"
                     };
-
+                    UserId = user.Id;
                     var result = await userManager.CreateAsync(user, "admin");
 
                     if (result.Succeeded)
@@ -57,13 +57,12 @@ namespace inventory_accounting_system.Services
                 var storage = context.Storages.FirstOrDefault(b => b.IsMain);
                 if (storage == null)
                 {
-                    if (admin != null)
-                        context.Storages.Add(new Storage()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Main storage",
-                            IsMain = true,
-                            OwnerId = admin.Id
+                     context.Storages.Add(new Storage()
+                     {
+                         Id = Guid.NewGuid().ToString(),
+                         Name = "Main storage",
+                         IsMain = true,
+                         OwnerId = UserId
                         });
                 }
                 context.SaveChanges();

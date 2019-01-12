@@ -33,7 +33,7 @@ namespace inventory_accounting_system.Controllers
                 return View();
             }
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion
