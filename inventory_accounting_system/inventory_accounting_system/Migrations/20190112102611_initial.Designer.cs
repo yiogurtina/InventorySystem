@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190108120514_init")]
-    partial class init
+    [Migration("20190112102611_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,12 +38,15 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("InventNumber");
 
-                    b.Property<string>("InventPrefix");
+                    b.Property<string>("InventPrefix")
+                        .IsRequired()
+                        .HasMaxLength(10);
 
                     b.Property<bool>("IsActive");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("OfficeId");
 
@@ -66,6 +69,28 @@ namespace inventory_accounting_system.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Assets");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("EmployeeId");
+
+                    b.Property<string>("StorageId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StorageId");
+
+                    b.ToTable("AssetOnStorages");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>
@@ -107,9 +132,13 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.Property<string>("Prefix");
+                    b.Property<string>("Prefix")
+                        .IsRequired()
+                        .HasMaxLength(10);
 
                     b.HasKey("Id");
 
@@ -137,9 +166,13 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Login");
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -159,7 +192,9 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -186,7 +221,9 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -218,7 +255,9 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -354,6 +393,21 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("inventory_accounting_system.Models.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>

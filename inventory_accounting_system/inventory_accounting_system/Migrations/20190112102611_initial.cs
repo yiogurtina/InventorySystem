@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace inventory_accounting_system.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,8 +28,8 @@ namespace inventory_accounting_system.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Prefix = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    Prefix = table.Column<string>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,7 +41,7 @@ namespace inventory_accounting_system.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    Title = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +54,7 @@ namespace inventory_accounting_system.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,8 +94,8 @@ namespace inventory_accounting_system.Migrations
                     IsDelete = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    Login = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
+                    Login = table.Column<string>(maxLength: 20, nullable: false),
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Number = table.Column<string>(nullable: true),
@@ -104,7 +104,7 @@ namespace inventory_accounting_system.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true),
+                    Surname = table.Column<string>(maxLength: 20, nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
@@ -235,9 +235,9 @@ namespace inventory_accounting_system.Migrations
                     EmployeeId = table.Column<string>(nullable: true),
                     ImagePath = table.Column<string>(nullable: true),
                     InventNumber = table.Column<string>(nullable: true),
-                    InventPrefix = table.Column<string>(nullable: true),
+                    InventPrefix = table.Column<string>(maxLength: 10, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
                     OfficeId = table.Column<string>(nullable: true),
                     SerialNum = table.Column<string>(nullable: true),
                     StorageId = table.Column<string>(nullable: true),
@@ -274,6 +274,38 @@ namespace inventory_accounting_system.Migrations
                         name: "FK_Assets_Suppliers_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssetOnStorages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AssetId = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    StorageId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssetOnStorages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -371,6 +403,21 @@ namespace inventory_accounting_system.Migrations
                 column: "OfficeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_AssetId",
+                table: "AssetOnStorages",
+                column: "AssetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_EmployeeId",
+                table: "AssetOnStorages",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_StorageId",
+                table: "AssetOnStorages",
+                column: "StorageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Assets_CategoryId",
                 table: "Assets",
                 column: "CategoryId");
@@ -442,6 +489,9 @@ namespace inventory_accounting_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "AssetOnStorages");
 
             migrationBuilder.DropTable(
                 name: "AssetsMoveStories");
