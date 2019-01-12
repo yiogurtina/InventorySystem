@@ -34,11 +34,12 @@ namespace inventory_accounting_system.Controllers
         public IActionResult Index(string officeId)
         {
             var offices = _context.Offices.ToList();
-            ViewData["Offices"] = new SelectList(offices, "Id", "Title", officeId);
+            ViewData["Offices"] = new SelectList(offices.OrderByDescending(x => x.Title), "Id", "Title", officeId);
 
             if (officeId.IsNullOrEmpty())
             {
-                var defaultOffice = offices.FirstOrDefault();
+                var defaultOffice = offices
+                    .FirstOrDefault();
                 if (defaultOffice == null)
                 {
                     return View();
@@ -49,7 +50,7 @@ namespace inventory_accounting_system.Controllers
             List<Employee> employees = _context.Users.Where(e => e.OfficeId == officeId).ToList();
 
             var categoryAssets = _context.Assets
-                //.Where(a => a.OfficeId == officeId) //Надо убрать комент после реализации привязки имущество-офиса. Для теста закрыл
+                .Where(a => a.OfficeId == officeId) 
                 .Include(a => a.Category)
                 .GroupBy(a => new { a.CategoryId, a.Category.Name })
                 .Select(g => new CategoryAssetCountViewModel
@@ -210,8 +211,8 @@ namespace inventory_accounting_system.Controllers
             var assets = _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.Supplier)
-                .Where(a => a.IsActive == true)
-                //.Where(a => a.OfficeId == officeId)
+                .Where(a => a.IsActive == false)
+                .Where(a => a.OfficeId == officeId)
                 .Where(a => a.CategoryId == categoryId);
             return View(await assets.ToListAsync());
         }

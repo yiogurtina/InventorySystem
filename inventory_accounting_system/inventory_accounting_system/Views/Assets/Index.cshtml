@@ -175,9 +175,6 @@
         }
 
         function getCheckedCheckBoxes() {
-            console.log(checkedCheckBox);
-            console.log(officeId);
-            debugger;
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Check", "Assets")',
@@ -186,8 +183,7 @@
                     assetId: checkedCheckBox
                 },
                 success: function (data) {
-                    console.log('ok');
-                    $("#onChangeText").closest("form").submit();
+                    console.log('success!');
                 }
             });
         }

@@ -429,7 +429,6 @@ namespace inventory_accounting_system.Controllers
 
         public ActionResult Check(string[] assetId, string officeId)
         {
-            bool result = false;
             foreach (var item in assetId)
             {
                 var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
@@ -441,8 +440,7 @@ namespace inventory_accounting_system.Controllers
                     _context.SaveChanges();
                 }
             }
-            result = true;
-            return Json(data: new {success = result});
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion
