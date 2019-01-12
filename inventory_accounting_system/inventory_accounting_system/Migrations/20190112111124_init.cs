@@ -279,6 +279,38 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AssetOnStorages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AssetId = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    StorageId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssetOnStorages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AssetsMoveStories",
                 columns: table => new
                 {
@@ -371,6 +403,21 @@ namespace inventory_accounting_system.Migrations
                 column: "OfficeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_AssetId",
+                table: "AssetOnStorages",
+                column: "AssetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_EmployeeId",
+                table: "AssetOnStorages",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_StorageId",
+                table: "AssetOnStorages",
+                column: "StorageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Assets_CategoryId",
                 table: "Assets",
                 column: "CategoryId");
@@ -442,6 +489,9 @@ namespace inventory_accounting_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "AssetOnStorages");
 
             migrationBuilder.DropTable(
                 name: "AssetsMoveStories");

@@ -42,6 +42,8 @@ namespace inventory_accounting_system.Services
                 {
                     var user = new Employee
                     {
+                        Name = "admin",
+                        Surname = "admin",
                         UserName = "admin", 
                         Email = "admin@admin.com",
                         Login = "admin"

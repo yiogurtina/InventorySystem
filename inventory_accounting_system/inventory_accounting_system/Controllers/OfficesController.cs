@@ -31,7 +31,7 @@ namespace inventory_accounting_system.Controllers
 
         #region Index
 
-        public async Task<IActionResult> Index(string officeId)
+        public IActionResult Index(string officeId)
         {
             var offices = _context.Offices.ToList();
             ViewData["Offices"] = new SelectList(offices, "Id", "Title", officeId);

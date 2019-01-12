@@ -16,6 +16,7 @@ namespace inventory_accounting_system.Data
         public DbSet<Asset> Assets { get; set; }
         public DbSet<AssetsMoveStory> AssetsMoveStories { get; set; }
         public DbSet<Storage> Storages { get; set; }
+        public DbSet<AssetOnStorage> AssetOnStorages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

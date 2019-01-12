@@ -11,7 +11,7 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190112062532_init")]
+    [Migration("20190112111124_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,28 @@ namespace inventory_accounting_system.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Assets");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("EmployeeId");
+
+                    b.Property<string>("StorageId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StorageId");
+
+                    b.ToTable("AssetOnStorages");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>
@@ -371,6 +393,21 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("inventory_accounting_system.Models.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>

@@ -70,6 +70,28 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("Assets");
                 });
 
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("EmployeeId");
+
+                    b.Property<string>("StorageId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StorageId");
+
+                    b.ToTable("AssetOnStorages");
+                });
+
             modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>
                 {
                     b.Property<string>("Id")
@@ -143,9 +165,13 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Login");
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -165,7 +191,9 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<string>("Surname");
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -364,6 +392,21 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("inventory_accounting_system.Models.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>

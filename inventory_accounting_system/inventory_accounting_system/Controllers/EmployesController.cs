@@ -168,7 +168,7 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
-        public async Task<IActionResult> UserAssets(string id)
+        public IActionResult UserAssets(string id)
         {
             var user = _context.Users.Include(u=>u.Assets).First(u=>u.Id==id );
             var assets = user.Assets;
