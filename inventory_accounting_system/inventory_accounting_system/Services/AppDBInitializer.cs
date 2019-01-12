@@ -57,13 +57,14 @@ namespace inventory_accounting_system.Services
                 var storage = context.Storages.FirstOrDefault(b => b.IsMain);
                 if (storage == null)
                 {
-                    context.Storages.Add(new Storage()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Main storage",
-                        IsMain = true,
-                        OwnerId = admin.Id
-                    });
+                    if (admin != null)
+                        context.Storages.Add(new Storage()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Name = "Main storage",
+                            IsMain = true,
+                            OwnerId = admin.Id
+                        });
                 }
                 context.SaveChanges();
 
