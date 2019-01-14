@@ -10,6 +10,13 @@
 <p>
     <a class="btn btn-primary" asp-action="Create">Создать</a>
 </p>
+@using (Html.BeginForm("Index", "Assets", FormMethod.Post))
+{
+    <div>
+        <p>Search by Name: @Html.TextBox("searchString")
+            <input id="Submit1" type="submit" value="Filter"></p>
+    </div>
+}
 <table class="table table-hover table-bordered">
     <thead>
     <tr style="background-color: whitesmoke">
