@@ -1,4 +1,9 @@
-﻿@using inventory_accounting_system.ViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using inventory_accounting_system.ViewModel
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+
 @model OfficeIndexViewModel
 
 @{
@@ -6,77 +11,150 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Офисы</h2>
+@if (SignInManager.IsSignedIn(User))
+{
+    if (User.IsInRole("Admin"))
+    {
+        <h2>Офисы</h2>
 
-<p>
-    <a class="btn btn-primary" href="/Account/Register">Добавить сотрудника</a>
-</p>
+        <p>
+            <a class="btn btn-primary" href="/Account/Register">Добавить сотрудника</a>
+        </p>
 
-<form>
-    <div class="form-group" id="catSelect">
-        <select onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
-    </div>
-    @* <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button> *@
-</form>
-<p>
-    <a class="btn btn-primary" asp-action="Create">Создать офис</a>
-</p>
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th id="officeName" scope="col">
+        <form>
+            <div class="form-group" id="catSelect">
+                <select onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText" asp-items="ViewBag.Offices"></select>
+            </div>
+            @* <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button> *@
+        </form>
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Создать офис</a>
+        </p>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th id="officeName" scope="col">
+                        @{
+                            if (Model != null)
+                            {
+                                @Model.Office.Title }
+                        }
+                    </th>
+                    <th scope="col"><a>Вася Пупкин</a></th>
+                </tr>
+            </thead>
+        </table>
+        <div class="row">
+            <div class="col-md-8">
                 @{
                     if (Model != null)
                     {
-                        @Model.Office.Title }
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Категория</th>
+                                    <th scope="col">Количество</th>
+                                    <th scope="col">Выбрать</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CategoryAssetCountViewModels)
+                                {
+                                    <tr>
+                                        <th scope="row"><a asp-controller="Offices" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
+                                        <td>@item.AssetsCount</td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
                 }
-            </th>
-            <th scope="col"><a>Вася Пупкин</a></th>
-        </tr>
-    </thead>
-</table>
-<div class="row">
-    <div class="col-md-8">
-        @{
-            if (Model != null)
-            {
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Категория</th>
-                            <th scope="col">Количество</th>
-                            <th scope="col">Выбрать</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.CategoryAssetCountViewModels)
-                        {
-                            <tr>
-                                <th scope="row"><a asp-controller="Offices" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
-                                <td>@item.AssetsCount</td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-        }
 
-    </div>
-    <div class="col-md-4">
-        <h4>Сотрудники</h4>
-        <ul>
-            @if (Model != null)
-                {
-                    @foreach (var item in Model.Employees)
+            </div>
+            <div class="col-md-4">
+                <h4>Сотрудники</h4>
+                <ul>
+                    @if (Model != null)
                     {
-                        <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
-                    }                    
-                }
-            </ul>
+                        @foreach (var item in Model.Employees)
+                        {
+                            <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
 
+    }
+
+
+
+    @*Modal Window*@
+
+    <div class="modal fade" id="newModalOffice">
+        <div class="modal-dialog modal-lg" style=" width: 500px !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h4>Отправить заявку</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form>
+                                <div class="form-group" id="officeSelect">
+                                    <label class="control-label">Офисы</label>
+                                    <select class="form-control" id="officeIdSelect"
+                                            onchange="OnChangeOfficeId(this)"
+                                            style=" width: 270px !important;"
+                                            asp-items="ViewBag.OfficeId"></select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label">Заголовок</label>
+                                    <input style=" width: 270px !important;" class="form-control" id="titleContent" />
+                                    <span class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group" id="EmployeeSelect">
+                                    <label class="control-label">Кому:</label>
+                                    <select class="form-control" id="EmployeeIdSelect"
+                                            onchange="OnChangeEmployeeId(this)"
+                                            style=" width: 270px !important;"
+                                            asp-items="ViewBag.EmployeeId"></select>
+                                </div>
+
+                                <div class="form-group" id="contentOrder">
+                                    <label class="control-label">Такст заявки</label>
+                                    <textarea class="form-control" id="contentOrderI"
+                                              style=" width: 270px !important;"
+                                              asp-items="ViewBag.OfficeId"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <form id="NewAssetForm">
+
+                    <div class="modal-footer">
+                        <div>
+                            <button id="CreateMethod" type="submit" onclick="GetOrderEmployee()" class="btn btn-primary">Ok</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
+    if (User.IsInRole("User") || User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" onclick="showModalSendOrder()" style="margin-top: 150px;">Отправить заявку</a>
+    }
+
+}
+
+
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
@@ -91,10 +169,42 @@
             type: 'GET',
             url: '@Url.Action("Index", "Offices")',
             data: { officeId: $("#onChangeText").val() },
-            success: function(data) { 
-                console.log('ok'); 
+            success: function(data) {
+                console.log('ok');
                 $("#onChangeText").closest("form").submit();
             }
         });
     }
+
+    var officeId;
+    var employeeId;
+    function showModalSendOrder() {
+        $("#newModalOffice").modal();
+        officeId = document.getElementById('officeIdSelect').children[0].value;
+        employeeId = document.getElementById('EmployeeIdSelect').children[0].value;
+    }
+
+    function OnChangeOfficeId(e) {
+        officeId = e.value;
+    }
+    function OnChangeEmployeeId(e) {
+        employeeId = e.value;
+    }
+
+    function GetOrderEmployee() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderSend", "OrderEmployees")',
+            data: {
+                officeId: officeId,
+                employeeId: employeeId,
+                title: $("#titleContent").val(),
+                content: $("#contentOrderI").val()
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+
 </script>

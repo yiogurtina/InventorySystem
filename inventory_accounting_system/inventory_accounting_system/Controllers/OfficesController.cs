@@ -31,8 +31,32 @@ namespace inventory_accounting_system.Controllers
 
         #region Index
 
-        public IActionResult Index(string officeId)
+        public async Task<IActionResult> Index(string officeId)
         {
+
+            #region Search office Manager
+
+            var officeIdEmployee = _context.Offices;
+
+            List<string> managers = new List<string>();
+            var userFromOff = _context.Users.Where(u => u.IsDelete == false);
+            foreach (var usr in userFromOff)
+            {
+                if (await _userManager.IsInRoleAsync(usr, "Manager"))
+                {
+                    ViewData["EmployeeId"] = new SelectList(_context.Users.Where(u => u.Id == usr.Id), "Id", "Name");
+                    foreach (var office in officeIdEmployee)
+                    {
+                        if (usr.OfficeId == office.Id)
+                        {
+                            ViewData["OfficeId"] = new SelectList(_context.Offices.Where(o => o.Id == usr.OfficeId), "Id", "Title");
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
             var offices = _context.Offices.ToList();
             ViewData["Offices"] = new SelectList(offices.OrderByDescending(x => x.Title), "Id", "Title", officeId);
 

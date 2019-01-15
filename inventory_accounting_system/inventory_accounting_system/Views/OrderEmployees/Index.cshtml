@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<inventory_accounting_system.Models.OrderEmployee>
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*@if (SignInManager.IsSignedIn(User))
+    {
+
+        if (User.IsInRole("Manager"))
+        {
+
+        }
+    }*@
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@*<div class="panel panel-default">
+        <div class="panel-heading">
+            <a class="btn btn-primary" data-toggle="collapse" href="#imageGallery">
+
+            </a>
+        </div>
+
+        <div class="panel-body collapse" id="imageGallery">
+
+        </div>
+    </div>*@
+
+
+
+<table class="table table-hover table-bordered col-lg-12">
+    <thead>
+        <tr style="background-color: whitesmoke">
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Office)
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Status == "New")
+            {
+                <tr style="background-color: #e0f7d4" onclick="window.location.href = '/OrderEmployees/Details?id=@item.Id';return false;">
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.Content
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateFrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Office.Title)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        <div>@Html.DisplayFor(modelItem => item.Content)</div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateFrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Office.Title)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+
+</script>

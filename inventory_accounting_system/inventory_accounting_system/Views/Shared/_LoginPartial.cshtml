@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using inventory_accounting_system.Models
 
+@* @using inventory_accounting_system.ViewModel *@
+
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
+
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -11,6 +14,18 @@
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
             </li>
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+                <li>
+                    <a class="glyphicon glyphicon-bell"
+                       style="color: aliceblue;"
+                       asp-area=""
+                       asp-controller="OrderEmployees"
+                       asp-action="Index">
+                    </a>
+
+                </li>
+            }
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Выход</button>
             </li>

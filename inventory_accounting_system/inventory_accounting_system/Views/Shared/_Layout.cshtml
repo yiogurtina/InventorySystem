@@ -33,7 +33,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">inventory_accounting_system</a>
+                    <a asp-area="" asp-controller="Offices" asp-action="Index" class="navbar-brand">inventory_accounting_system</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -43,6 +43,7 @@
                             <li><a asp-area="" asp-controller="Categories" asp-action="Index">Категории</a></li>
                             <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщик</a></li>
                             <li><a asp-area="" asp-controller="Assets" asp-action="Index">Имущество</a></li>
+                            @*<li><a asp-area="" asp-controller="Offices" asp-action="Index" onclick="GetOfficeId()">Офис</a></li>*@
                             <li><a asp-area="" asp-controller="Offices" asp-action="Index">Офис</a></li>
                             <li><a asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a></li>
                             <li><a asp-area="" asp-controller="Employes" asp-action="Users">Сотрудники</a></li>
@@ -92,3 +93,22 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+@*<script>
+        var officeId;
+        function GetOfficeId() {
+            officeId = document.getElementById('officeIdSelect').children[0].value;
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Index", "Offices")',
+                data: {
+                    officeId: officeId
+                },
+                success: function (data) {
+                    console.log('success!');
+                }
+            });
+        }
+
+    </script>*@
