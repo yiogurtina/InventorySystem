@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using inventory_accounting_system.Controllers;
 using inventory_accounting_system.Data;
 
 namespace inventory_accounting_system.Services
@@ -38,17 +39,19 @@ namespace inventory_accounting_system.Services
                 }
 
                 Employee admin = await userManager.FindByNameAsync("admin");
+                var AdminId = Guid.NewGuid().ToString();
                 if (admin == null)
                 {
                     var user = new Employee
                     {
+                        Id= AdminId,
                         Name = "admin",
                         Surname = "admin",
                         UserName = "admin", 
                         Email = "admin@admin.com",
                         Login = "admin"
                     };
-                    UserId = user.Id;
+
                     var result = await userManager.CreateAsync(user, "admin");
 
                     if (result.Succeeded)
@@ -59,16 +62,15 @@ namespace inventory_accounting_system.Services
                 var storage = context.Storages.FirstOrDefault(b => b.IsMain);
                 if (storage == null)
                 {
-                     context.Storages.Add(new Storage()
+                    context.Storages.Add(new Storage()
                      {
-                         Id = Guid.NewGuid().ToString(),
                          Name = "Main storage",
                          IsMain = true,
-                         OwnerId = UserId
-                        });
+                         OwnerId = AdminId
+                    });
                 }
-                context.SaveChanges();
 
+                context.SaveChanges();
             }
         }
     }

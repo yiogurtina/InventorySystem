@@ -32,6 +32,7 @@ namespace inventory_accounting_system.Models
 
         public string Number { get; set; }
         public IEnumerable<Asset> Assets { get; set; }
+        public IEnumerable<EventAsset> EventAssets { get; set; }
         public bool IsDelete { get; set; }
 
     }

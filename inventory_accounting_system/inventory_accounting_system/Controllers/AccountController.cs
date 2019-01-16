@@ -15,6 +15,7 @@ using inventory_accounting_system.Models;
 using inventory_accounting_system.Models.AccountViewModels;
 using inventory_accounting_system.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -610,5 +611,57 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region GetUserAssetsEvents
+
+        public IActionResult GetAssetsEvents()
+        {
+            var currUserId = _userManager.GetUserId(User);
+            var events = _context.AssetEvents.Where(a => a.EmployeeId == currUserId);
+
+
+            return View(events);
+        }
+
+        #endregion
+
+        #region GetExpiringEvents
+
+        public IActionResult GetExpiringEvents()
+        {
+            var currUserId = _userManager.GetUserId(User);
+            var events = _context.AssetEvents.Where(a => a.EmployeeId == currUserId);
+            List<EventAsset> expiringEvents = new List<EventAsset>();
+            foreach (var ev in events)
+            {
+                double diff = (ev.DeadLine - ev.CreationDate).TotalDays;
+                if (diff < 10)
+                {
+                    expiringEvents.Add(ev);
+                }
+            }
+            return View(expiringEvents);
+        }
+
+        #endregion
+
+        #region GetExpiringEventsJson
+
+        public string GetExpiringEventsJson()
+        {
+            var currUserId = _userManager.GetUserId(User);
+            var events = _context.AssetEvents.Where(a => a.EmployeeId == currUserId);
+            List<EventAsset> expiringEvents = new List<EventAsset>();
+            foreach (var ev in events)
+            {
+                double diff = (ev.DeadLine - ev.CreationDate).TotalDays;
+                if (diff < 10)
+                {
+                    expiringEvents.Add(ev);
+                }
+            }
+            return JsonConvert.SerializeObject(expiringEvents);
+        }
+
+        #endregion
     }
 }

@@ -88,6 +88,8 @@ namespace inventory_accounting_system.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     CategoryId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    Periodicity = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -332,9 +334,12 @@ namespace inventory_accounting_system.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     AssetId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    DaysCountBeforeAlert = table.Column<int>(nullable: false),
                     DeadLine = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    EventId = table.Column<string>(nullable: true),
+                    Period = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -344,6 +349,18 @@ namespace inventory_accounting_system.Migrations
                         name: "FK_AssetEvents_Assets_AssetId",
                         column: x => x.AssetId,
                         principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetEvents_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetEvents_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -478,6 +495,16 @@ namespace inventory_accounting_system.Migrations
                 column: "AssetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssetEvents_EmployeeId",
+                table: "AssetEvents",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetEvents_EventId",
+                table: "AssetEvents",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AssetOnStorages_AssetId",
                 table: "AssetOnStorages",
                 column: "AssetId");
@@ -590,13 +617,13 @@ namespace inventory_accounting_system.Migrations
                 name: "AssetsMoveStories");
 
             migrationBuilder.DropTable(
-                name: "Events");
-
-            migrationBuilder.DropTable(
                 name: "OrderEmployees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Assets");

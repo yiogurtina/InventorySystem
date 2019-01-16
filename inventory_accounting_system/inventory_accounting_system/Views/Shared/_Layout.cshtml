@@ -94,22 +94,9 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-
-@*<script>
-        var officeId;
-        function GetOfficeId() {
-            officeId = document.getElementById('officeIdSelect').children[0].value;
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("Index", "Offices")',
-                data: {
-                    officeId: officeId
-                },
-                success: function (data) {
-                    console.log('success!');
-                }
-            });
-        }
-
-    </script>*@
+<script>
+    $.ajax({
+        type: 'PUT',
+        url: '@Url.Action("UpdateExpiredEvents", "Events")'
+    });
+</script>

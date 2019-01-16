@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace inventory_accounting_system.Controllers
 {
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Employee> _userManager;
 
-        public EventsController(ApplicationDbContext context)
+        public EventsController(ApplicationDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Events
@@ -48,13 +51,21 @@ namespace inventory_accounting_system.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
+            List<string> periods = new List<string>()
+            {
+                "Ежедневно",
+                "Еженедельно",
+                "Ежемесячно",
+                "Ежегодно"
+            };
+            ViewData["Periods"] = new SelectList(periods);
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,CreationDate,CategoryId,DaysCountBeforeAlert,AssetId,Id")] Event _event)
+        public async Task<IActionResult> Create([Bind("Title,CategoryId,Content,Id,Periodicity")] Event _event)
         {
             if (ModelState.IsValid)
             {
@@ -150,6 +161,28 @@ namespace inventory_accounting_system.Controllers
         private bool EventExists(string id)
         {
             return _context.Events.Any(e => e.Id == id);
+        }
+
+        public void UpdateExpiredEvents()
+        {
+            var currUserId = _userManager.GetUserId(User);
+
+            var events = _context.AssetEvents.Where(a => a.EmployeeId == currUserId);
+
+            if (events.Count() != 0)
+            {
+
+                foreach (var ev in events)
+                {
+                    if (ev.DeadLine > ev.CreationDate)
+                    {
+                        ev.DeadLine = DateTime.Now.AddDays(ev.Period);
+                        _context.Update(ev);
+                    }
+                }
+
+                _context.SaveChanges();
+            }
         }
     }
 }

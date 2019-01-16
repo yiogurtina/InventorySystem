@@ -180,16 +180,6 @@ namespace inventory_accounting_system.Controllers
 
             if (ModelState.IsValid)
             {
-                var _event = _context.Events.Find(eventId);
-
-                var assetEvent = new EventAsset()
-                {
-                    Title =  _event.Title,
-                    CreationDate = DateTime.Now,
-                    DeadLine = DateTime.Now,
-                    AssetId = asset.Id
-                };
-
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
                 
@@ -212,8 +202,43 @@ namespace inventory_accounting_system.Controllers
                 {
                     UploadDocument(asset);
                 }
+
+                if (eventId != null)
+                {
+                    int period;
+                    var _event = _context.Events.Find(eventId);
+                    switch (_event.Periodicity)
+                    {
+                        case "Ежедневно":
+                            period = 1;
+                            break;
+                        case "Еженедельно":
+                            period = 7;
+                            break;
+                        case "Ежемесячно":
+                            period = 31;
+                            break;
+                        case "Ежегодно":
+                            period = 365;
+                            break;
+                        default:
+                            period = 0;
+                            break;
+                    }
+                    var assetEvent = new EventAsset()
+                    {
+                        Title = _event.Title,
+                        Content = _event.Content,
+                        Period = period,
+                        CreationDate = DateTime.Now,
+                        DeadLine = DateTime.Now.AddDays(period),
+                        AssetId = asset.Id,
+                        EmployeeId = asset.EmployeeId
+                    };
+                    _context.Add(assetEvent);
+                }
+
                 _context.Add(asset);
-                _context.Add(assetEvent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

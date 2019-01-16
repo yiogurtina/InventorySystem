@@ -1,0 +1,29 @@
+﻿
+@model IEnumerable<EventAsset>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+            <th scope="col">Creation Date</th>
+            <th scope="col">Dead Line</th>
+        </tr>
+    </thead>
+    <tbody>
+    @{
+        if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="bg-danger">@item.Title</td>
+                    <td class="bg-danger">@item.Content</td>
+                    <td class="bg-danger">@item.CreationDate</td>
+                    <td class="bg-danger">@item.DeadLine</td>
+                </tr>
+            }
+        }
+        }
+    </tbody>
+</table>
