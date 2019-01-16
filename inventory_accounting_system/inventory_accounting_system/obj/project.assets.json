@@ -9790,7 +9790,6 @@
       "type": "package",
       "path": "system.diagnostics.diagnosticsource/4.4.1",
       "files": [
-        ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",

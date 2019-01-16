@@ -36,22 +36,44 @@ namespace inventory_accounting_system.Controllers
 
             #region Search office Manager
 
+            var userId = _userManager.GetUserId(User);
+            var userName = _userManager.GetUserName(User);
+
+            ViewData["UserId"] = userName;
+
             var officeIdEmployee = _context.Offices;
 
             List<string> managers = new List<string>();
             var userFromOff = _context.Users.Where(u => u.IsDelete == false);
             foreach (var usr in userFromOff)
             {
-                if (await _userManager.IsInRoleAsync(usr, "Manager"))
+                if (await _userManager.IsInRoleAsync(usr, "User") && usr.Id == userId) // нашли юзера который залогинен
                 {
-                    ViewData["EmployeeId"] = new SelectList(_context.Users.Where(u => u.Id == usr.Id), "Id", "Name");
+                    var userLoginNew = usr.Id;
+                    var userOfficeId = usr.OfficeId;
+
                     foreach (var office in officeIdEmployee)
                     {
-                        if (usr.OfficeId == office.Id)
+                        if (userOfficeId == office.Id)
                         {
-                            ViewData["OfficeId"] = new SelectList(_context.Offices.Where(o => o.Id == usr.OfficeId), "Id", "Title");
+                            foreach (var usrManager in userFromOff)
+                            {
+                                if (await _userManager.IsInRoleAsync(usrManager, "Manager") && usrManager.OfficeId == userOfficeId)
+                                {
+                                    ViewData["EmployeeId"] = new SelectList(_context.Users.Where(u => u.Id == usrManager.Id), "Id", "Name");
+                                    ViewData["OfficeId"] = new SelectList(_context.Offices.Where(o => o.Id == usr.OfficeId), "Id", "Title");
+
+                                    ViewData["EmployeeIdName"] = usrManager.Name;
+                                    ViewData["OfficeIdTitle"] = office.Title;
+                                }
+                            }
+                            
                         }
                     }
+
+                    
+                    
+
                 }
             }
 
