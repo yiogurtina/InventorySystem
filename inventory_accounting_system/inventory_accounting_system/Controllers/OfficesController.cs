@@ -49,7 +49,7 @@ namespace inventory_accounting_system.Controllers
             List<Employee> employees = _context.Users.Where(e => e.OfficeId == officeId).ToList();
 
             var categoryAssets = _context.Assets
-                //.Where(a => a.OfficeId == officeId) //Надо убрать комент после реализации привязки имущество-офиса. Для теста закрыл
+                .Where(a => a.OfficeId == officeId) 
                 .Include(a => a.Category)
                 .GroupBy(a => new { a.CategoryId, a.Category.Name })
                 .Select(g => new CategoryAssetCountViewModel

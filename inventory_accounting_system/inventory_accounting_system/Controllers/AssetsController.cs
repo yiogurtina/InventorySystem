@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using inventory_accounting_system.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace inventory_accounting_system.Controllers
 {
@@ -126,12 +127,21 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        public string GetCategoryEvents(string categoryId)
+        {
+            if (categoryId == null) throw new Exception();
+            var events = _context.Events.Where(e => e.CategoryId == categoryId);
+            
+            return JsonConvert.SerializeObject(events);
+        }
+
         #region Create
 
         public IActionResult Create()
         {
             string usrId =_userManager.GetUserId(User);
             var user = _context.Users.Find(usrId);
+
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
             if (User.IsInRole("Admin"))
@@ -147,7 +157,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset, string serialNum)
+        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset, string serialNum, string eventId)
         {
             var storage = _context.Storages.FirstOrDefault(s => s.IsMain);
             var categoryPrefix = _context.Categories
@@ -157,6 +167,16 @@ namespace inventory_accounting_system.Controllers
 
             if (ModelState.IsValid)
             {
+                var _event = _context.Events.Find(eventId);
+
+                var assetEvent = new EventAsset()
+                {
+                    Title =  _event.Title,
+                    CreationDate = DateTime.Now,
+                    DeadLine = DateTime.Now,
+                    AssetId = asset.Id
+                };
+
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
                 
@@ -180,6 +200,7 @@ namespace inventory_accounting_system.Controllers
                     UploadDocument(asset);
                 }
                 _context.Add(asset);
+                _context.Add(assetEvent);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

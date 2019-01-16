@@ -11,7 +11,7 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190112111124_init")]
+    [Migration("20190116032554_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,6 +214,44 @@ namespace inventory_accounting_system.Migrations
                     b.HasIndex("OfficeId");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.EventAsset", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int>("DaysCountBeforeAlert");
+
+                    b.Property<DateTime>("DeadLine");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("AssetEvents");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
@@ -438,6 +476,20 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany("Employees")
                         .HasForeignKey("OfficeId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Category", "Category")
+                        .WithMany("Events")
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.EventAsset", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany("AssetEvents")
+                        .HasForeignKey("AssetId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>

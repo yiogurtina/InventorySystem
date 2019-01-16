@@ -29,7 +29,7 @@ namespace inventory_accounting_system.Controllers
         public IActionResult Index()
         {
             if (_signInManager.IsSignedIn(User))
-            {
+            {                
                 return View();
             }
 
