@@ -11,7 +11,7 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190116032554_init")]
+    [Migration("20190116034033_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -268,6 +268,32 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("Offices");
                 });
 
+            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployee", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("DateFrom");
+
+                    b.Property<string>("EmployeeId");
+
+                    b.Property<string>("OfficeId");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("OfficeId");
+
+                    b.ToTable("OrderEmployees");
+                });
+
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
                 {
                     b.Property<string>("Id")
@@ -490,6 +516,17 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
                         .WithMany("AssetEvents")
                         .HasForeignKey("AssetId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployee", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("inventory_accounting_system.Models.Office", "Office")
+                        .WithMany()
+                        .HasForeignKey("OfficeId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>

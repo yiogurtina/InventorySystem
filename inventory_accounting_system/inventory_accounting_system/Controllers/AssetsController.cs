@@ -43,7 +43,7 @@ namespace inventory_accounting_system.Controllers
 
         #region Index
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index(Sorting sorting = Sorting.NameAsc)
+        public async Task<IActionResult> Index(string searchString, Sorting sorting = Sorting.NameAsc)
         {
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
 
@@ -99,7 +99,20 @@ namespace inventory_accounting_system.Controllers
 
             #endregion
 
+            if (searchString != null)
+            {
+                var assets1 = from m in _context.Assets
+                    select m;
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    assets1 = assets1.Where(s => s.Name.Contains(searchString));
+                }
+                return View(await assets1.ToListAsync());
+            }
+
             return View(await assets.ToListAsync());
+
         }
 
         #endregion
@@ -450,7 +463,6 @@ namespace inventory_accounting_system.Controllers
 
         public ActionResult Check(string[] assetId, string officeId)
         {
-            bool result = false;
             foreach (var item in assetId)
             {
                 var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
@@ -462,8 +474,7 @@ namespace inventory_accounting_system.Controllers
                     _context.SaveChanges();
                 }
             }
-            result = true;
-            return Json(data: new {success = result});
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion

@@ -26,7 +26,7 @@ namespace inventory_accounting_system.Controllers
 
         #region Index
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(_context.Categories.ToList());
         }

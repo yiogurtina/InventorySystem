@@ -224,6 +224,35 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderEmployees",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    DateFrom = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    OfficeId = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderEmployees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployees_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployees_Offices_OfficeId",
+                        column: x => x.OfficeId,
+                        principalTable: "Offices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Storages",
                 columns: table => new
                 {
@@ -519,6 +548,16 @@ namespace inventory_accounting_system.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployees_EmployeeId",
+                table: "OrderEmployees",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployees_OfficeId",
+                table: "OrderEmployees",
+                column: "OfficeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Storages_OwnerId",
                 table: "Storages",
                 column: "OwnerId");
@@ -552,6 +591,9 @@ namespace inventory_accounting_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "OrderEmployees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

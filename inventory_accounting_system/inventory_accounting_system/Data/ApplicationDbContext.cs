@@ -19,6 +19,7 @@ namespace inventory_accounting_system.Data
         public DbSet<AssetOnStorage> AssetOnStorages { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventAsset> AssetEvents { get; set; }
+        public DbSet<OrderEmployee> OrderEmployees { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
