@@ -53,7 +53,7 @@
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId"  href="#imageGallery-@item.Id" style="width: 100%">
+                <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
                     <p style="color: white">
                         от:
                         @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
@@ -83,11 +83,11 @@
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3 >@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
                 <div style="width: 100%">
-                    <h2 >@Html.DisplayFor(modelItem => item.Content)</h2>
+                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
                 </div> <br />
-                <p >@Html.DisplayFor(modelItem => item.DateFrom)</p>
+                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
             </div>
         </div>
     }
@@ -98,7 +98,9 @@
     function GetMessageId() {
         var messageId = document.getElementById('clickId');
         idMessage = messageId.getAttribute('data-id');
-        alert(idMessage);
+
+//        alert(idMessage);
+//        alert(idMessage);
 
         $.ajax({
             type: 'POST',
