@@ -76,32 +76,7 @@ namespace inventory_accounting_system.Controllers
             }
             #endregion
 
-            #region Test Count
-
-<<<<<<< refs/remotes/origin/develop
-            /*var orderMessage = _context.OrderEmployees
-                .Include(o => o.Employee)
-=======
-            var orderMessage = _context.OrderEmployees
-                .Include(o => o.EmployeeFrom)
->>>>>>> #82 Started working on the text
-                .Include(o => o.Office)
-                .GroupBy(a => new { a.EmployeeFromId, a.Office.Title })
-                .Select(g => new OrderMessageViewModel
-                {
-                    MessageCount = g.Count()
-                }).ToList();
-
-            OrderEmployeeVM model = new OrderEmployeeVM()
-            {
-                OrderMessageViewModels = orderMessage
-            };
-
-            ViewData["MessageCount"] = model;
-*/
-
-            #endregion
-
+            
             var applicationDbContextAll = _context.OrderEmployees
                 .Include(o => o.EmployeeFrom)
                 .Include(o => o.EmployeeToId)

@@ -1,13 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-<<<<<<< refs/remotes/origin/develop
-      "C:\\Users\\Joni\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Joni\\.nuget\\packages",
-=======
       "C:\\Users\\evgen\\.dotnet\\store\\|arch|\\|tfm|",
       "C:\\Users\\evgen\\.nuget\\packages",
->>>>>>> #82 Started working on the text
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ]
   }

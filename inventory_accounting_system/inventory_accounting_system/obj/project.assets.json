@@ -5240,6 +5240,7 @@
       "type": "package",
       "path": "castle.core/4.3.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "ASL - Apache Software Foundation License.txt",
         "CHANGELOG.md",
@@ -5284,6 +5285,7 @@
       "type": "package",
       "path": "mailkit/2.1.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "lib/monoandroid/MailKit.dll",
         "lib/monoandroid/MailKit.xml",
@@ -5570,11 +5572,7 @@
       ]
     },
     "Microsoft.AspNetCore.Authorization/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "6gRS5BwCiJt/SVYBpb6y+1EQwheojFREDbyQJRlrtejGmdDfqQ3OVyatv5yn6UWJZHbzl3PldEVo+r9g2C4I0A==",
-=======
       "sha512": "5QnQrKNCiMEvbQgvd/hMS1wEBgfTSqQfl1hEcgVhYIVjz+vieOlND9tfqEDxiSe+Gm+IcFEZAMSxZApmiE7QwA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.authorization/2.0.4",
       "files": [
@@ -5654,11 +5652,7 @@
       ]
     },
     "Microsoft.AspNetCore.Cryptography.Internal/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "Wd29RiTXlmtw3HcEwIyAlBdQiz27bki50hUUBF2UCQqg0BPm4I+yqBAWHV1VxMpyt3ZvcIRlua8/xXJhMtwwdg==",
-=======
       "sha512": "NszmqeN9q7Akw91M4OnOSKV0T86B/hDVzzILoiH+8B1gpf6H/jrvKLZf8a+pQRYvBr1dK6x6DfofLqwd/Pg8kg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.cryptography.internal/2.0.3",
       "files": [
@@ -5684,11 +5678,7 @@
       ]
     },
     "Microsoft.AspNetCore.DataProtection/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "cIGo7S5dlVIZ71yG2rtfcWwrLG/KG4G7BjBtM6JQu3Zmzs0acNIzAoWI07mMVA8CevKAMqZr1S8UEBP9NoiVfA==",
-=======
       "sha512": "zhToyceCoNG5qyY91Y4PrQ3fYyhay0hJRiUWcvGeRLg8mLvDnViWT8VK1f0bnuzfsTu1UQqiEP9zqpXLsu07/Q==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.dataprotection/2.0.3",
       "files": [
@@ -5701,11 +5691,7 @@
       ]
     },
     "Microsoft.AspNetCore.DataProtection.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "ZKY1DbrITjONdLpU/15zLGR2786SbBtuLTKBO80OlwC6MsL3+XtWAUt8rf9H9oVQdB+qLYkATZ1VVmSxmx4grg==",
-=======
       "sha512": "KkLb+S3DzEMqNJosZ8He8S3uo/wxVjGlC2wDIzZ9/GY4T0+AA+D5TfSi/3g9KwABtrGtlDzCqkfcYBtx7b5xZw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.dataprotection.abstractions/2.0.3",
       "files": [
@@ -5757,11 +5743,7 @@
       ]
     },
     "Microsoft.AspNetCore.Diagnostics.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "DaQv1RR+Imc1CSOHBEO8/Z0YsLI3RURnbLSDUqN/rN7QqGACcETA415QmBx1AS7JU39VQ/I/igZHr+8BizP/0w==",
-=======
       "sha512": "jjrE6Tynt5DEbVQOaA2vis2LanzN2tHrexv/hSBjnvCrnZCIaclDIabAZnajpTMgOPD1nTCymWDuF4PVtj48WA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.diagnostics.abstractions/2.0.3",
       "files": [
@@ -5787,11 +5769,7 @@
       ]
     },
     "Microsoft.AspNetCore.Hosting/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "AhwzP7WABdt0+cbWD15wp2/nCQ7QhhcNkWil+MmSc5Y3AhVUWrwP4CJt3RfysfN0zVL1NIjLt0ErGhYo0lU4eg==",
-=======
       "sha512": "wvjHT6kcjbF5mxV2UAwISa0C+SsNOifvbqBxdZi4TEzpEWj1OzpX17y0oiQVOh/K1LGBtCQ5a9qAXv4Y1AzpOg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.hosting/2.0.3",
       "files": [
@@ -5804,11 +5782,7 @@
       ]
     },
     "Microsoft.AspNetCore.Hosting.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "kANAaNQfF4m+llKfv/cxVZVzhTESOrFjKeS6hKHj8oBPD4kymVn254XsekKx6Mkw4UfiTKh45CcKzdEScFyFlw==",
-=======
       "sha512": "l9OVHfiRuChmHluTIbOgr3M183EOWieuGXeMyYLo52XEHMR69P8rivANfP0o6dmMsN/AFvYlvdwn0uR8wU1ByA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.hosting.abstractions/2.0.3",
       "files": [
@@ -5821,11 +5795,7 @@
       ]
     },
     "Microsoft.AspNetCore.Hosting.Server.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "sgm+OGvsDrr7NC3bE2k2r92iqAoNRV7rJYv42J4CsDFINllDMzksPkqHmlevx0FFsadIt/5XEx4J44v4CtPdfA==",
-=======
       "sha512": "kqlRnVZivP+hsRx2KQ7iyko7uYd3kyqi66+AOKIikw96AtdivIa+AlmNi7m3jhHydexDU7D1NEfnkXvRaUkfDA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.hosting.server.abstractions/2.0.3",
       "files": [
@@ -5851,11 +5821,7 @@
       ]
     },
     "Microsoft.AspNetCore.Http/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "0vdCvmrBQJEv/jxQwm46fupEYYKCikhoZobKkfa8BA2e8KI0l/5ohFIeF9MHEDfdubDkxiQofAjIktaM9E6UhQ==",
-=======
       "sha512": "Cy755AwTx2RD8ld5Ro9sv48JgsrwFH886iU4KT5hctbdz3EZ9aqKO/LOgCnJylIx3IZz7mGBYGWp83VmU7oayQ==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.http/2.0.3",
       "files": [
@@ -5868,11 +5834,7 @@
       ]
     },
     "Microsoft.AspNetCore.Http.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "4lfcSmPT4BkCLyouRZR5eMOptT7Zd4s7EJwlPiYgKDa+T0LguAdPnvgfII6ObmQsw2WMi/8Be9naJQ3XeaBfEw==",
-=======
       "sha512": "TnAQQpkSvvO7BQut5mHPV8nn6DBq02RTN4kojgK6GuXNNF5EOSDZtoO7lSsyv6k8LpOjL/MvE0/Z/LZs/rOsXA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.http.abstractions/2.0.3",
       "files": [
@@ -5885,11 +5847,7 @@
       ]
     },
     "Microsoft.AspNetCore.Http.Extensions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "3ITaP3UbwdCp0y8B/WiI9X9jIhzfu0Y1Uyve6DLJP65uHDRuKrNqusGBkLk0w/EI0wMxMYkvTO5nPOm2ozOe1A==",
-=======
       "sha512": "Gp3XV/88yX3Ydmp84kWmaheRz7sTB0HfUBb0kmXlU70gaIqvFKreMSpof1oBsdmtE1X7BnQE7ko2dhDGQddyvg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.http.extensions/2.0.3",
       "files": [
@@ -5902,11 +5860,7 @@
       ]
     },
     "Microsoft.AspNetCore.Http.Features/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "6yIGNR9pe6bTuFVSAtoS3GlnQ+tovDHQIUuqFw9/EKAMsYDmNsFb8wFRRH74ThVj9WYNQyyblW4awrrwWVywJw==",
-=======
       "sha512": "lXzqrv6QfwV7d6GCIcx7ooL7qx0AghLnKp+zcV61vJKPnPB8ics4zWBERY3mun3ae1WPCXEJ7kPTVVr9GOC9Gg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.http.features/2.0.3",
       "files": [
@@ -6023,11 +5977,7 @@
       ]
     },
     "Microsoft.AspNetCore.Mvc.Abstractions/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "l1lxp85ITJoTN0ZV/YXiex7V/3OFKjCm5D86wLi/rXONqBi8CVLkLAKGuTyxzkbJAyT4ozWQXkAj2kz/gogLyA==",
-=======
       "sha512": "Kp47R2Q+FSh0c3JtnuXhUMNuekdaTtqIX7bm02P7pK5gPdAa196R4ljOO4RzGttkD9feCGepQxFxZ6Zg8d9ipQ==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.mvc.abstractions/2.0.4",
       "files": [
@@ -6040,11 +5990,7 @@
       ]
     },
     "Microsoft.AspNetCore.Mvc.ApiExplorer/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "u/5diYtEXVBgKixaJA2NBgKnqaBRR7Wj3zCpgvTM2KSety9gUDT5xNJlo1C6fHMkgeMGjFYwGFlJBFGL1Enklw==",
-=======
       "sha512": "eT95TUajTLRFXFPmNrSa/BeDXmfi7TDVjpEGMG/tU8fIAZtbwf8YrrwBmBRt3rRRbjeGfrLLufUSZ+rNThOoqw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.mvc.apiexplorer/2.0.4",
       "files": [
@@ -6057,11 +6003,7 @@
       ]
     },
     "Microsoft.AspNetCore.Mvc.Core/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "hfs2m/SdHhtAJnh9/34Bo2ZQhV6t7wddhhzK0i1nwzGiXRFY8GX7XkMOGbm9rhvE0R0S052qsSXAWhRoMvXzcA==",
-=======
       "sha512": "DZhoju70HLHywVqqmnrLdcw92c/hA+DnseJseJsvr+wLFFECFHtEIs3JiaF8KJy1RyDFbSoEePTl/XmrvwtA4A==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.mvc.core/2.0.4",
       "files": [
@@ -6087,11 +6029,7 @@
       ]
     },
     "Microsoft.AspNetCore.Mvc.DataAnnotations/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "sgj7oEounP2kxPjAVHxmbGKwiFriwHchr9AxI+6yRL/DF5o48SCaICcrE0o3umAiurwOraWJgeiTlFoiZUwjKw==",
-=======
       "sha512": "xMMs/1lsRJgX/VsSITvBG8h1gnP8NTE0xhM8if6qIcJiVn8AstFT9GJlWEyyFcbT0iUrMEuqyEKckiDrUQkpFw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.mvc.dataannotations/2.0.4",
       "files": [
@@ -6104,11 +6042,7 @@
       ]
     },
     "Microsoft.AspNetCore.Mvc.Formatters.Json/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "uRVI6bOSGbBwa6vVK8bASyd/cDfpmE6/0EIpZ7McjbwAHkMnFJQ3t5V8PQbJTwdey2pHAuvZccbsQXNL99u94w==",
-=======
       "sha512": "6Q9cLPiW8UB124Hi7AkWjE585vw5PSJRLdckHpl3DkhJC3PHa1hLHHsH+OKeC/mn/v1j4jNKAelRF147D0WwUA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.mvc.formatters.json/2.0.4",
       "files": [
@@ -6217,11 +6151,7 @@
       ]
     },
     "Microsoft.AspNetCore.Mvc.ViewFeatures/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "h3igihn7FU8lPVtEzIzGgFJxJ58tHEg6Dcsz03phr9epi75SU+49RFidD3J1VsAG0PEeU/dPI9IKwvaTwx1Vqg==",
-=======
       "sha512": "mAIZBTXtYck/rLBq5upCfYZnYXYvez9Nn9Iowds8hNwx9QMg4351Rfr0TvYQRGBFwsGgfkSqtkHVe/gAwY/Ngg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.mvc.viewfeatures/2.0.4",
       "files": [
@@ -6355,11 +6285,7 @@
       ]
     },
     "Microsoft.AspNetCore.Routing/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "k2MsNmcD2ZyFrFaw73Fb+m1cjT1rzdSEUS/x8CiP8SegttBZW+qrMbk6lkLbDrEf9fdKoGY1E/1Z07okZ7XkuQ==",
-=======
       "sha512": "tk3RFkmh2ElGoM9x1je6XTW9PvdLnnXSqZgwNGwcxZG5sMa6UOTYyWUCWWqLOlf57cepac3kWyN0OKYi54DOsg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.routing/2.0.3",
       "files": [
@@ -6372,11 +6298,7 @@
       ]
     },
     "Microsoft.AspNetCore.Routing.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "GYafy5/u6DhorEMq8Dqq7AP2586MZWATOrqpP+8ARHkBDTeIvtMNOeGsgBPUsjIO+5QNT5PlOWQOgEqGGtC38w==",
-=======
       "sha512": "7c950VKIiIOOezIFSA+7w5HhhGtDC8XeJNagi0J2ofw3Mn+9iwiue66YlDtGaMnKZKqizqWKfx/hVPW12/1NKw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.routing.abstractions/2.0.3",
       "files": [
@@ -6415,11 +6337,7 @@
       ]
     },
     "Microsoft.AspNetCore.Server.Kestrel/2.0.4": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "uNtyTJcECwgATH4sFVfGQcoHAte9qNIa5lNTG9yt5hiKEDoonwfY4sOKrQ1NJf30dE4M0I4urcXFuritDae1Hw==",
-=======
       "sha512": "3jaFVm3R7unVkiIKXkDGyX8rfUhaoZ1JjELqKuiaXG4Bj7VOUXGK82DWpvqYVepzCMRlauzUiVr+VmOjyXxolA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.server.kestrel/2.0.4",
       "files": [
@@ -6510,11 +6428,7 @@
       ]
     },
     "Microsoft.AspNetCore.StaticFiles/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "eH09fkkKb+qqF/hGmPm6hNk7MSQnkxo/vH6B5RqIgwoZJbsH/TLfyUDAsQjw09GXuOj2ob4ZJ6zMdyeD1Tfwqg==",
-=======
       "sha512": "TA93jNQWrEgAuy34nz6TPveJ2NvdYHo6LVkUi06w0XccxrCCLL0hkkdUDKgDhaebds5QcO61ycCxVvJevSgWtQ==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.staticfiles/2.0.3",
       "files": [
@@ -6540,11 +6454,7 @@
       ]
     },
     "Microsoft.AspNetCore.WebUtilities/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "uyGklpwBLS/SM1TAr79l2Y3scaho04YkOob9OvQKwAxZ9DRFFuBioLcRykDHqWCIZgjf5KxmTDoPfX44XAWKlg==",
-=======
       "sha512": "F8IOgtS9coprPzgDwZG6a4IPXTc2454vN/HFpYZnkuGbPGOxT2ygfrtlwkE+4omrzhtGOIjpuMJF+peIMuTUTQ==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.aspnetcore.webutilities/2.0.3",
       "files": [
@@ -6594,6 +6504,7 @@
       "sha512": "HS3iRWZKcUw/8eZ/08GXKY2Bn7xNzQPzf8gRPHGSowX7u7XXu9i9YEaBeBNKUXWfI7qjvT2zXtLUvbN0hds8vg==",
       "type": "package",
       "path": "microsoft.codeanalysis.analyzers/1.1.0",
+      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         "ThirdPartyNotices.rtf",
@@ -6749,6 +6660,7 @@
       "type": "package",
       "path": "microsoft.data.edm/5.8.2",
       "files": [
+        ".nupkg.metadata",
         "lib/net40/Microsoft.Data.Edm.dll",
         "lib/net40/Microsoft.Data.Edm.xml",
         "lib/net40/de/Microsoft.Data.Edm.resources.dll",
@@ -6813,6 +6725,7 @@
       "type": "package",
       "path": "microsoft.data.odata/5.8.2",
       "files": [
+        ".nupkg.metadata",
         "lib/net40/Microsoft.Data.OData.dll",
         "lib/net40/Microsoft.Data.OData.xml",
         "lib/net40/de/Microsoft.Data.OData.resources.dll",
@@ -7029,11 +6942,7 @@
       ]
     },
     "Microsoft.Extensions.Caching.Abstractions/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "VEOkzQZ+pQcE6kBtbQ69m5hIBGyyljQFEdJn7Qk8caOFee4uG39T6ObF7JAPngF9pZJuYmpzuXxjESOUbgMWPw==",
-=======
       "sha512": "+MfE9PGzyS9PT72JYwFWZMAOgQ2SIqj6oezFiu16bxSbVdTQpzMnF3KaHZ83zoYnRQisq5DB4OT0Ejrc1g4eSw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.caching.abstractions/2.0.2",
       "files": [
@@ -7046,11 +6955,7 @@
       ]
     },
     "Microsoft.Extensions.Caching.Memory/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "IbqAtoZO40+WyZU5yPdVduzhiWu+xpfchMZrOhajkW0qW8BpBN4kDDoe8mkZDZ41Z/jsmsR8kdL4+HpEGEqeYg==",
-=======
       "sha512": "iJEGKtlqVXwbu2+PMwk3BcBF660flAOwcuFxhMV12wMT4G+eqU3ctqWruC0nVfhWz8QfkXMQPrLr0P4PwiUfHg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.caching.memory/2.0.2",
       "files": [
@@ -7089,11 +6994,7 @@
       ]
     },
     "Microsoft.Extensions.Configuration/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "Pq3lwQQ2zB/meGk7D0kf2n6i/N/+/+0OwgyovGzfEAhsM7XWf24dP7Q2PmAJPKOXhQA++gzvQqYUhA19JuwW8g==",
-=======
       "sha512": "QFSbXvApLNX2fi47tLBkQnMf9gy4YO995Z0202F0s1Epz3HV7EkXWaE6EsreMqo8RIEMZe/7mFzR+IHI8YIM1Q==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.configuration/2.0.2",
       "files": [
@@ -7106,11 +7007,7 @@
       ]
     },
     "Microsoft.Extensions.Configuration.Abstractions/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "2b4XZRT3fHB9fkcfQS9/S4ClYcYYx2FGVReTurtT1mhV/Kg/OtWIYx4Saar2LHlCdz90OqM/AGjDSfzsbOzFsQ==",
-=======
       "sha512": "NG7WmFlt0gQhTF4do3PIt+RYooa2WK8jxCSso4dtcRQmXbvxV+/RrZ2s4xC4HnVx4WLwXpH3t/nM9gGTT4juDA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.configuration.abstractions/2.0.2",
       "files": [
@@ -7162,11 +7059,7 @@
       ]
     },
     "Microsoft.Extensions.Configuration.EnvironmentVariables/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "E2aL3FcuiAR1/3sFMFIMzpkYh7lsUaYnq7tUoNF9QLF6T40FkZUpY2DZtJjKunNbbMtPkHx2RNemmfcPfXcxbQ==",
-=======
       "sha512": "j7qa7Q9wkaDMm3X6z0Zxia0ZPGchTkO4P8Zo6SZRo0EaS9r9+vckAbQnYZTdLY4j3VLRCfYQvqLTGqcOVkWQtA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.configuration.environmentvariables/2.0.2",
       "files": [
@@ -7179,11 +7072,7 @@
       ]
     },
     "Microsoft.Extensions.Configuration.FileExtensions/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "KaMJOx3SKUGlAijiP4zNgC74gS+pYijD1z1sVTqd4NpA12RDlLkXbOHC9h4L0NO72J8qQw595SDpd+dQ2lusyQ==",
-=======
       "sha512": "9uB1yjxRrkPQNQpKM6zacPW5ZFWtho1cRZoeD6YbxF09FAjC4rN9IITG9AZBAmosJunrX2oYtb3HN2MaCHfcig==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.configuration.fileextensions/2.0.2",
       "files": [
@@ -7209,11 +7098,7 @@
       ]
     },
     "Microsoft.Extensions.Configuration.Json/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "rSxkoyL5tSWrJ9ka2Pf+1FlgsnjcBIQu+x+EMQUrTdGbQXi4Tso7oKfAdnW63GKvzSkABZqWKe2epMS+TSMlaQ==",
-=======
       "sha512": "3JkSePC8IRgwUkC4iU/466MCH8BI0Ipy4VufF0O/Cwre7AcrIttqT6LtvMukbG8zGwwvJgSxMkC7hTbOtg7ohg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.configuration.json/2.0.2",
       "files": [
@@ -7414,11 +7299,7 @@
       ]
     },
     "Microsoft.Extensions.Localization/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "S4IsLFdEnv59wIlQiuZO9FrnFXleqwX8uXrdsdt/66tePZHgDBhXF035y35AfmYmY/gFVQdb/xPTUKvCFSMtlw==",
-=======
       "sha512": "bXKiEIEj4M8Py8mvIjvTawTvvuJdnhzQsbuFvaQu2sXGY/FjhYJmkhkvP7Jlf8NJgIVJUQsXSZpEMRQ2d3DjPw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.localization/2.0.3",
       "files": [
@@ -7431,11 +7312,7 @@
       ]
     },
     "Microsoft.Extensions.Localization.Abstractions/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "4a11vSounRIm77lSP34rQ0rSROx1mJc6IFY5sQ0wKUKxKrdGY7L7eSotxJ/d2wsQyI/bJAM6jwoHOPQ6aYWsRA==",
-=======
       "sha512": "gmyp//y8X58081LfdWTd9J/jgOED7HvumbxaTdp8zSoW5zaNdcPD+RglAWTOj9r8p7dqjVj9wSjcjSEYywUDbQ==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.localization.abstractions/2.0.3",
       "files": [
@@ -7448,11 +7325,7 @@
       ]
     },
     "Microsoft.Extensions.Logging/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "kka7M7HmqXr9wWP8bMTGQfg6kVCPVlwHXniHhEHVrSGVEmWHxnyPCOeCyvhrz9MDcX16WMJq+uEvob+k3+dxDQ==",
-=======
       "sha512": "mfMYF9jTU4K8cKW/UDdnKBvNHeOBI5cNO08+wZpKRI8kqSIlHokcdNERnaVQrEHGKkV4VRVnh08qBNbwbv6ILw==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.logging/2.0.2",
       "files": [
@@ -7465,11 +7338,7 @@
       ]
     },
     "Microsoft.Extensions.Logging.Abstractions/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "72iP9bY5OhMxZbaqP76T6Egq7+/g+yDEm9FL8bc9yB3nVTCbtiSHkIRRdhMXxXKxxtmtzPHe4iewdRKA9uSZYQ==",
-=======
       "sha512": "cu1lJnvs0SgkUcdsehSv6KVSy7hYp9soicmWKJL4jfGlpP4LmZxipSCTMumlMDZ44/XQnxFSUsPPRExmc+rXqg==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.logging.abstractions/2.0.2",
       "files": [
@@ -7573,11 +7442,7 @@
       ]
     },
     "Microsoft.Extensions.Options/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "UwoGhA9IST5AqeVz6Ig3fwAmVCHkVPU0Mv+gBpYWLu9J1UM4QSqLGTcEZaEuhGZ9HCkS5BC2mHCMv9g+oIvntg==",
-=======
       "sha512": "VNLQ07aSNstSDYVY4PXKzMtoDCy3N9ee7Yy4ejG3CVD3iGNmhLPvFd3HAcGH7IFQECm9RBX1n2574Mvmm8CLsQ==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.options/2.0.2",
       "files": [
@@ -7607,6 +7472,7 @@
       "type": "package",
       "path": "microsoft.extensions.platformabstractions/1.1.0",
       "files": [
+        ".nupkg.metadata",
         "lib/net451/Microsoft.Extensions.PlatformAbstractions.dll",
         "lib/net451/Microsoft.Extensions.PlatformAbstractions.xml",
         "lib/netstandard1.3/Microsoft.Extensions.PlatformAbstractions.dll",
@@ -7629,11 +7495,7 @@
       ]
     },
     "Microsoft.Extensions.WebEncoders/2.0.2": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "NyjO8JyBTlavkJmwaSc3YiG2W4xYAgqE5GWpz1UP8ro0cJ6qTpriB+VLL5HSQarAO7fZ7M8kPf4TLx8jm1aU7Q==",
-=======
       "sha512": "Quj+fmsIBIeUSrWrfmvYXv5NiKmos2fX88jFSoOV8HfJMXO0ceJeCkgm23cSz/KraxyIvE7X9SleBUBwotZfHA==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.extensions.webencoders/2.0.2",
       "files": [
@@ -7942,11 +7804,7 @@
       ]
     },
     "Microsoft.Net.Http.Headers/2.0.3": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "R1MuitB3uKhWZFWU+zMmS43hfZ0M81KXGsXi41oa974juImdT46g+G5R24YT40E05MbZ/ExaBTj3mTMCA/GIfA==",
-=======
       "sha512": "9Zq3d4amBFnfpI9b5eqiBABjlomhVUZ16ReJnn2tYEWoBklyFGQxKmRBolGrzNmM5TsHWEsJ9yRVIzykzAVqow==",
->>>>>>> #82 Started working on the text
       "type": "package",
       "path": "microsoft.net.http.headers/2.0.3",
       "files": [
@@ -8589,6 +8447,7 @@
       "type": "package",
       "path": "mimekit/2.1.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "lib/monoandroid/BouncyCastle.dll",
         "lib/monoandroid/MimeKit.dll",
@@ -8619,6 +8478,7 @@
       "type": "package",
       "path": "moq/4.10.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "lib/net45/Moq.dll",
         "lib/net45/Moq.pdb",
@@ -8824,6 +8684,7 @@
       "type": "package",
       "path": "portable.bouncycastle/1.8.2",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "lib/net40/BouncyCastle.Crypto.dll",
         "lib/net40/BouncyCastle.Crypto.xml",
@@ -8864,6 +8725,7 @@
       "type": "package",
       "path": "runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -8876,6 +8738,7 @@
       "type": "package",
       "path": "runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -8888,6 +8751,7 @@
       "type": "package",
       "path": "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -8913,6 +8777,7 @@
       "type": "package",
       "path": "runtime.native.system.data.sqlclient.sni/4.4.0",
       "files": [
+        ".nupkg.metadata",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
@@ -8978,6 +8843,7 @@
       "type": "package",
       "path": "runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/_._",
@@ -8990,6 +8856,7 @@
       "type": "package",
       "path": "runtime.opensuse.13.2-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.opensuse.13.2-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9002,6 +8869,7 @@
       "type": "package",
       "path": "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.opensuse.42.1-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9027,6 +8895,7 @@
       "type": "package",
       "path": "runtime.osx.10.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.osx.10.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9039,6 +8908,7 @@
       "type": "package",
       "path": "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.rhel.7-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9051,6 +8921,7 @@
       "type": "package",
       "path": "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9063,6 +8934,7 @@
       "type": "package",
       "path": "runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9075,6 +8947,7 @@
       "type": "package",
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -9087,6 +8960,7 @@
       "type": "package",
       "path": "runtime.win-arm64.runtime.native.system.data.sqlclient.sni/4.4.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
@@ -9101,6 +8975,7 @@
       "type": "package",
       "path": "runtime.win-x64.runtime.native.system.data.sqlclient.sni/4.4.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
@@ -9115,6 +8990,7 @@
       "type": "package",
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
@@ -9517,6 +9393,7 @@
       "type": "package",
       "path": "system.collections.nongeneric/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -9554,6 +9431,7 @@
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -9736,6 +9614,7 @@
       "type": "package",
       "path": "system.componentmodel.primitives/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -9773,6 +9652,7 @@
       "type": "package",
       "path": "system.componentmodel.typeconverter/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -9824,6 +9704,7 @@
       "type": "package",
       "path": "system.composition/1.0.31",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "system.composition.1.0.31.nupkg.sha512",
@@ -9835,6 +9716,7 @@
       "type": "package",
       "path": "system.composition.attributedmodel/1.0.31",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/System.Composition.AttributedModel.dll",
@@ -9848,6 +9730,7 @@
       "type": "package",
       "path": "system.composition.convention/1.0.31",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/System.Composition.Convention.dll",
@@ -9861,6 +9744,7 @@
       "type": "package",
       "path": "system.composition.hosting/1.0.31",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/System.Composition.Hosting.dll",
@@ -9874,6 +9758,7 @@
       "type": "package",
       "path": "system.composition.runtime/1.0.31",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/System.Composition.Runtime.dll",
@@ -9887,6 +9772,7 @@
       "type": "package",
       "path": "system.composition.typedparts/1.0.31",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/System.Composition.TypedParts.dll",
@@ -9937,10 +9823,7 @@
       "type": "package",
       "path": "system.data.common/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -10058,6 +9941,7 @@
       "type": "package",
       "path": "system.diagnostics.contracts/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -10179,10 +10063,12 @@
       ]
     },
     "System.Diagnostics.DiagnosticSource/4.4.1": {
-      "sha512": "U/KcC19fyLsPN1GLmeU2zQq15MMVcPwMOYPADVo1+WIoJpvMHxrzvl+BLLZwTEZSneGwaPFZ0aWr0nJ7B7LSdA==",
+      "sha512": "DfmSEfJLAfs+iVaQhxUJEh57N2ubV+nd00Xsob2tnC+XwasndKazMjhDYdYMW7UZ6tmyBTxuR5uEx0ov4AaVsQ==",
       "type": "package",
       "path": "system.diagnostics.diagnosticsource/4.4.1",
       "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net45/System.Diagnostics.DiagnosticSource.dll",
@@ -10204,7 +10090,7 @@
       ]
     },
     "System.Diagnostics.FileVersionInfo/4.3.0": {
-      "sha512": "6WVi7gArhxRiC+3qI5V2mFe1gHENj/F7xT5PQiy/lI/RsxXeivrt09WF0huwSQK2ubnmyyRFeA9z3w743/w32A==",
+      "sha512": "omCF64wzQ3Q2CeIqkD6lmmxeMZtGHUmzgFMPjfVaOsyqpR66p/JaZzManMw1s33osoAb5gqpncsjie67+yUPHQ==",
       "type": "package",
       "path": "system.diagnostics.fileversioninfo/4.3.0",
       "files": [
@@ -10249,6 +10135,7 @@
       "type": "package",
       "path": "system.diagnostics.stacktrace/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -11157,10 +11044,7 @@
       "type": "package",
       "path": "system.linq.queryable/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/monoandroid10/_._",
@@ -11341,6 +11225,7 @@
       "type": "package",
       "path": "system.net.networkinformation/4.3.0",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
@@ -11493,6 +11378,7 @@
       "type": "package",
       "path": "system.net.security/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -12035,6 +11921,7 @@
       "type": "package",
       "path": "system.reflection.typeextensions/4.5.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -12248,6 +12135,7 @@
       "type": "package",
       "path": "system.runtime.compilerservices.unsafe/4.5.0",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -12573,6 +12461,7 @@
       "type": "package",
       "path": "system.runtime.serialization.formatters/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -12658,6 +12547,7 @@
       "type": "package",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -12807,10 +12697,7 @@
       "type": "package",
       "path": "system.security.cryptography.algorithms/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -12908,10 +12795,7 @@
       "type": "package",
       "path": "system.security.cryptography.encoding/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -12966,10 +12850,7 @@
       "type": "package",
       "path": "system.security.cryptography.primitives/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -12997,10 +12878,7 @@
       "type": "package",
       "path": "system.security.cryptography.x509certificates/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -13055,10 +12933,7 @@
       "type": "package",
       "path": "system.security.cryptography.xml/4.4.2",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -13177,6 +13052,7 @@
       "type": "package",
       "path": "system.spatial/5.8.2",
       "files": [
+        ".nupkg.metadata",
         "lib/net40/System.Spatial.dll",
         "lib/net40/System.Spatial.xml",
         "lib/net40/de/System.Spatial.resources.dll",
@@ -13595,10 +13471,7 @@
       "type": "package",
       "path": "system.threading.overlapped/4.3.0",
       "files": [
-<<<<<<< refs/remotes/origin/develop
-=======
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/net46/System.Threading.Overlapped.dll",
@@ -13690,10 +13563,11 @@
       ]
     },
     "System.Threading.Tasks.Extensions/4.5.1": {
-      "sha512": "2BJKAh+K6CwICk7OD4PJ4wURNv20xJ0R+Rgd/rC7InSsTiIDSnnXd2QHyttQ0/rOkRKFJ8R7BZZMpxGyM/Aw9A==",
+      "sha512": "rckdhLJtzQ3EI+0BGuq7dUVtCSnerqAoAmL3S6oMRZ4VMZTL3Rq9DS8IDW57c6PYVebA4O0NbSA1BDvyE18UMA==",
       "type": "package",
       "path": "system.threading.tasks.extensions/4.5.1",
       "files": [
+        ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -13916,18 +13790,11 @@
       ]
     },
     "System.ValueTuple/4.4.0": {
-<<<<<<< refs/remotes/origin/develop
-      "sha512": "6FvjECwwsvwtdnm2uD91MlFEgId6C2SWsdZk23gFpynHQ9x5ruqjsfEadb0VNzpkEHDQ6cq31CXUv3ouT09EHA==",
-      "type": "package",
-      "path": "system.valuetuple/4.4.0",
-      "files": [
-=======
       "sha512": "hBl0/yPqtMnwrsqCYSxYr4Abvo9hSVYmf+55EniEMyCEPJRM1VGr8o+kHeHJdEqgr6wrQMhZ7HowYmejruXStg==",
       "type": "package",
       "path": "system.valuetuple/4.4.0",
       "files": [
         ".nupkg.metadata",
->>>>>>> #82 Started working on the text
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
@@ -14112,6 +13979,7 @@
       "type": "package",
       "path": "system.xml.xmldocument/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -14219,6 +14087,7 @@
       "type": "package",
       "path": "system.xml.xpath/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -14256,6 +14125,7 @@
       "type": "package",
       "path": "system.xml.xpath.xdocument/4.3.0",
       "files": [
+        ".nupkg.metadata",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -14324,39 +14194,23 @@
     ]
   },
   "packageFolders": {
-<<<<<<< refs/remotes/origin/develop
-    "C:\\Users\\Joni\\.nuget\\packages\\": {},
-=======
     "C:\\Users\\evgen\\.nuget\\packages\\": {},
->>>>>>> #82 Started working on the text
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< refs/remotes/origin/develop
-      "projectUniqueName": "C:\\home\\Git_work\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
-      "projectName": "inventory_accounting_system",
-      "projectPath": "C:\\home\\Git_work\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
-      "packagesPath": "C:\\Users\\Joni\\.nuget\\packages\\",
-      "outputPath": "C:\\home\\Git_work\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\",
-=======
       "projectUniqueName": "F:\\GitFolderHome\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
       "projectName": "inventory_accounting_system",
       "projectPath": "F:\\GitFolderHome\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system.csproj",
       "packagesPath": "C:\\Users\\evgen\\.nuget\\packages\\",
       "outputPath": "F:\\GitFolderHome\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\",
->>>>>>> #82 Started working on the text
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-<<<<<<< refs/remotes/origin/develop
-        "C:\\Users\\Joni\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
         "C:\\Users\\evgen\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> #82 Started working on the text
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14394,7 +14248,6 @@
             "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.0.0, )",
             "autoReferenced": true
@@ -14416,5 +14269,13 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Ошибка чтения файла кэша F:\\GitFolderHome\\inventory_accounting_system\\inventory_accounting_system\\inventory_accounting_system\\obj\\inventory_accounting_system.csproj.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

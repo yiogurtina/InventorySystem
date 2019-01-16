@@ -58,27 +58,7 @@
                         от:
                         @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
                         @Html.DisplayFor(modelItem => item.Title)
-<<<<<<< refs/remotes/origin/develop
-                    </td>
-                    <td>
-                        <div>@Html.DisplayFor(modelItem => item.Content)</div>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateFrom)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Employee.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Office.Title)
-                    </td>
-                </tr>
-            }
-        }
-    
-    </tbody>
-</table>
-=======
+
                     </p>
                 </a>
             </div>
@@ -93,14 +73,37 @@
     }
 }
 
+@foreach (var item in Model)
+{
+    if (item.Status == "Open")
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
+                    <p style="color: white">
+                        от:
+                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </p>
+                </a>
+            </div>
+            <div class="panel-body collapse" id="imageGallery-@item.Id">
+                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <div style="width: 100%">
+                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
+                </div> <br />
+                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
+            </div>
+        </div>
+    }
+}
+
+
 <script>
     var idMessage;
     function GetMessageId() {
         var messageId = document.getElementById('clickId');
         idMessage = messageId.getAttribute('data-id');
-
-//        alert(idMessage);
-//        alert(idMessage);
 
         $.ajax({
             type: 'POST',
@@ -114,4 +117,3 @@
         });
     }
 </script>
->>>>>>> #82 Started working on the text

@@ -31,7 +31,6 @@ namespace inventory_accounting_system.ViewModel
         {
             var orderMessage = _context.OrderEmployees
                 .Where(s => s.Status == "New")
-                .Include(o => o.Employee)
                 .GroupBy(a => new { a.Id})
                 .Select(g => new OrderMessageViewModel
                 {
