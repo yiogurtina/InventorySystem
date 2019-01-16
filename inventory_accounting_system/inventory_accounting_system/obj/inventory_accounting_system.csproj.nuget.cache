@@ -1,5 +1,9 @@
 {
   "version": 1,
+<<<<<<< refs/remotes/origin/develop
   "dgSpecHash": "T9PhhE5+mJDgwKAPoQLIGNSYcl35IIHi0AMWmmKy8ZQG4a7Gcz7LT8gHETAA+Bh1khhAmfBNcWOnI7kyNUUfew==",
+=======
+  "dgSpecHash": "mWcZedwmirIrNZanHunbXO8jygxDiwp3xrW8WquP4+Hdl6vM1jCzpUI5LQuwNWQMdv9oNAx1TQ4WzxOaabFNvw==",
+>>>>>>> #82 Started working on the text
   "success": true
 }

@@ -11,9 +11,10 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190116160804_AddPropertyFromToOrder")]
+    partial class AddPropertyFromToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,7 +291,7 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<DateTime>("DateFrom");
 
-                    b.Property<DateTime?>("DateTo");
+                    b.Property<DateTime>("DateTo");
 
                     b.Property<string>("EmployeeFromId");
 

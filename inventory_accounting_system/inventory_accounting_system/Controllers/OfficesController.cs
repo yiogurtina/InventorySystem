@@ -50,6 +50,7 @@ namespace inventory_accounting_system.Controllers
                 if (await _userManager.IsInRoleAsync(usr, "User") && usr.Id == userId) // нашли юзера который залогинен
                 {
                     var userLoginNew = usr.Id;
+                    ViewData["EmployeeToId"] = new SelectList(_context.Users.Where(u => u.Id == usr.Id), "Id", "Name");
                     var userOfficeId = usr.OfficeId;
 
                     foreach (var office in officeIdEmployee)
@@ -60,10 +61,10 @@ namespace inventory_accounting_system.Controllers
                             {
                                 if (await _userManager.IsInRoleAsync(usrManager, "Manager") && usrManager.OfficeId == userOfficeId)
                                 {
-                                    ViewData["EmployeeId"] = new SelectList(_context.Users.Where(u => u.Id == usrManager.Id), "Id", "Name");
+                                    ViewData["EmployeeFromId"] = new SelectList(_context.Users.Where(u => u.Id == usrManager.Id), "Id", "Name");
                                     ViewData["OfficeId"] = new SelectList(_context.Offices.Where(o => o.Id == usr.OfficeId), "Id", "Title");
 
-                                    ViewData["EmployeeIdName"] = usrManager.Name;
+                                    ViewData["EmployeeFromIdName"] = usrManager.Name;
                                     ViewData["OfficeIdTitle"] = office.Title;
                                 }
                             }

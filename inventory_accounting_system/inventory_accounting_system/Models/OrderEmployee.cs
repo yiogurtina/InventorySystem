@@ -8,14 +8,19 @@ namespace inventory_accounting_system.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime DateFrom { get; set; } = DateTime.Now;
+        public DateTime? DateTo { get; set; } = DateTime.Now;
 
         public string OfficeId { get; set; }
         [Display(Name = "Офис")]
         public Office Office { get; set; }
 
-        public string EmployeeId { get; set; }
+        public string EmployeeFromId { get; set; }
         [Display(Name = "Сотрудник")]
-        public Employee Employee { get; set; }
+        public Employee EmployeeFrom { get; set; }
+
+        public string EmployeeToId { get; set; }
+        [Display(Name = "Сотрудник")]
+        public Employee EmployeeTo { get; set; }
 
         public string Status { get; set; } = "New";
     }

@@ -46,8 +46,9 @@ namespace inventory_accounting_system.Controllers
                     if (usr.Id == userId)
                     {
                         var applicationDbContext = _context.OrderEmployees
-                            .Where(u => u.EmployeeId == usr.Id)
-                            .Include(o => o.Employee)
+                            .Where(u => u.EmployeeFromId == usr.Id)
+                            .Include(o => o.EmployeeFrom)
+                            .Include(o => o.EmployeeTo)
                             .Include(o => o.Office);
 
                         return View(await applicationDbContext.ToListAsync());
@@ -61,8 +62,9 @@ namespace inventory_accounting_system.Controllers
                         if (usr.Id == userId)
                         {
                             var applicationDbContext = _context.OrderEmployees
-                                .Where(u => u.EmployeeId == usr.Id)
-                                .Include(o => o.Employee)
+                                .Where(u => u.EmployeeFromId == usr.Id)
+                                .Include(o => o.EmployeeFrom)
+                                .Include(o => o.EmployeeTo)
                                 .Include(o => o.Office);
 
                             return View(await applicationDbContext.ToListAsync());
@@ -76,10 +78,15 @@ namespace inventory_accounting_system.Controllers
 
             #region Test Count
 
+<<<<<<< refs/remotes/origin/develop
             /*var orderMessage = _context.OrderEmployees
                 .Include(o => o.Employee)
+=======
+            var orderMessage = _context.OrderEmployees
+                .Include(o => o.EmployeeFrom)
+>>>>>>> #82 Started working on the text
                 .Include(o => o.Office)
-                .GroupBy(a => new { a.EmployeeId, a.Office.Title })
+                .GroupBy(a => new { a.EmployeeFromId, a.Office.Title })
                 .Select(g => new OrderMessageViewModel
                 {
                     MessageCount = g.Count()
@@ -95,7 +102,10 @@ namespace inventory_accounting_system.Controllers
 
             #endregion
 
-            var applicationDbContextAll = _context.OrderEmployees.Include(o => o.Employee).Include(o => o.Office);
+            var applicationDbContextAll = _context.OrderEmployees
+                .Include(o => o.EmployeeFrom)
+                .Include(o => o.EmployeeToId)
+                .Include(o => o.Office);
             return View(await applicationDbContextAll.ToListAsync());
         }
 
@@ -103,7 +113,7 @@ namespace inventory_accounting_system.Controllers
 
         #region OrderSend
         //[Authorize(Roles = "User, Admin")]
-        public ActionResult OrderSend(string officeId, string title, string content, string employeeId)
+        public ActionResult OrderSend(string officeId, string title, string content, string employeeFromId, string employeeToId)
         {
 
             var orderSend = new OrderEmployee
@@ -111,10 +121,33 @@ namespace inventory_accounting_system.Controllers
                 OfficeId = officeId,
                 Title = title,
                 Content = content,
-                EmployeeId = employeeId
+                EmployeeFromId = employeeFromId,
+                EmployeeToId = employeeToId,
+                DateFrom = DateTime.Now,
+                DateTo = null
             };
             _context.Add(orderSend);
             _context.SaveChanges();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region Status
+
+        public ActionResult OrderStatus(string idMessage)
+        {
+            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessage);
+            if (messageId != null && messageId.Status == "New")
+            {
+
+                messageId.Status = "Open";
+              
+                _context.Update(messageId);
+                _context.SaveChanges();
+            }
 
 
             return RedirectToAction(nameof(Index));
@@ -133,7 +166,7 @@ namespace inventory_accounting_system.Controllers
             }
 
             var orderEmployee = await _context.OrderEmployees
-                .Include(o => o.Employee)
+                .Include(o => o.EmployeeFrom)
                 .Include(o => o.Office)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (orderEmployee == null)
@@ -147,7 +180,6 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
-
         #region Delete
 
         // GET: OrderEmployees/Delete/5
@@ -159,7 +191,7 @@ namespace inventory_accounting_system.Controllers
             }
 
             var orderEmployee = await _context.OrderEmployees
-                .Include(o => o.Employee)
+                .Include(o => o.EmployeeFrom)
                 .Include(o => o.Office)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (orderEmployee == null)

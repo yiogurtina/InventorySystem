@@ -112,8 +112,14 @@
                                 <div class="form-group" id="officeSelect" style="width: 150px">
 
                                     <h5>Менеджеру - @ViewBag.OfficeIdTitle</h5>
-                                    <strong>Кому:</strong><p> @ViewBag.EmployeeIdName </p><br/>
-                                    <strong >От:</strong> @ViewBag.UserId
+                                    <strong>Кому:</strong><p> @ViewBag.EmployeeFromIdName </p><br />
+                                    <strong>От:</strong> <p>@ViewBag.UserId</p>
+                                    
+                                    <select class="form-control hidden" id="EmployeeToIdSelect"
+                                            onchange="OnChangeEmployeeToId(this)"
+                                            style=" width: 270px !important;"
+                                            asp-items="ViewBag.EmployeeToId"></select>
+
                                 </div>
 
 
@@ -128,7 +134,7 @@
                                     <select class="form-control" id="EmployeeIdSelect"
                                             onchange="OnChangeEmployeeId(this)"
                                             style=" width: 270px !important;"
-                                            asp-items="ViewBag.EmployeeId"></select>
+                                            asp-items="ViewBag.EmployeeFromId"></select>
                                 </div>
 
                                 <div class="form-group" id="contentOrder">
@@ -184,18 +190,24 @@
     }
 
     var officeId;
-    var employeeId;
+    var employeeFromId;
+    var employeeToId;
     function showModalSendOrder() {
         $("#newModalOffice").modal();
         officeId = document.getElementById('officeIdSelect').children[0].value;
-        employeeId = document.getElementById('EmployeeIdSelect').children[0].value;
+        employeeFromId = document.getElementById('EmployeeIdSelect').children[0].value;
+        employeeToId = document.getElementById('EmployeeToIdSelect').children[0].value;
+        console.log(employeeToId);
     }
 
     function OnChangeOfficeId(e) {
         officeId = e.value;
     }
     function OnChangeEmployeeId(e) {
-        employeeId = e.value;
+        employeeFromId = e.value;
+    }
+    function OnChangeEmployeeToId(e) {
+        employeeToId = e.value;
     }
 
     function GetOrderEmployee() {
@@ -204,7 +216,8 @@
             url: '@Url.Action("OrderSend", "OrderEmployees")',
             data: {
                 officeId: officeId,
-                employeeId: employeeId,
+                employeeFromId: employeeFromId,
+                employeeToId: employeeToId,
                 title: $("#titleContent").val(),
                 content: $("#contentOrderI").val()
             },

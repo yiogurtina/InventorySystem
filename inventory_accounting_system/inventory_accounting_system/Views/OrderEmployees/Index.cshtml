@@ -18,9 +18,19 @@
     }*@
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+@*-----------------------------------------------------------------------------------------------------------------------------------------*@
+
+@*<div class="container">
+        <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+        <p>Click on the button to toggle between showing and hiding content.</p>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+        <div id="demo" class="collapse">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
+    </div>*@
 
 @*<div class="panel panel-default">
         <div class="panel-heading">
@@ -35,56 +45,20 @@
     </div>*@
 
 
+@*-----------------------------------------------------------------------------------------------------------------------------------------*@
 
-<table class="table table-hover table-bordered col-lg-12">
-    <thead>
-        <tr style="background-color: whitesmoke">
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateFrom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Office)
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-            if (item.Status == "New")
-            {
-                <tr style="background-color: #e0f7d4" onclick="window.location.href = '/OrderEmployees/Details?id=@item.Id';return false;">
-                    <td>
-                        @item.Title
-                    </td>
-                    <td>
-                        @item.Content
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateFrom)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Employee.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Office.Title)
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td>
+@foreach (var item in Model)
+{
+    if (item.Status == "New")
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId"  href="#imageGallery-@item.Id" style="width: 100%">
+                    <p style="color: white">
+                        от:
+                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
                         @Html.DisplayFor(modelItem => item.Title)
+<<<<<<< refs/remotes/origin/develop
                     </td>
                     <td>
                         <div>@Html.DisplayFor(modelItem => item.Content)</div>
@@ -104,3 +78,38 @@
     
     </tbody>
 </table>
+=======
+                    </p>
+                </a>
+            </div>
+            <div class="panel-body collapse" id="imageGallery-@item.Id">
+                <h3 >@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <div style="width: 100%">
+                    <h2 >@Html.DisplayFor(modelItem => item.Content)</h2>
+                </div> <br />
+                <p >@Html.DisplayFor(modelItem => item.DateFrom)</p>
+            </div>
+        </div>
+    }
+}
+
+<script>
+    var idMessage;
+    function GetMessageId() {
+        var messageId = document.getElementById('clickId');
+        idMessage = messageId.getAttribute('data-id');
+        alert(idMessage);
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatus", "OrderEmployees")',
+            data: {
+                idMessage: idMessage
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+</script>
+>>>>>>> #82 Started working on the text
