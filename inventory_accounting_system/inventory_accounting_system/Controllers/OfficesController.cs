@@ -37,6 +37,9 @@ namespace inventory_accounting_system.Controllers
             #region Search office Manager
 
             var userId = _userManager.GetUserId(User);
+            var userName = _userManager.GetUserName(User);
+
+            ViewData["UserId"] = userName;
 
             var officeIdEmployee = _context.Offices;
 
@@ -57,8 +60,11 @@ namespace inventory_accounting_system.Controllers
                             {
                                 if (await _userManager.IsInRoleAsync(usrManager, "Manager") && usrManager.OfficeId == userOfficeId)
                                 {
-                                   ViewData["EmployeeId"] = new SelectList(_context.Users.Where(u => u.Id == _userManager.GetUserId(User)), "Id", "Name");
-                                   ViewData["OfficeId"] = new SelectList(_context.Offices.Where(o => o.Id == usr.OfficeId), "Id", "Title");
+                                    ViewData["EmployeeId"] = new SelectList(_context.Users.Where(u => u.Id == usrManager.Id), "Id", "Name");
+                                    ViewData["OfficeId"] = new SelectList(_context.Offices.Where(o => o.Id == usr.OfficeId), "Id", "Title");
+
+                                    ViewData["EmployeeIdName"] = usrManager.Name;
+                                    ViewData["OfficeIdTitle"] = office.Title;
                                 }
                             }
                             
