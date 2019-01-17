@@ -14,7 +14,7 @@
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
             </li>
-            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            @if (User.IsInRole("Manager"))
             {
                 <li>
                     <a class="glyphicon glyphicon-bell"
