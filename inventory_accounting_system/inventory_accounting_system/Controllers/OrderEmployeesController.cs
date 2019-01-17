@@ -130,6 +130,26 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region StatusOpen
+
+        public ActionResult OrderStatusOpen(string idMessageOpen)
+        {
+            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessageOpen);
+            if (messageId != null && messageId.Status == "Open")
+            {
+
+                messageId.Status = "Open";
+
+                _context.Update(messageId);
+                _context.SaveChanges();
+            }
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
         #region Details
 
         // GET: OrderEmployees/Details/5

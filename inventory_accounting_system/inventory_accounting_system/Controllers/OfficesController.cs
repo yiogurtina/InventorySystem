@@ -49,7 +49,6 @@ namespace inventory_accounting_system.Controllers
             {
                 if (await _userManager.IsInRoleAsync(usr, "User") && usr.Id == userId) // нашли юзера который залогинен
                 {
-                    var userLoginNew = usr.Id;
                     ViewData["EmployeeToId"] = new SelectList(_context.Users.Where(u => u.Id == usr.Id), "Id", "Name");
                     var userOfficeId = usr.OfficeId;
 

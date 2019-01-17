@@ -79,7 +79,7 @@
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
+                <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdOpen()" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
                     <p style="color: white">
                         от:
                         @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
@@ -110,6 +110,23 @@
             url: '@Url.Action("OrderStatus", "OrderEmployees")',
             data: {
                 idMessage: idMessage
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+
+    var idMessageOpen;
+    function GetMessageIdOpen() {
+        var messageId = document.getElementById('clickIdOpen');
+        idMessageOpen = messageId.getAttribute('data-id');
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatusOpen", "OrderEmployees")',
+            data: {
+                idMessageOpen: idMessageOpen
             },
             success: function (data) {
                 console.log('success!');
