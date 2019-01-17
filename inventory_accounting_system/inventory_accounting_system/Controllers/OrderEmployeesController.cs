@@ -76,7 +76,7 @@ namespace inventory_accounting_system.Controllers
 
             #region Test Count
 
-            var orderMessage = _context.OrderEmployees
+            /*var orderMessage = _context.OrderEmployees
                 .Include(o => o.Employee)
                 .Include(o => o.Office)
                 .GroupBy(a => new { a.EmployeeId, a.Office.Title })
@@ -91,6 +91,7 @@ namespace inventory_accounting_system.Controllers
             };
 
             ViewData["MessageCount"] = model;
+*/
 
             #endregion
 

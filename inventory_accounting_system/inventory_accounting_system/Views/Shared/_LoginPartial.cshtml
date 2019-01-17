@@ -22,6 +22,7 @@
                        asp-area=""
                        asp-controller="OrderEmployees"
                        asp-action="Index">
+                        @await Component.InvokeAsync("OrderEmployeeVM")
                     </a>
 
                 </li>
