@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190111170216_init")]
-    partial class init
+    [Migration("20190116163132_AddNulebal")]
+    partial class AddNulebal
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,7 +71,29 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("Assets");
                 });
 
-            modelBuilder.Entity("inventory_accounting_system.Models.AssetAction", b =>
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("EmployeeId");
+
+                    b.Property<string>("StorageId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StorageId");
+
+                    b.ToTable("AssetOnStorages");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -86,9 +108,9 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("EmployeeToId");
 
-                    b.Property<string>("StorageFromId");
+                    b.Property<string>("OfficeFromId");
 
-                    b.Property<string>("StorageToId");
+                    b.Property<string>("OfficeToId");
 
                     b.HasKey("Id");
 
@@ -98,11 +120,11 @@ namespace inventory_accounting_system.Migrations
 
                     b.HasIndex("EmployeeToId");
 
-                    b.HasIndex("StorageFromId");
+                    b.HasIndex("OfficeFromId");
 
-                    b.HasIndex("StorageToId");
+                    b.HasIndex("OfficeToId");
 
-                    b.ToTable("AssetActions");
+                    b.ToTable("AssetsMoveStories");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Category", b =>
@@ -194,6 +216,58 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("Periodicity");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.EventAsset", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<DateTime>("DeadLine");
+
+                    b.Property<string>("EmployeeId");
+
+                    b.Property<string>("EventId");
+
+                    b.Property<int>("Period");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("AssetEvents");
+                });
+
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>
                 {
                     b.Property<string>("Id")
@@ -206,6 +280,38 @@ namespace inventory_accounting_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Offices");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployee", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("DateFrom");
+
+                    b.Property<DateTime?>("DateTo");
+
+                    b.Property<string>("EmployeeFromId");
+
+                    b.Property<string>("EmployeeToId");
+
+                    b.Property<string>("OfficeId");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeFromId");
+
+                    b.HasIndex("EmployeeToId");
+
+                    b.HasIndex("OfficeId");
+
+                    b.ToTable("OrderEmployees");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
@@ -373,7 +479,22 @@ namespace inventory_accounting_system.Migrations
                         .HasForeignKey("SupplierId");
                 });
 
-            modelBuilder.Entity("inventory_accounting_system.Models.AssetAction", b =>
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetOnStorage", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("inventory_accounting_system.Models.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.AssetsMoveStory", b =>
                 {
                     b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
                         .WithMany("AssetsMoveStories")
@@ -387,19 +508,56 @@ namespace inventory_accounting_system.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeeToId");
 
-                    b.HasOne("inventory_accounting_system.Models.Storage", "StorageFrom")
+                    b.HasOne("inventory_accounting_system.Models.Office", "OfficeFrom")
                         .WithMany()
-                        .HasForeignKey("StorageFromId");
+                        .HasForeignKey("OfficeFromId");
 
-                    b.HasOne("inventory_accounting_system.Models.Storage", "StorageTo")
+                    b.HasOne("inventory_accounting_system.Models.Office", "OfficeTo")
                         .WithMany()
-                        .HasForeignKey("StorageToId");
+                        .HasForeignKey("OfficeToId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>
                 {
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany("Employees")
+                        .HasForeignKey("OfficeId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Event", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Category", "Category")
+                        .WithMany("Events")
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.EventAsset", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany("AssetEvents")
+                        .HasForeignKey("AssetId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "Employee")
+                        .WithMany("EventAssets")
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("inventory_accounting_system.Models.Event", "Event")
+                        .WithMany("EventAssets")
+                        .HasForeignKey("EventId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployee", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeFrom")
+                        .WithMany()
+                        .HasForeignKey("EmployeeFromId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeTo")
+                        .WithMany()
+                        .HasForeignKey("EmployeeToId");
+
+                    b.HasOne("inventory_accounting_system.Models.Office", "Office")
+                        .WithMany()
                         .HasForeignKey("OfficeId");
                 });
 

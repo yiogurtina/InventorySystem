@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace inventory_accounting_system.Models
 {
-    public class AssetAction : Entity
+    public class AssetsMoveStory : Entity
     {
 
         public string AssetId { get; set; }
         public Asset Asset { get; set; }
 
-        public string StorageFromId { get; set; }
-        [Display(Name = "Офис/Склад от")]
-        public Storage StorageFrom { get; set; }
+        public string OfficeFromId { get; set; }
+        [Display(Name = "Офис от")]
+        public Office OfficeFrom { get; set; }
 
-        public string StorageToId { get; set; }
-        [Display(Name = "Офис/Склад куда")]
-        public Storage StorageTo { get; set; }
+        public string OfficeToId { get; set; }
+        [Display(Name = "Офис куда")]
+        public Office OfficeTo { get; set; }
 
         public string EmployeeFromId { get; set; }
         [Display(Name = "Сотрудник от")]

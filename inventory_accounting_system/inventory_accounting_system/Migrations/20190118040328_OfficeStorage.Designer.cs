@@ -11,9 +11,10 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190118040328_OfficeStorage")]
+    partial class OfficeStorage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,8 +35,6 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("EmployeeId");
 
                     b.Property<string>("ImagePath");
-
-                    b.Property<bool>("InStock");
 
                     b.Property<string>("InventNumber");
 
@@ -322,15 +321,9 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("OfficeId");
-
                     b.Property<string>("OwnerId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfficeId")
-                        .IsUnique()
-                        .HasFilter("[OfficeId] IS NOT NULL");
 
                     b.HasIndex("OwnerId");
 
@@ -564,10 +557,6 @@ namespace inventory_accounting_system.Migrations
 
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
                 {
-                    b.HasOne("inventory_accounting_system.Models.Office", "Office")
-                        .WithOne("Storage")
-                        .HasForeignKey("inventory_accounting_system.Models.Storage", "OfficeId");
-
                     b.HasOne("inventory_accounting_system.Models.Employee", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");

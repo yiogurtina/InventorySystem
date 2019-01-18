@@ -13,7 +13,6 @@ namespace inventory_accounting_system.Services
 {
     public class AppDBInitializer
     {
-        private string UserId;
         public async Task SeedAsync(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -59,14 +58,13 @@ namespace inventory_accounting_system.Services
                         await userManager.AddToRoleAsync(user, "Admin");
                     }
                 }
-                var storage = context.Storages.FirstOrDefault(b => b.IsMain);
+                var storage = context.Offices.FirstOrDefault(b => b.IsMain);
                 if (storage == null)
                 {
-                    context.Storages.Add(new Storage()
+                    context.Offices.Add(new Office()
                      {
-                         Name = "Main storage",
+                        Title = "Main storage",
                          IsMain = true,
-                         OwnerId = AdminId
                     });
                 }
 

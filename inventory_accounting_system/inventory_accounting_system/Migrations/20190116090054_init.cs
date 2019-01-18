@@ -83,6 +83,27 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CategoryId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    Periodicity = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -205,6 +226,35 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderEmployees",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    DateFrom = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    OfficeId = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderEmployees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployees_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployees_Offices_OfficeId",
+                        column: x => x.OfficeId,
+                        principalTable: "Offices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Storages",
                 columns: table => new
                 {
@@ -279,7 +329,76 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AssetActions",
+                name: "AssetEvents",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AssetId = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    DeadLine = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    EventId = table.Column<string>(nullable: true),
+                    Period = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssetEvents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AssetEvents_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetEvents_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetEvents_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssetOnStorages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AssetId = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<string>(nullable: true),
+                    StorageId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AssetOnStorages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AssetOnStorages_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AssetsMoveStories",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -288,40 +407,40 @@ namespace inventory_accounting_system.Migrations
                     DateStart = table.Column<DateTime>(nullable: false),
                     EmployeeFromId = table.Column<string>(nullable: true),
                     EmployeeToId = table.Column<string>(nullable: true),
-                    StorageFromId = table.Column<string>(nullable: true),
-                    StorageToId = table.Column<string>(nullable: true)
+                    OfficeFromId = table.Column<string>(nullable: true),
+                    OfficeToId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AssetActions", x => x.Id);
+                    table.PrimaryKey("PK_AssetsMoveStories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AssetActions_Assets_AssetId",
+                        name: "FK_AssetsMoveStories_Assets_AssetId",
                         column: x => x.AssetId,
                         principalTable: "Assets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AssetActions_AspNetUsers_EmployeeFromId",
+                        name: "FK_AssetsMoveStories_AspNetUsers_EmployeeFromId",
                         column: x => x.EmployeeFromId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AssetActions_AspNetUsers_EmployeeToId",
+                        name: "FK_AssetsMoveStories_AspNetUsers_EmployeeToId",
                         column: x => x.EmployeeToId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AssetActions_Storages_StorageFromId",
-                        column: x => x.StorageFromId,
-                        principalTable: "Storages",
+                        name: "FK_AssetsMoveStories_Offices_OfficeFromId",
+                        column: x => x.OfficeFromId,
+                        principalTable: "Offices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AssetActions_Storages_StorageToId",
-                        column: x => x.StorageToId,
-                        principalTable: "Storages",
+                        name: "FK_AssetsMoveStories_Offices_OfficeToId",
+                        column: x => x.OfficeToId,
+                        principalTable: "Offices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -371,29 +490,34 @@ namespace inventory_accounting_system.Migrations
                 column: "OfficeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AssetActions_AssetId",
-                table: "AssetActions",
+                name: "IX_AssetEvents_AssetId",
+                table: "AssetEvents",
                 column: "AssetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AssetActions_EmployeeFromId",
-                table: "AssetActions",
-                column: "EmployeeFromId");
+                name: "IX_AssetEvents_EmployeeId",
+                table: "AssetEvents",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AssetActions_EmployeeToId",
-                table: "AssetActions",
-                column: "EmployeeToId");
+                name: "IX_AssetEvents_EventId",
+                table: "AssetEvents",
+                column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AssetActions_StorageFromId",
-                table: "AssetActions",
-                column: "StorageFromId");
+                name: "IX_AssetOnStorages_AssetId",
+                table: "AssetOnStorages",
+                column: "AssetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AssetActions_StorageToId",
-                table: "AssetActions",
-                column: "StorageToId");
+                name: "IX_AssetOnStorages_EmployeeId",
+                table: "AssetOnStorages",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetOnStorages_StorageId",
+                table: "AssetOnStorages",
+                column: "StorageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_CategoryId",
@@ -421,6 +545,46 @@ namespace inventory_accounting_system.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AssetsMoveStories_AssetId",
+                table: "AssetsMoveStories",
+                column: "AssetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetsMoveStories_EmployeeFromId",
+                table: "AssetsMoveStories",
+                column: "EmployeeFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetsMoveStories_EmployeeToId",
+                table: "AssetsMoveStories",
+                column: "EmployeeToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetsMoveStories_OfficeFromId",
+                table: "AssetsMoveStories",
+                column: "OfficeFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AssetsMoveStories_OfficeToId",
+                table: "AssetsMoveStories",
+                column: "OfficeToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_CategoryId",
+                table: "Events",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployees_EmployeeId",
+                table: "OrderEmployees",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployees_OfficeId",
+                table: "OrderEmployees",
+                column: "OfficeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Storages_OwnerId",
                 table: "Storages",
                 column: "OwnerId");
@@ -444,10 +608,22 @@ namespace inventory_accounting_system.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "AssetActions");
+                name: "AssetEvents");
+
+            migrationBuilder.DropTable(
+                name: "AssetOnStorages");
+
+            migrationBuilder.DropTable(
+                name: "AssetsMoveStories");
+
+            migrationBuilder.DropTable(
+                name: "OrderEmployees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Assets");
