@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,12 @@ namespace inventory_accounting_system.Models
 
         [Display(Name = "Сотрудники")]
         public IEnumerable<Employee> Employees { get; set; }
+
+        
+        public string StorageId { get; set; }
+        public Storage Storage { get; set; }
+
+
 
         [Display(Name = "Имущество")]
         public IEnumerable<Asset> Assets { get; set; }

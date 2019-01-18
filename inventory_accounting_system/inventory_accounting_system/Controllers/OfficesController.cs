@@ -154,6 +154,18 @@ namespace inventory_accounting_system.Controllers
             {
                 _context.Add(office);
                 await _context.SaveChangesAsync();
+                
+                Storage st = new Storage();
+                st.Name = $"Склад {office.Title}";
+                st.IsMain = false;
+                st.OfficeId = office.Id;
+
+                _context.Storages.Add(st);
+
+                office.StorageId = st.Id;
+                _context.Update(office);
+                
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(office);
