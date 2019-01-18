@@ -70,5 +70,14 @@ namespace inventory_accounting_system.Controllers
         }
 
         #endregion
+
+        #region Chat
+
+        public IActionResult Chat()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }
