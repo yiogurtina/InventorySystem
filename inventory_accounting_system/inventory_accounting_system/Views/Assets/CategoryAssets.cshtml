@@ -173,7 +173,7 @@
             dateAction = document.getElementById('dateAction').children[0].value;
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("Check", "Assets")',
+                url: '@Url.Action("CheckOnMainStorage", "Assets")',
                 data: {
                     officeId: officeId,
                     assetId: checkedCheckBox,

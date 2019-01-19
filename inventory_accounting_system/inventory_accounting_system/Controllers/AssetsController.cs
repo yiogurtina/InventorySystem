@@ -567,5 +567,54 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region CheckOnMainStorage
+
+        public ActionResult CheckOnMainStorage(string[] assetId, string officeId, string employeeId, string dateAction, int inIndex)
+        {
+            foreach (var item in assetId)
+            {
+                var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
+                if (assetIdFind != null)
+                {
+                    assetIdFind.IsActive = true;
+                    assetIdFind.OfficeId = officeId;
+                    _context.Update(assetIdFind);
+                    _context.SaveChanges();
+
+                    //DateTime dateStart = DateTime.Parse(dateAction);
+                    DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
+                    DateTime dateEnd = DateTime.Parse("2100-01-01");
+
+                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory
+                    {
+                        AssetId = assetIdFind.Id,
+                        EmployeeFromId = assetIdFind.EmployeeId,
+                        OfficeFromId = assetIdFind.OfficeId,
+                        EmployeeToId = employeeId,
+                        OfficeToId = officeId,
+                        DateStart = dateStart,
+                        DateEnd = dateEnd
+                    };
+
+                    _context.Add(assetsMoveStory);
+                    _context.SaveChanges();
+
+                }
+            }
+            if (inIndex == 1)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
+                return RedirectToAction("Index", "Offices");
+            }
+
+            //
+        }
+
+        #endregion
+
     }
 }

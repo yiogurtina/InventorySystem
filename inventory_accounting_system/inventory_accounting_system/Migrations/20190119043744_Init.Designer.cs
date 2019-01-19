@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190118091331_initial")]
-    partial class initial
+    [Migration("20190119043744_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,8 +54,6 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("SerialNum");
 
-                    b.Property<string>("StorageId");
-
                     b.Property<string>("SupplierId");
 
                     b.HasKey("Id");
@@ -65,8 +63,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("OfficeId");
-
-                    b.HasIndex("StorageId");
 
                     b.HasIndex("SupplierId");
 
@@ -275,6 +271,8 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsMain");
+
                     b.Property<string>("StorageId");
 
                     b.Property<string>("Title")
@@ -479,10 +477,6 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany("Assets")
                         .HasForeignKey("OfficeId");
-
-                    b.HasOne("inventory_accounting_system.Models.Storage", "Storage")
-                        .WithMany("Assets")
-                        .HasForeignKey("StorageId");
 
                     b.HasOne("inventory_accounting_system.Models.Supplier", "Supplier")
                         .WithMany()

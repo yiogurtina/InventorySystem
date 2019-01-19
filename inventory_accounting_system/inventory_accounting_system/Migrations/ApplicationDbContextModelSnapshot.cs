@@ -272,6 +272,8 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<bool>("IsMain");
 
+                    b.Property<string>("StorageId");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(20);
