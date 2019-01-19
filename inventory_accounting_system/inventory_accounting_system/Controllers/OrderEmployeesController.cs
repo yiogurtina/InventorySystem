@@ -228,6 +228,7 @@ namespace inventory_accounting_system.Controllers
             {
 
                 messageId.Status = "Inprogress";
+                messageId.DateTo = DateTime.Now;
 
                 _context.Update(messageId);
                 _context.SaveChanges();
