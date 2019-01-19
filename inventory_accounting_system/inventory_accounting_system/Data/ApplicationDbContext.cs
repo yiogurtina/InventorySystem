@@ -20,6 +20,7 @@ namespace inventory_accounting_system.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<EventAsset> AssetEvents { get; set; }
         public DbSet<OrderEmployee> OrderEmployees { get; set; }
+        public DbSet<OrderEmployeeAdmin> OrderEmployeeAdmins { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -32,9 +33,6 @@ namespace inventory_accounting_system.Data
             base.OnModelCreating(builder);
 
         }
-
-
-        public DbSet<inventory_accounting_system.Models.OrderEmployeeAdmin> OrderEmployeeAdmin { get; set; }
 
     }
 }
