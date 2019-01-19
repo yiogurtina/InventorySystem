@@ -188,7 +188,7 @@ namespace inventory_accounting_system.Controllers
             string idMessageOpen,
             OrderEmployee orderStatus)
         {
-//            OrderStatusInprogress(idMessageOpen);
+            OrderStatusInprogress(idMessageOpen);
 
             var orderSend = new OrderEmployeeAdmin
             {
@@ -212,6 +212,26 @@ namespace inventory_accounting_system.Controllers
             }
             _context.Add(orderSend);
             _context.SaveChanges();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region OrderStatusInprogress
+
+        public ActionResult OrderStatusInprogress(string idMessageOpen)
+        {
+            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessageOpen);
+            if (messageId != null && messageId.Status == "Open")
+            {
+
+                messageId.Status = "Inprogress";
+
+                _context.Update(messageId);
+                _context.SaveChanges();
+            }
 
 
             return RedirectToAction(nameof(Index));
