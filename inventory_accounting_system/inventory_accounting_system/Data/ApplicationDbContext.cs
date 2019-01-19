@@ -33,5 +33,8 @@ namespace inventory_accounting_system.Data
 
         }
 
+
+        public DbSet<inventory_accounting_system.Models.OrderEmployeeAdmin> OrderEmployeeAdmin { get; set; }
+
     }
 }

@@ -1,0 +1,76 @@
+﻿@model inventory_accounting_system.Models.OrderEmployeeAdmin
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>OrderEmployeeAdmin</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TitleAdmin" class="control-label"></label>
+                <input asp-for="TitleAdmin" class="form-control" />
+                <span asp-validation-for="TitleAdmin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentUser" class="control-label"></label>
+                <input asp-for="ContentUser" class="form-control" />
+                <span asp-validation-for="ContentUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentAdmin" class="control-label"></label>
+                <input asp-for="ContentAdmin" class="form-control" />
+                <span asp-validation-for="ContentAdmin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateFromAdmin" class="control-label"></label>
+                <input asp-for="DateFromAdmin" class="form-control" />
+                <span asp-validation-for="DateFromAdmin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateToAdmin" class="control-label"></label>
+                <input asp-for="DateToAdmin" class="form-control" />
+                <span asp-validation-for="DateToAdmin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OfficeAdminId" class="control-label"></label>
+                <select asp-for="OfficeAdminId" class="form-control" asp-items="ViewBag.OfficeAdminId"></select>
+                <span asp-validation-for="OfficeAdminId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeFromAdminId" class="control-label"></label>
+                <select asp-for="EmployeeFromAdminId" class="form-control" asp-items="ViewBag.EmployeeFromAdminId"></select>
+                <span asp-validation-for="EmployeeFromAdminId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeToAdminId" class="control-label"></label>
+                <select asp-for="EmployeeToAdminId" class="form-control" asp-items="ViewBag.EmployeeToAdminId"></select>
+                <span asp-validation-for="EmployeeToAdminId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderEmployeeId" class="control-label"></label>
+                <select asp-for="OrderEmployeeId" class="form-control" asp-items="ViewBag.OrderEmployeeId"></select>
+                <span asp-validation-for="OrderEmployeeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusAdmin" class="control-label"></label>
+                <input asp-for="StatusAdmin" class="form-control" />
+                <span asp-validation-for="StatusAdmin" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<inventory_accounting_system.Models.OrderEmployeeAdmin>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TitleAdmin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContentUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContentAdmin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateFromAdmin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateToAdmin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusAdmin)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeFromAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeToAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OfficeAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderEmployee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TitleAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContentUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContentAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateFromAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateToAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeFromAdmin.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OfficeAdmin.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderEmployee.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
