@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string dateAction = @ViewBag.dateAction;
 }
 
 <h2>Имущество</h2>
@@ -66,7 +67,7 @@
     <tbody>
     @foreach (var item in Model)
     {
-        <tr>
+        <tr >
             <td>
                 <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
             </td>
@@ -142,7 +143,7 @@
                             </div>
                             <div class="form-group" id="dateAction">
                                 <label class="control-label">Дата</label>
-                                <input id="dateAction" type="date" class="form-control" style=" width: 270px !important;" value="@ViewBag.dateAction" />
+                                <input id="dateAction" type="date" class="form-control" style=" width: 270px !important;" value="@dateAction" />
                             </div>
                         </form>
                     </div>
@@ -209,7 +210,8 @@
                     officeId: officeId,
                     assetId: checkedCheckBox,
                     employeeId: employeeId,
-                    dateAction: dateAction
+                    dateAction: dateAction,
+                    inIndex: 1
                 },
                 success: function (data) {
                     console.log('success!');

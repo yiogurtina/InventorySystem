@@ -80,8 +80,7 @@ namespace inventory_accounting_system.Controllers
             #endregion
 
             var offices = _context.Offices.ToList();
-            ViewData["Offices"] = new SelectList(offices.OrderByDescending(x => x.Title), "Id", "Title", officeId);
-
+            
             if (officeId.IsNullOrEmpty())
             {
                 var defaultOffice = offices
@@ -93,6 +92,7 @@ namespace inventory_accounting_system.Controllers
                 officeId = defaultOffice.Id;
             }
 
+            ViewData["Offices"] = new SelectList(offices.OrderByDescending(x => x.Title), "Id", "Title", officeId);
             List<Employee> employees = _context.Users.Where(e => e.OfficeId == officeId).ToList();
 
             var categoryAssets = _context.Assets
@@ -259,23 +259,7 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        #endregion
-
-        #region CategoryAssets
-
-        public async Task<IActionResult> CategoryAssets(string officeId, string categoryId)
-        {
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
-            var assets = _context.Assets
-                .Include(a => a.Category)
-                .Include(a => a.Supplier)
-                .Where(a => a.IsActive == false)
-                .Where(a => a.OfficeId == officeId)
-                .Where(a => a.CategoryId == categoryId);
-            return View(await assets.ToListAsync());
-        }
-
-        #endregion
+        #endregion       
 
         #region OfficeExists
 

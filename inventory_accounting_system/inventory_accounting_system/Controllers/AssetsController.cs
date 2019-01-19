@@ -47,7 +47,7 @@ namespace inventory_accounting_system.Controllers
         {
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
             ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
-            ViewData["dateAction"] = DateTime.Now;
+            ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
 
             var mainStorage = _context.Offices.FirstOrDefault(s=>s.IsMain);
             var assets = _context.Assets
@@ -118,6 +118,26 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region CategoryAssets
+
+        public async Task<IActionResult> CategoryAssets(string officeId, string categoryId)
+        {
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
+            ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
+
+
+            var assets = _context.Assets
+                .Include(a => a.Category)
+                .Include(a => a.Supplier)
+                .Where(a => a.IsActive == false)
+                .Where(a => a.OfficeId == officeId)
+                .Where(a => a.CategoryId == categoryId);
+            return View(await assets.ToListAsync());
+        }
+
+        #endregion
+
         #region Details
 
         public async Task<IActionResult> Details(string id)
@@ -136,7 +156,19 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            return View(asset);
+            DetailsAssetViewModel model = new DetailsAssetViewModel()
+            {
+                Asset = asset,
+                AssetsMoveStories = _context.AssetsMoveStories
+                                    .Where(f => f.AssetId == id)
+                                    .Include(t => t.EmployeeFrom)
+                                    .Include(t => t.OfficeFrom)
+                                    .Include(t => t.EmployeeTo)
+                                    .Include(t => t.OfficeTo)
+            };
+
+            return View(model);
+            //return View(asset);
         }
 
         #endregion
@@ -489,7 +521,7 @@ namespace inventory_accounting_system.Controllers
 
         #region Check
 
-        public ActionResult Check(string[] assetId, string officeId, string employeeId, string dateAction)
+        public ActionResult Check(string[] assetId, string officeId, string employeeId, string dateAction,int inIndex)
         {
             foreach (var item in assetId)
             {
@@ -503,7 +535,7 @@ namespace inventory_accounting_system.Controllers
 
                     //DateTime dateStart = DateTime.Parse(dateAction);
                     DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
-                    DateTime dateEnd = DateTime.Parse("2100-01-01 0:00");
+                    DateTime dateEnd = DateTime.Parse("2100-01-01");
 
                     AssetsMoveStory assetsMoveStory = new AssetsMoveStory
                     {
@@ -521,7 +553,16 @@ namespace inventory_accounting_system.Controllers
 
                 }
             }
-            return RedirectToAction(nameof(Index));
+            if (inIndex == 1) {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+               // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
+                return RedirectToAction("Index", "Offices");
+            }
+            
+            //
         }
 
         #endregion
