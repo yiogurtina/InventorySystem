@@ -8,44 +8,7 @@
     ViewData["Title"] = "Index";
 }
 
-@*@if (SignInManager.IsSignedIn(User))
-    {
-
-        if (User.IsInRole("Manager"))
-        {
-
-        }
-    }*@
 <h2>Index</h2>
-
-
-@*-----------------------------------------------------------------------------------------------------------------------------------------*@
-
-@*<div class="container">
-        <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
-        <p>Click on the button to toggle between showing and hiding content.</p>
-        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
-        <div id="demo" class="collapse">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </div>
-    </div>*@
-
-@*<div class="panel panel-default">
-        <div class="panel-heading">
-            <a class="btn btn-primary" data-toggle="collapse" href="#imageGallery">
-
-            </a>
-        </div>
-
-        <div class="panel-body collapse" id="imageGallery">
-
-        </div>
-    </div>*@
-
-
-@*-----------------------------------------------------------------------------------------------------------------------------------------*@
 
 @foreach (var item in Model)
 {
@@ -68,6 +31,7 @@
                     <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
                 </div> <br />
                 <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
             </div>
         </div>
     }
@@ -93,10 +57,87 @@
                     <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
                 </div> <br />
                 <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
+
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
+
             </div>
         </div>
     }
 }
+
+
+@*Modal Window*@
+
+<div class="modal fade" id="newModalOrderAdmin">
+    <div class="modal-dialog modal-lg" style=" width: 500px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Отправить заявку</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <form>
+                            <div class="form-group hidden" id="officeSelectAdmin">
+                                <label class="control-label">Офисы</label>
+                                <select class="form-control" id="officeIdSelectAdmin"
+                                        onchange="OnChangeOfficeIdAdmin(this)"
+                                        style=" width: 270px !important;"
+                                        asp-items="ViewBag.OfficeIdAdmin"></select>
+                            </div>
+
+                            <div class="form-group" id="officeSelect" style="width: 150px">
+
+                                <h5>Менеджер - @ViewBag.OfficeIdTitleAdmin</h5>
+                                <p>@ViewBag.UserIdAdmin</p>
+                                <strong>Кому:</strong><p> @ViewBag.EmployeeFromIdNameAdmin </p><br />
+
+
+                                <select class="form-control hidden" id="EmployeeToIdSelectAdmin"
+                                        onchange="OnChangeEmployeeToIdAdmin(this)"
+                                        style=" width: 270px !important;"
+                                        asp-items="ViewBag.EmployeeToIdAdmin"></select>
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">Заголовок</label>
+                                <input style=" width: 270px !important;" class="form-control" id="titleContentAdmin" />
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group hidden" id="EmployeeSelectAdmin">
+                                <label class="control-label">Кому:</label>
+                                <select class="form-control" id="EmployeeIdSelectAdmin"
+                                        onchange="OnChangeEmployeeIdAdmin(this)"
+                                        style=" width: 270px !important;"
+                                        asp-items="ViewBag.EmployeeFromIdAdmin"></select>
+                            </div>
+
+                            <div class="form-group" id="contentOrder">
+                                <label class="control-label">Такст заявки</label>
+                                <textarea class="form-control" id="contentOrderIAdmin"
+                                          style=" width: 270px !important;"
+                                          asp-items="ViewBag.OfficeIdAdmin"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <form id="NewAssetForm">
+
+                <div class="modal-footer">
+                    <div>
+                        <button id="CreateMethod" type="submit" onclick="GetOrderEmployeeAdmin()" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 
 <script>
@@ -133,4 +174,52 @@
             }
         });
     }
+
+
+    var officeIdAdmin;
+    var employeeFromIdAdmin;
+    var employeeToIdAdmin;
+
+    var messageOnIdOpen = [];
+    var messageOnIdOpenUser;
+    
+
+    function showModalSendOrderAdmin() {
+        $("#newModalOrderAdmin").modal();
+        officeIdAdmin = document.getElementById('officeIdSelectAdmin').children[0].value;
+        employeeFromIdAdmin = document.getElementById('EmployeeIdSelectAdmin').children[0].value;
+        employeeToIdAdmin = document.getElementById('EmployeeToIdSelectAdmin').children[0].value;
+        
+    }
+
+    function OnChangeOfficeIdAdmin(e) {
+        officeIdAdmin = e.value;
+    }
+    function OnChangeEmployeeIdAdmin(e) {
+        employeeFromIdAdmin = e.value;
+    }
+    function OnChangeEmployeeToIdAdmin(e) {
+        employeeToIdAdmin = e.value;
+    }
+    
+
+    function GetOrderEmployeeAdmin() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderSendAdmin", "OrderEmployees")',
+            data: {
+                idMessageOpen: idMessageOpen,
+                messageOnIdOpenUser: messageOnIdOpenUser,
+                officeIdAdmin: officeIdAdmin,
+                employeeFromIdAdmin: employeeFromIdAdmin,
+                employeeToIdAdmin: employeeToIdAdmin,
+                titleAdmin: $("#titleContentAdmin").val(),
+                contentAdmin: $("#contentOrderIAdmin").val()
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+
 </script>
