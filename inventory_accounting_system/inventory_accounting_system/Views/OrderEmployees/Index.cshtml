@@ -14,39 +14,12 @@
 {
     if (item.Status == "New")
     {
-        <div class="panel panel-default">
+        <div class="panel panel-default" data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">
             <div class="panel-heading">
-                <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
-                    <p style="color: white">
-                        от:
-                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
-                        @Html.DisplayFor(modelItem => item.Title)
-
-                    </p>
-                </a>
-            </div>
-            <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
-                <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
-                </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
-            </div>
-        </div>
-    }
-}
-
-@foreach (var item in Model)
-{
-    if (item.Status == "Open")
-    {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdOpen()" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
+                <a class="btn btn-success" data-toggle="collapse" id="clickNew" href="#imageGallery-@item.Id" style="width: 100%">
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
                         От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
-                        <strong > @Html.DisplayFor(modelItem => item.Title)</strong>
+                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
                     </h4>
                 </a>
             </div>
@@ -54,7 +27,34 @@
                 <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
                 <div style="width: 100%">
                     <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
-                </div> <br /><hr/>
+                </div> <br /><hr />
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
+            </div>
+        </div>
+    }
+}
+
+<strong>Прочитанные</strong><br /><hr />
+
+@foreach (var item in Model)
+{
+    if (item.Status == "Open")
+    {
+        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdOpen(this)">
+            <div class="panel-heading">
+                <a class="btn btn-info" data-toggle="collapse" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
+                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
+                    </h4>
+                </a>
+            </div>
+            <div class="panel-body collapse" id="imageGallery-@item.Id">
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
+                <div style="width: 100%">
+                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                </div> <br /><hr />
                 <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
                 <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
 
@@ -65,30 +65,32 @@
     }
 }
 
+<strong>В процессе</strong><br /><hr />
+
 @foreach (var item in Model)
 {
     if (item.Status == "Inprogress")
     {
-        <div class="panel panel-default">
+        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdInprogress(this)">
             <div class="panel-heading">
-                <a class="btn btn-danger" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdInprogress()" id="clickIdInInprogress" href="#imageGallery-@item.Id" style="width: 100%">
-                    
+                <a class="btn btn-danger" data-toggle="collapse" id="clickIdInInprogress" href="#imageGallery-@item.Id" style="width: 100%">
+
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
                         От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
-                        <strong > @Html.DisplayFor(modelItem => item.Title)</strong>
+                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
                     </h4>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
                 <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
                 <div style="width: 100%">
-                   <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
-                </div> <br /><hr/>
+                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                </div> <br /><hr />
                 <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
                 <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
 
                 <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
-                
+
             </div>
         </div>
     }
@@ -170,10 +172,13 @@
 
 
 <script>
+
+    
+
+
     var idMessage;
-    function GetMessageId() {
-        var messageId = document.getElementById('clickId');
-        idMessage = messageId.getAttribute('data-id');
+    function GetMessageId(event) {
+        idMessage = event.getAttribute('data-id');
 
         $.ajax({
             type: 'POST',
@@ -187,10 +192,21 @@
         });
     }
 
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("OrderStatus", "OrderEmployees")',
+        contentType: "application/json",
+        success: function (result) {
+            var status = JSON.parse(result);
+            alert(status);
+        }
+    });
+        
+
+
     var idMessageOpen;
-    function GetMessageIdOpen() {
-        var messageId = document.getElementById('clickIdOpen');
-        idMessageOpen = messageId.getAttribute('data-id');
+    function GetMessageIdOpen(event) {
+        idMessageOpen = event.getAttribute('data-id');
 
         $.ajax({
             type: 'POST',
@@ -211,14 +227,14 @@
 
     var messageOnIdOpen = [];
     var messageOnIdOpenUser;
-    
+
 
     function showModalSendOrderAdmin() {
         $("#newModalOrderAdmin").modal();
         officeIdAdmin = document.getElementById('officeIdSelectAdmin').children[0].value;
         employeeFromIdAdmin = document.getElementById('EmployeeIdSelectAdmin').children[0].value;
         employeeToIdAdmin = document.getElementById('EmployeeToIdSelectAdmin').children[0].value;
-        
+
     }
 
     function OnChangeOfficeIdAdmin(e) {
@@ -230,7 +246,7 @@
     function OnChangeEmployeeToIdAdmin(e) {
         employeeToIdAdmin = e.value;
     }
-    
+
 
     function GetOrderEmployeeAdmin() {
         $.ajax({

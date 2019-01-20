@@ -16,9 +16,9 @@
     if (item.StatusAdmin == "New")
     {
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageId(this)">
             <div class="panel-heading">
-                <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
+                <a class="btn btn-success" data-toggle="collapse" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
 
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
                         От: @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) -
@@ -50,9 +50,9 @@
 {
     if (item.StatusAdmin == "Open")
     {
-        <div class="panel panel-default">
+        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdOpen(this)">
             <div class="panel-heading">
-                <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdOpen()" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
+                <a class="btn btn-primary" data-toggle="collapse"  id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
                         От: @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) -
                         <strong> @Html.DisplayFor(modelItem => item.TitleAdmin)</strong>
@@ -153,9 +153,8 @@
 <script>
     var idMessage;
 
-    function GetMessageId() {
-        var messageId = document.getElementById('clickId');
-        idMessage = messageId.getAttribute('data-id');
+    function GetMessageId(event) {
+        idMessage = event.getAttribute('data-id');
 
         $.ajax({
             type: 'POST',
@@ -174,8 +173,7 @@
     var messageIdOpen;
 
     function GetMessageIdOpen() {
-        var messageId = document.getElementById('clickIdOpen');
-        idMessageOpen = messageId.getAttribute('data-id');
+        idMessageOpen = event.getAttribute('data-id');
 
         $.ajax({
             type: 'POST',

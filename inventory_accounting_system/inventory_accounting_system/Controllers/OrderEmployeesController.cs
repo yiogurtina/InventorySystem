@@ -139,22 +139,18 @@ namespace inventory_accounting_system.Controllers
 
         #region Status
 
-        public ActionResult OrderStatus(string idMessage)
+        public JsonResult OrderStatus(string idMessage)
         {
             var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessage);
             if (messageId != null && messageId.Status == "New")
             {
-
                 messageId.Status = "Open";
-              
                 _context.Update(messageId);
                 _context.SaveChanges();
             }
 
-
-            return RedirectToAction(nameof(Index));
+            return Json(messageId.Status);
         }
-
 
         #endregion
 
@@ -171,8 +167,6 @@ namespace inventory_accounting_system.Controllers
                 _context.Update(messageId);
                 _context.SaveChanges();
             }
-
-
             return RedirectToAction(nameof(Index));
         }
 
