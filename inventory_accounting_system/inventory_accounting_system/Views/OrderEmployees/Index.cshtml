@@ -44,19 +44,19 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdOpen()" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
-                    <p style="color: white">
-                        от:
-                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </p>
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
+                        <strong > @Html.DisplayFor(modelItem => item.Title)</strong>
+                    </h4>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
-                </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
+                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                </div> <br /><hr/>
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
 
                 <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
 
@@ -72,19 +72,20 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="btn btn-danger" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdInprogress()" id="clickIdInInprogress" href="#imageGallery-@item.Id" style="width: 100%">
-                    <p style="color: white">
-                        от:
-                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </p>
+                    
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
+                        <strong > @Html.DisplayFor(modelItem => item.Title)</strong>
+                    </h4>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
-                </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
+                   <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                </div> <br /><hr/>
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
 
                 <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
                 

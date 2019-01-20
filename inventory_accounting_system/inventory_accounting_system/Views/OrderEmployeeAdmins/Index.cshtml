@@ -19,27 +19,28 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
-                    <p style="color: white">
-                        от:
-                        @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) :
-                        @Html.DisplayFor(modelItem => item.TitleAdmin)
 
-                    </p>
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) -
+                        <strong> @Html.DisplayFor(modelItem => item.TitleAdmin)</strong>
+                    </h4>
+
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.TitleAdmin)</h3><br />
+
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.TitleAdmin)</h5><br />
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.ContentUser)</h2>
+                    <strong style="color: dimgrey">Прекреплённое сообщение:</strong> <h5>@Html.DisplayFor(modelItem => item.ContentUser)</h5>
                 </div> <br />
-                <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.ContentAdmin)</h2>
-                </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFromAdmin)</p>
+                <strong style="color: dimgrey">Сообщение:</strong> <h4>@Html.DisplayFor(modelItem => item.ContentAdmin)</h4>
+                
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFromAdmin) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateToAdmin) </p>
 
                 <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Ответить</a>
-
             </div>
+
         </div>
 
     }
@@ -52,25 +53,25 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdOpen()" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
-                    <p style="color: white">
-                        от:
-                        @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) :
-                        @Html.DisplayFor(modelItem => item.TitleAdmin)
-                    </p>
-                </a>
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) -
+                        <strong> @Html.DisplayFor(modelItem => item.TitleAdmin)</strong>
+                    </h4>
+
+                </a>    
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.TitleAdmin)</h3><br />
+
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.TitleAdmin)</h5><br />
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.ContentUser)</h2>
-                </div> <br />s
-                <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.ContentAdmin)</h2>
+                    <strong style="color: dimgrey">Прекреплённое сообщение:</strong> <h5>@Html.DisplayFor(modelItem => item.ContentUser)</h5>
                 </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFromAdmin)</p>
+                <strong style="color: dimgrey">Сообщение:</strong> <h4>@Html.DisplayFor(modelItem => item.ContentAdmin)</h4>
+
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFromAdmin) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateToAdmin) </p>
 
                 <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Ответить</a>
-
             </div>
         </div>
     }
