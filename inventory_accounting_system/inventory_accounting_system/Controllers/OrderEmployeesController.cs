@@ -155,6 +155,7 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         #endregion
 
         #region StatusOpen
