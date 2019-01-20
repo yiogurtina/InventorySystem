@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<inventory_accounting_system.Models.OrderEmployee>
+@model IEnumerable<inventory_accounting_system.Models.OrderEmployeeAdmin>
 
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
@@ -10,84 +10,67 @@
 
 <h2>Index</h2>
 
+
 @foreach (var item in Model)
 {
-    if (item.Status == "New")
+    if (item.StatusAdmin == "New")
     {
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="btn btn-success" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageId()" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
                     <p style="color: white">
                         от:
-                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
-                        @Html.DisplayFor(modelItem => item.Title)
+                        @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) :
+                        @Html.DisplayFor(modelItem => item.TitleAdmin)
 
                     </p>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <h3>@Html.DisplayFor(modelItem => item.TitleAdmin)</h3><br />
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
+                    <h2>@Html.DisplayFor(modelItem => item.ContentUser)</h2>
                 </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
+                <div style="width: 100%">
+                    <h2>@Html.DisplayFor(modelItem => item.ContentAdmin)</h2>
+                </div> <br />
+                <p>@Html.DisplayFor(modelItem => item.DateFromAdmin)</p>
+
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Ответить</a>
+
             </div>
         </div>
+
     }
 }
 
 @foreach (var item in Model)
 {
-    if (item.Status == "Open")
+    if (item.StatusAdmin == "Open")
     {
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a class="btn btn-primary" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdOpen()" id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
                     <p style="color: white">
                         от:
-                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
-                        @Html.DisplayFor(modelItem => item.Title)
+                        @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) :
+                        @Html.DisplayFor(modelItem => item.TitleAdmin)
                     </p>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                <h3>@Html.DisplayFor(modelItem => item.TitleAdmin)</h3><br />
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
-                </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
-
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
-
-            </div>
-        </div>
-    }
-}
-
-@foreach (var item in Model)
-{
-    if (item.Status == "Inprogress")
-    {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <a class="btn btn-danger" data-toggle="collapse" data-id="@item.Id" onclick="GetMessageIdInprogress()" id="clickIdInInprogress" href="#imageGallery-@item.Id" style="width: 100%">
-                    <p style="color: white">
-                        от:
-                        @Html.DisplayFor(modelItem => item.EmployeeTo.Name) :
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </p>
-                </a>
-            </div>
-            <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3><br />
+                    <h2>@Html.DisplayFor(modelItem => item.ContentUser)</h2>
+                </div> <br />s
                 <div style="width: 100%">
-                    <h2>@Html.DisplayFor(modelItem => item.Content)</h2>
+                    <h2>@Html.DisplayFor(modelItem => item.ContentAdmin)</h2>
                 </div> <br />
-                <p>@Html.DisplayFor(modelItem => item.DateFrom)</p>
+                <p>@Html.DisplayFor(modelItem => item.DateFromAdmin)</p>
 
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
-                
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Ответить</a>
+
             </div>
         </div>
     }
@@ -166,17 +149,16 @@
 </div>
 
 
-
-
 <script>
     var idMessage;
+
     function GetMessageId() {
         var messageId = document.getElementById('clickId');
         idMessage = messageId.getAttribute('data-id');
 
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("OrderStatus", "OrderEmployees")',
+            url: '@Url.Action("OrderStatusAdmin", "OrderEmployeeAdmins")',
             data: {
                 idMessage: idMessage
             },
@@ -187,13 +169,16 @@
     }
 
     var idMessageOpen;
+    var messageOnId = [];
+    var messageIdOpen;
+
     function GetMessageIdOpen() {
         var messageId = document.getElementById('clickIdOpen');
         idMessageOpen = messageId.getAttribute('data-id');
 
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("OrderStatusOpen", "OrderEmployees")',
+            url: '@Url.Action("OrderStatusOpenAdmin", "OrderEmployeeAdmins")',
             data: {
                 idMessageOpen: idMessageOpen
             },
@@ -210,14 +195,14 @@
 
     var messageOnIdOpen = [];
     var messageOnIdOpenUser;
-    
+
 
     function showModalSendOrderAdmin() {
         $("#newModalOrderAdmin").modal();
         officeIdAdmin = document.getElementById('officeIdSelectAdmin').children[0].value;
         employeeFromIdAdmin = document.getElementById('EmployeeIdSelectAdmin').children[0].value;
         employeeToIdAdmin = document.getElementById('EmployeeToIdSelectAdmin').children[0].value;
-        
+
     }
 
     function OnChangeOfficeIdAdmin(e) {
@@ -229,12 +214,12 @@
     function OnChangeEmployeeToIdAdmin(e) {
         employeeToIdAdmin = e.value;
     }
-    
+
 
     function GetOrderEmployeeAdmin() {
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("OrderSendAdmin", "OrderEmployees")',
+            url: '@Url.Action("OrderSendAdmin", "OrderEmployeeAdmins")',
             data: {
                 idMessageOpen: idMessageOpen,
                 messageOnIdOpenUser: messageOnIdOpenUser,
@@ -249,5 +234,4 @@
             }
         });
     }
-
 </script>

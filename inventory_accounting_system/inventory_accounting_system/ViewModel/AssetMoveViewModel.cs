@@ -12,4 +12,10 @@ namespace inventory_accounting_system.ViewModel
         public AssetsMoveStory AssetsMoveStory { get; set; }
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
     }
+
+    public class DetailsAssetViewModel
+    {
+        public Asset Asset { get; set; }
+        public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
+    }
 }

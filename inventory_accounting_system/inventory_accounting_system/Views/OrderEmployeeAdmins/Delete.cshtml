@@ -1,0 +1,81 @@
+﻿@model inventory_accounting_system.Models.OrderEmployeeAdmin
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>OrderEmployeeAdmin</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TitleAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TitleAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ContentUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContentUser)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ContentAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContentAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFromAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateFromAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateToAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateToAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StatusAdmin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeFromAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeFromAdmin.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeToAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeToAdmin.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OfficeAdmin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OfficeAdmin.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderEmployee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderEmployee.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

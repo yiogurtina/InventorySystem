@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string dateAction = @ViewBag.dateAction;
 }
 
 <h2>Имущество</h2>
@@ -66,7 +67,7 @@
     <tbody>
     @foreach (var item in Model)
     {
-        <tr>
+        <tr >
             <td>
                 <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
             </td>
@@ -131,10 +132,18 @@
                 
                 <div class="row">
                     <div class="col-md-4">
-                        <form >
+                        <form>
                             <div class="form-group" id="officeSelect">
-                                <label class="control-label">Офисы</label>
-                                <select class="form-control" id="officeIdSelect" onchange="OnChangeOfficeId(this)"  style=" width: 270px !important;" asp-items="ViewBag.OfficeId"></select>
+                                <label class="control-label">Офис/Склад</label>
+                                <select class="form-control" id="officeIdSelect" onchange="OnChangeOfficeId(this)" style=" width: 270px !important;" asp-items="ViewBag.OfficeId"></select>
+                            </div>
+                            <div class="form-group" id="employeeSelect">
+                                <label class="control-label">Сотрудник</label>
+                                <select class="form-control" id="employeeIdSelect" onchange="OnChangeEmployeeId(this)" style=" width: 270px !important;" asp-items="ViewBag.EmployeeId"></select>
+                            </div>
+                            <div class="form-group" id="dateAction">
+                                <label class="control-label">Дата</label>
+                                <input id="dateAction" type="date" class="form-control" style=" width: 270px !important;" value="@dateAction" />
                             </div>
                         </form>
                     </div>
@@ -159,10 +168,14 @@
     <script>
 
         var officeId;
+        var employeeId;
+        var dateAction;
 
         function modalShowHendler() {
             $("#newAssetModal").modal();
             officeId = document.getElementById('officeIdSelect').children[0].value;
+            employeeId = document.getElementById('employeeIdSelect').children[0].value;
+            dateAction = document.getElementById('dateAction').value;
         }
 
         checkedCheckBox = [];
@@ -181,13 +194,24 @@
             officeId = e.value;
         }
 
+        function OnChangeEmployeeId(e) {
+            employeeId = e.value;
+        }
+        
+
+
         function getCheckedCheckBoxes() {
+            employeeId = document.getElementById('employeeIdSelect').children[0].value;
+            dateAction = document.getElementById('dateAction').children[0].value;
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Check", "Assets")',
                 data: {
                     officeId: officeId,
-                    assetId: checkedCheckBox
+                    assetId: checkedCheckBox,
+                    employeeId: employeeId,
+                    dateAction: dateAction,
+                    inIndex: 1
                 },
                 success: function (data) {
                     console.log('success!');

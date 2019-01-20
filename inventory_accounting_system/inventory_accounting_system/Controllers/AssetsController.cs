@@ -46,14 +46,15 @@ namespace inventory_accounting_system.Controllers
         public async Task<IActionResult> Index(string searchString, Sorting sorting = Sorting.NameAsc)
         {
             ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
+            ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
 
-            var mainStorage = _context.Storages.FirstOrDefault(s=>s.IsMain);
+            var mainStorage = _context.Offices.FirstOrDefault(s=>s.IsMain);
             var assets = _context.Assets
                 .Include(a => a.Category)
-                .Include(a=>a.Storage)
                 .Include(a => a.Supplier)
                 .Where(a => a.IsActive)
-                .Where(a => a.StorageId == mainStorage.Id);
+                .Where(a => a.OfficeId == mainStorage.Id);
 
             #region Sorting
 
@@ -117,6 +118,26 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
+        #region CategoryAssets
+
+        public async Task<IActionResult> CategoryAssets(string officeId, string categoryId)
+        {
+            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
+            ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
+
+
+            var assets = _context.Assets
+                .Include(a => a.Category)
+                .Include(a => a.Supplier)
+                .Where(a => a.IsActive == false)
+                .Where(a => a.OfficeId == officeId)
+                .Where(a => a.CategoryId == categoryId);
+            return View(await assets.ToListAsync());
+        }
+
+        #endregion
+
         #region Details
 
         public async Task<IActionResult> Details(string id)
@@ -135,7 +156,19 @@ namespace inventory_accounting_system.Controllers
                 return NotFound();
             }
 
-            return View(asset);
+            DetailsAssetViewModel model = new DetailsAssetViewModel()
+            {
+                Asset = asset,
+                AssetsMoveStories = _context.AssetsMoveStories
+                                    .Where(f => f.AssetId == id)
+                                    .Include(t => t.EmployeeFrom)
+                                    .Include(t => t.OfficeFrom)
+                                    .Include(t => t.EmployeeTo)
+                                    .Include(t => t.OfficeTo)
+            };
+
+            return View(model);
+            //return View(asset);
         }
 
         #endregion
@@ -172,22 +205,24 @@ namespace inventory_accounting_system.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset, string serialNum, string eventId)
         {
-            var storage = _context.Storages.FirstOrDefault(s => s.IsMain);
+            var storage = _context.Offices.FirstOrDefault(s => s.IsMain);
             var categoryPrefix = _context.Categories
                 .Where(c => c.Id == asset.CategoryId)
                 .Select(c => c.Prefix)
                 .FirstOrDefaultAsync();
+            var admin = await _userManager.FindByNameAsync("admin");
 
             if (ModelState.IsValid)
             {
                 asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
                 asset.SerialNum = serialNum;
                 
+
                 asset.IsActive = true;
                 if (storage != null)
                 {
-                    asset.StorageId = storage.Id;
-                    asset.EmployeeId = storage.OwnerId;
+                    asset.OfficeId = storage.Id;
+                    asset.EmployeeId = admin.Id;
                 }
 
                 if (asset.Image != null)
@@ -408,7 +443,7 @@ namespace inventory_accounting_system.Controllers
             {
                 try
                 {
-                    _context.Update(assetsMoveStory);
+                    _context.Add(assetsMoveStory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -486,7 +521,7 @@ namespace inventory_accounting_system.Controllers
 
         #region Check
 
-        public ActionResult Check(string[] assetId, string officeId)
+        public ActionResult Check(string[] assetId, string officeId, string employeeId, string dateAction,int inIndex)
         {
             foreach (var item in assetId)
             {
@@ -497,9 +532,86 @@ namespace inventory_accounting_system.Controllers
                     assetIdFind.OfficeId = officeId;
                     _context.Update(assetIdFind);
                     _context.SaveChanges();
+
+                    //DateTime dateStart = DateTime.Parse(dateAction);
+                    DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
+                    DateTime dateEnd = DateTime.Parse("2100-01-01");
+
+                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory
+                    {
+                        AssetId = assetIdFind.Id,
+                        EmployeeFromId = assetIdFind.EmployeeId,
+                        OfficeFromId = assetIdFind.OfficeId,
+                        EmployeeToId = employeeId,
+                        OfficeToId = officeId,
+                        DateStart = dateStart,
+                        DateEnd = dateEnd
+                    };
+
+                    _context.Add(assetsMoveStory);
+                    _context.SaveChanges();
+
                 }
             }
-            return RedirectToAction(nameof(Index));
+            if (inIndex == 1) {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+               // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
+                return RedirectToAction("Index", "Offices");
+            }
+            
+            //
+        }
+
+        #endregion
+
+        #region CheckOnMainStorage
+
+        public ActionResult CheckOnMainStorage(string[] assetId, string officeId, string employeeId, string dateAction, int inIndex)
+        {
+            foreach (var item in assetId)
+            {
+                var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
+                if (assetIdFind != null)
+                {
+                    assetIdFind.IsActive = true;
+                    assetIdFind.OfficeId = officeId;
+                    _context.Update(assetIdFind);
+                    _context.SaveChanges();
+
+                    //DateTime dateStart = DateTime.Parse(dateAction);
+                    DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
+                    DateTime dateEnd = DateTime.Parse("2100-01-01");
+
+                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory
+                    {
+                        AssetId = assetIdFind.Id,
+                        EmployeeFromId = assetIdFind.EmployeeId,
+                        OfficeFromId = assetIdFind.OfficeId,
+                        EmployeeToId = employeeId,
+                        OfficeToId = officeId,
+                        DateStart = dateStart,
+                        DateEnd = dateEnd
+                    };
+
+                    _context.Add(assetsMoveStory);
+                    _context.SaveChanges();
+
+                }
+            }
+            if (inIndex == 1)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
+                return RedirectToAction("Index", "Offices");
+            }
+
+            //
         }
 
         #endregion

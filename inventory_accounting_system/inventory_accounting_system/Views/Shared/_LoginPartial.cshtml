@@ -27,6 +27,19 @@
 
                 </li>
             }
+            @if (User.IsInRole("Admin"))
+            {
+                <li>
+                    <a class="glyphicon glyphicon-bell"
+                       style="color: aliceblue;"
+                       asp-area=""
+                       asp-controller="OrderEmployeeAdmins"
+                       asp-action="Index">
+                        @await Component.InvokeAsync("OrderEmployeeAdminVM")
+                    </a>
+
+                </li>
+            }
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Выход</button>
             </li>

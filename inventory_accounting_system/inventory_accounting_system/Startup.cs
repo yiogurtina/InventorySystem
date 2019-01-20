@@ -12,6 +12,7 @@ using inventory_accounting_system.Data;
 using inventory_accounting_system.Interface;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.Services;
+using inventory_accounting_system.Hubs;
 
 namespace inventory_accounting_system
 {
@@ -42,6 +43,7 @@ namespace inventory_accounting_system
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<FileUploadService>();
             services.AddMvc();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -60,6 +62,11 @@ namespace inventory_accounting_system
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseMvc(routes =>
             {

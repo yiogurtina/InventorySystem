@@ -27,5 +27,7 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Имущество")]
         public IEnumerable<Asset> Assets { get; set; }
 
+        public bool IsMain { get; set; }
+
     }
 }

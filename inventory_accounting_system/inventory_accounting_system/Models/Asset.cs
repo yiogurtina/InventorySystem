@@ -59,8 +59,7 @@ namespace inventory_accounting_system.Models
         public bool InStock { get; set; }
 
         public bool IsActive { get; set; }
-        public Storage Storage { get; set; }
-        public string StorageId { get; set; }
+        
         public IEnumerable<EventAsset> AssetEvents { get; set; }
 
     }

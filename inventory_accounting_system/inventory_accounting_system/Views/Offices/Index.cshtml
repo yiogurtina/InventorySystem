@@ -61,7 +61,7 @@
                                 @foreach (var item in Model.CategoryAssetCountViewModels)
                                 {
                                     <tr>
-                                        <th scope="row"><a asp-controller="Offices" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
+                                        <th scope="row"><a asp-controller="Assets" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
                                         <td>@item.AssetsCount</td>
                                         <td><input type="checkbox"></td>
                                     </tr>
