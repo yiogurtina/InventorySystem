@@ -35,7 +35,7 @@
     }
 }
 
-<strong>Прочитанные</strong><br /><hr />
+@* <strong>Прочитанные</strong><br /><hr /> *@
 
 
 
@@ -175,10 +175,24 @@
 
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("asdasdasdasdasdasdsadasdsads")
+        var colorIdDiv2 = document.getElementById(`imageGalleryOpen-${idMessage}`);
+        if (colorIdDiv2) {
+            colorIdDiv2.className = 'panel-body collapse in';
+            console.log(colorIdDiv2);
+        }
+    })
+    
+    
     var idMessage;
     var idMessageOpen;
     function GetMessageId(event) {
         idMessage = event.getAttribute('data-id');
+        
+        var colorIdDiv = document.getElementById(`imageGalleryNew-${idMessage}`);
+        colorIdDiv.id = `imageGalleryOpen-${idMessage}`;
+        colorIdDiv.className = 'panel-body collapse in';
 
         $.ajax({
             type: 'POST',
@@ -187,8 +201,16 @@
                 idMessage: idMessage
             },
             success: function (data) {
-                console.log('success!');
-                GetMessageStatus(idMessage);
+                console.log(document.getElementById(`imageGalleryOpen-${idMessage}`));
+                window.location.reload();
+//                var colorIdDiv2 = document.getElementById(`imageGalleryOpen-${idMessage}`);
+//                colorIdDiv2.className = 'panel-body collapse in';
+//                console.log(colorIdDiv2);
+//                console.log(idMessage);
+                console.log("sdfkajdfksadfjbsfdkbsad");
+                debugger;
+
+//                GetMessageStatus(idMessage);
             }
         });
     }
@@ -204,7 +226,8 @@
             success: function (result) {
                 var status = JSON.parse(result);
                 if (status === "Open") {
-                    setTimeout(function () { window.location = window.location; }, 100);
+//                    setTimeout(function () { window.location = window.location; }, 100);
+                    window.location.reload();
                 }
                 console.log(status);
             }
