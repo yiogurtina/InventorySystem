@@ -10,13 +10,13 @@ using inventory_accounting_system.Models;
 using inventory_accounting_system.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace inventory_accounting_system.Controllers
 {
     public class OrderEmployeesController : Controller
     {
         #region Dependency Injection
-
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Employee> _userManager;
 
@@ -139,18 +139,34 @@ namespace inventory_accounting_system.Controllers
 
         #region Status
 
-        public JsonResult OrderStatus(string idMessage)
+        public IActionResult OrderStatus(string idMessage)
         {
+            
             var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessage);
             if (messageId != null && messageId.Status == "New")
             {
                 messageId.Status = "Open";
                 _context.Update(messageId);
                 _context.SaveChanges();
-            }
 
-            return Json(messageId.Status);
+            }
+            return RedirectToAction(nameof(Index));
         }
+
+        public string GetMsgOrderStatus(string idMessage)
+        {
+            var msgStatusJson = String.Empty;
+            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessage);
+            if (messageId != null)
+            {
+                string status = messageId.Status;
+                string statusMsg = status;
+                msgStatusJson = statusMsg;
+            }
+            return JsonConvert.SerializeObject(msgStatusJson);
+        }
+
+
 
         #endregion
 

@@ -17,7 +17,7 @@
             @if (User.IsInRole("Manager"))
             {
                 <li>
-                    <a class="glyphicon glyphicon-bell"
+                    <a id="update" class="glyphicon glyphicon-bell"
                        style="color: aliceblue;"
                        asp-area=""
                        asp-controller="OrderEmployees"
@@ -30,7 +30,7 @@
             @if (User.IsInRole("Admin"))
             {
                 <li>
-                    <a class="glyphicon glyphicon-bell"
+                    <a id="update" class="glyphicon glyphicon-bell"
                        style="color: aliceblue;"
                        asp-area=""
                        asp-controller="OrderEmployeeAdmins"
@@ -52,3 +52,12 @@ else
         <li><a asp-area="" asp-controller="Account" asp-action="Login">Вход</a></li>
     </ul>
 }
+
+
+<script>
+
+    /*setInterval(function(){
+        $("#update").load("index.php #block");
+    }, 30000);*/
+
+</script>
