@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190119181001_Init")]
-    partial class Init
+    [Migration("20190122062532_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -316,6 +316,44 @@ namespace inventory_accounting_system.Migrations
                     b.ToTable("OrderEmployees");
                 });
 
+            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployeeAdmin", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ContentAdmin");
+
+                    b.Property<string>("ContentUser");
+
+                    b.Property<DateTime>("DateFromAdmin");
+
+                    b.Property<DateTime?>("DateToAdmin");
+
+                    b.Property<string>("EmployeeFromAdminId");
+
+                    b.Property<string>("EmployeeToAdminId");
+
+                    b.Property<string>("OfficeAdminId");
+
+                    b.Property<string>("OrderEmployeeId");
+
+                    b.Property<string>("StatusAdmin");
+
+                    b.Property<string>("TitleAdmin");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeFromAdminId");
+
+                    b.HasIndex("EmployeeToAdminId");
+
+                    b.HasIndex("OfficeAdminId");
+
+                    b.HasIndex("OrderEmployeeId");
+
+                    b.ToTable("OrderEmployeeAdmins");
+                });
+
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>
                 {
                     b.Property<string>("Id")
@@ -563,6 +601,25 @@ namespace inventory_accounting_system.Migrations
                     b.HasOne("inventory_accounting_system.Models.Office", "Office")
                         .WithMany()
                         .HasForeignKey("OfficeId");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployeeAdmin", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeFromAdmin")
+                        .WithMany()
+                        .HasForeignKey("EmployeeFromAdminId");
+
+                    b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeToAdmin")
+                        .WithMany()
+                        .HasForeignKey("EmployeeToAdminId");
+
+                    b.HasOne("inventory_accounting_system.Models.Office", "OfficeAdmin")
+                        .WithMany()
+                        .HasForeignKey("OfficeAdminId");
+
+                    b.HasOne("inventory_accounting_system.Models.OrderEmployee", "OrderEmployee")
+                        .WithMany()
+                        .HasForeignKey("OrderEmployeeId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Storage", b =>

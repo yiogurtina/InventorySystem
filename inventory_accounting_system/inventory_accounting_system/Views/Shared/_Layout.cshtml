@@ -10,9 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Inventory Accounting System</title>
 
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        @*<link rel="stylesheet" href="~/css/site.css"/>*@
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -21,55 +23,56 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
+
 <body>
     @if (SignInManager.IsSignedIn(User))
     {
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-area="" asp-controller="Offices" asp-action="Index" class="navbar-brand">inventory_accounting_system</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-
-                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                        {
-                            <li><a asp-area="" asp-controller="Categories" asp-action="Index">Категории</a></li>
-                            <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщик</a></li>
-                            <li><a asp-area="" asp-controller="Events" asp-action="Index">События</a></li>
-                            <li><a asp-area="" asp-controller="Assets" asp-action="Index">Имущество</a></li>
-                            @*<li><a asp-area="" asp-controller="Offices" asp-action="Index" onclick="GetOfficeId()">Офис</a></li>*@
-                            <li><a asp-area="" asp-controller="Offices" asp-action="Index">Офис</a></li>
-                            <li><a asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a></li>
-                            <li><a asp-area="" asp-controller="Employes" asp-action="Users">Сотрудники</a></li>
-                        }
-                    </ul>
-                    @await Html.PartialAsync("_LoginPartial")
-                </div>
-            </div>
-        </nav>
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; 2018 - Inventory Accounting System</p>
-            </footer>
+        <!-- Sidebar -->
+        <div class="w3-sidebar w3-bar-block w3-animate-left" style="display: none; z-index: 5" id="mySidebar">
+            <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+                <a class="w3-bar-item w3-button glyphicon glyphicon-home" asp-area="" asp-controller="Home" asp-action="Index"> Домой</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Categories" asp-action="Index">Категории</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Suppliers" asp-action="Index">Поставщик</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Events" asp-action="Index">События</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Assets" asp-action="Index">Имущество</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Offices" asp-action="Index">Офис</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="Employes" asp-action="Users">Сотрудники</a>
+            }
+            @await Html.PartialAsync("_LoginPartial")
         </div>
+
+        <!-- Page Content -->
+        <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor: pointer" id="myOverlay"></div>
+
+        <div>
+            <button class="w3-button w3-white w3-xxlarge" onclick="w3_open()">&#9776;</button>
+
+            <div class="container">
+                @RenderBody()
+                <hr />
+            </div>
+
+            <div class="container">
+                <hr />
+                <footer>
+                    <p>&copy; 2018 - Inventory Accounting System</p>
+                </footer>
+            </div>
+        </div>
+
+
     }
     else
     {
-        <div class="container body-content">
+        <div class="container">
             @RenderBody()
             <hr />
-
         </div>
     }
+
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -94,9 +97,21 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+
 <script>
     $.ajax({
         type: 'PUT',
         url: '@Url.Action("UpdateExpiredEvents", "Events")'
     });
+
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("myOverlay").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("myOverlay").style.display = "none";
+    }
 </script>

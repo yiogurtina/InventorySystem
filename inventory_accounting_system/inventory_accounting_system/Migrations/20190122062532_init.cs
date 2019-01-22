@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace inventory_accounting_system.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -425,6 +425,51 @@ namespace inventory_accounting_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderEmployeeAdmins",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ContentAdmin = table.Column<string>(nullable: true),
+                    ContentUser = table.Column<string>(nullable: true),
+                    DateFromAdmin = table.Column<DateTime>(nullable: false),
+                    DateToAdmin = table.Column<DateTime>(nullable: true),
+                    EmployeeFromAdminId = table.Column<string>(nullable: true),
+                    EmployeeToAdminId = table.Column<string>(nullable: true),
+                    OfficeAdminId = table.Column<string>(nullable: true),
+                    OrderEmployeeId = table.Column<string>(nullable: true),
+                    StatusAdmin = table.Column<string>(nullable: true),
+                    TitleAdmin = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderEmployeeAdmins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployeeAdmins_AspNetUsers_EmployeeFromAdminId",
+                        column: x => x.EmployeeFromAdminId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployeeAdmins_AspNetUsers_EmployeeToAdminId",
+                        column: x => x.EmployeeToAdminId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployeeAdmins_Offices_OfficeAdminId",
+                        column: x => x.OfficeAdminId,
+                        principalTable: "Offices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployeeAdmins_OrderEmployees_OrderEmployeeId",
+                        column: x => x.OrderEmployeeId,
+                        principalTable: "OrderEmployees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AssetOnStorages",
                 columns: table => new
                 {
@@ -581,6 +626,26 @@ namespace inventory_accounting_system.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployeeAdmins_EmployeeFromAdminId",
+                table: "OrderEmployeeAdmins",
+                column: "EmployeeFromAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployeeAdmins_EmployeeToAdminId",
+                table: "OrderEmployeeAdmins",
+                column: "EmployeeToAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployeeAdmins_OfficeAdminId",
+                table: "OrderEmployeeAdmins",
+                column: "OfficeAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployeeAdmins_OrderEmployeeId",
+                table: "OrderEmployeeAdmins",
+                column: "OrderEmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderEmployees_EmployeeFromId",
                 table: "OrderEmployees",
                 column: "EmployeeFromId");
@@ -635,7 +700,7 @@ namespace inventory_accounting_system.Migrations
                 name: "AssetsMoveStories");
 
             migrationBuilder.DropTable(
-                name: "OrderEmployees");
+                name: "OrderEmployeeAdmins");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -650,13 +715,16 @@ namespace inventory_accounting_system.Migrations
                 name: "Assets");
 
             migrationBuilder.DropTable(
+                name: "OrderEmployees");
+
+            migrationBuilder.DropTable(
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Suppliers");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Offices");
