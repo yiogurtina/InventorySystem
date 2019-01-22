@@ -203,7 +203,11 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset, string serialNum, string eventId)
+        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")]
+            Asset asset, 
+            string serialNum, 
+            string eventId, 
+            int inventPrefix)
         {
             var storage = _context.Offices.FirstOrDefault(s => s.IsMain);
             var categoryPrefix = _context.Categories
@@ -214,9 +218,25 @@ namespace inventory_accounting_system.Controllers
 
             if (ModelState.IsValid)
             {
-                asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
+                if (inventPrefix != null)
+                {
+                    asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString($"D{inventPrefix}") + asset.InventPrefix;
+                }
+                else
+                {
+                    asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
+                }
+                
                 asset.SerialNum = serialNum;
                 
+                InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory
+                {
+                    Been = asset.InventNumber,
+                    CreateDate = DateTime.Now,
+                    AssetIdCreate = asset.Id
+                   
+                };
+                _context.Add(inventoryNumberHistory);
 
                 asset.IsActive = true;
                 if (storage != null)
@@ -306,7 +326,13 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset, string serialNum, string currentPath, string inventNumber)
+        public async Task<IActionResult> Edit(string id, 
+            [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")]
+            Asset asset, 
+            InventoryNumberHistory inventNumberHistory,
+            string serialNum, 
+            string currentPath,     
+            string inventNumber)
         {
             if (id != asset.Id)
             {
@@ -321,10 +347,19 @@ namespace inventory_accounting_system.Controllers
                 ModelState.AddModelError("InventNumber", "Такой номер уже существует");
             }
 
+            var oldInventoryNumber = _context.InventoryNumberHistories.FirstOrDefault(i => i.AssetIdCreate == asset.Id);
+           
             if (ModelState.IsValid)
             {
                 try
                 {
+                    if (oldInventoryNumber != null)
+                    {
+                        oldInventoryNumber.Become = inventNumber;
+                        oldInventoryNumber.ChangeDate = DateTime.Now;
+                        _context.Update(oldInventoryNumber);
+                    }
+
                     asset.SerialNum = serialNum;
                     if (asset.Image != null)
                     {
@@ -353,6 +388,7 @@ namespace inventory_accounting_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
             return View(asset);

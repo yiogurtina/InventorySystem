@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace inventory_accounting_system.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,6 +34,22 @@ namespace inventory_accounting_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InventoryNumberHistories",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AssetIdCreate = table.Column<string>(nullable: true),
+                    Become = table.Column<string>(nullable: true),
+                    Been = table.Column<string>(nullable: true),
+                    ChangeDate = table.Column<DateTime>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryNumberHistories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,7 +255,7 @@ namespace inventory_accounting_system.Migrations
                     ImagePath = table.Column<string>(nullable: true),
                     InStock = table.Column<bool>(nullable: false),
                     InventNumber = table.Column<string>(nullable: true),
-                    InventPrefix = table.Column<string>(maxLength: 10, nullable: false),
+                    InventPrefix = table.Column<int>(maxLength: 10, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 20, nullable: false),
                     OfficeId = table.Column<string>(nullable: true),
@@ -698,6 +714,9 @@ namespace inventory_accounting_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "AssetsMoveStories");
+
+            migrationBuilder.DropTable(
+                name: "InventoryNumberHistories");
 
             migrationBuilder.DropTable(
                 name: "OrderEmployeeAdmins");

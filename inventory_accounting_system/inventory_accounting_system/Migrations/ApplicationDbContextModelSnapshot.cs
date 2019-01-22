@@ -39,8 +39,7 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("InventNumber");
 
-                    b.Property<string>("InventPrefix")
-                        .IsRequired()
+                    b.Property<int>("InventPrefix")
                         .HasMaxLength(10);
 
                     b.Property<bool>("IsActive");
@@ -263,6 +262,26 @@ namespace inventory_accounting_system.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("AssetEvents");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.InventoryNumberHistory", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetIdCreate");
+
+                    b.Property<string>("Become");
+
+                    b.Property<string>("Been");
+
+                    b.Property<DateTime?>("ChangeDate");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InventoryNumberHistories");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Office", b =>

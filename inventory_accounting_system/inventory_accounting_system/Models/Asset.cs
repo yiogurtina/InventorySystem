@@ -29,10 +29,10 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Инвентарный номер")]
         public string InventNumber { get; set; }
 
-        [Required(ErrorMessage = "Добавьте префикс категории")]
-        [StringLength(10, MinimumLength = 2, ErrorMessage = "Префикс категории не должен быть короче 2 символов и длиннее 10")]
-        [Display(Name = "Инвентарный префикс")]
-        public string InventPrefix { get; set; }
+//        [StringLength(10, MinimumLength = 3, ErrorMessage = "Маска не должна быть ментше 3 и больше 10")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Можно использовать только цифры")]
+        [Display(Name = "По умолчанию маска сотоит из 6 цифр")]
+        public int InventPrefix { get; set; }
 
         [Display(Name = "Дата")]
         public DateTime Date { get; set; } = DateTime.Now;
