@@ -252,6 +252,22 @@ namespace inventory_accounting_system.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string role, string email)
         {
+            var office = _context.Offices.Include(o => o.Employees).FirstOrDefault(o => o.Id == model.OfficeId);
+            var officeEmployees = office.Employees;
+            List<Employee> managers = new List<Employee>();
+            foreach (var emp in officeEmployees)
+            {
+                if (await _userManager.IsInRoleAsync(emp, "Manager"))
+                {
+                    managers.Add(emp);
+                }
+            }
+
+            if (managers.Count != 0)
+            {
+                ModelState.AddModelError("OfficeId", "У этого офиса есть менеджер");
+            }
+
             EmailService emailService = new EmailService();
 
             var userManager = _context.Users.FirstOrDefault(u => u.Email == email);
