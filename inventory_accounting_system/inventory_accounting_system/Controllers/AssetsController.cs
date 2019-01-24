@@ -49,11 +49,12 @@ namespace inventory_accounting_system.Controllers
             ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
             ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
 
-            var mainStorage = _context.Offices.FirstOrDefault(s=>s.IsMain);
+            var mainStorage = _context.Offices.FirstOrDefault(s => s.IsMain);
             var assets = _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.Supplier)
                 .Where(a => a.IsActive)
+                .Where(a => a.InStock)
                 .Where(a => a.OfficeId == mainStorage.Id);
 
             #region Sorting
@@ -103,7 +104,7 @@ namespace inventory_accounting_system.Controllers
             if (searchString != null)
             {
                 var assets1 = from m in _context.Assets
-                    select m;
+                              select m;
 
                 if (!string.IsNullOrEmpty(searchString))
                 {
@@ -130,7 +131,8 @@ namespace inventory_accounting_system.Controllers
             var assets = _context.Assets
                 .Include(a => a.Category)
                 .Include(a => a.Supplier)
-                .Where(a => a.IsActive == false)
+                .Where(a => a.IsActive == true)
+                .Where(a => a.InStock == false)
                 .Where(a => a.OfficeId == officeId)
                 .Where(a => a.CategoryId == categoryId);
             return View(await assets.ToListAsync());
@@ -165,6 +167,7 @@ namespace inventory_accounting_system.Controllers
                                     .Include(t => t.OfficeFrom)
                                     .Include(t => t.EmployeeTo)
                                     .Include(t => t.OfficeTo)
+                                    .OrderBy(t => t.DateCurrent)
             };
 
             return View(model);
@@ -557,29 +560,43 @@ namespace inventory_accounting_system.Controllers
 
         #region Check
 
-        public ActionResult Check(string[] assetId, string officeId, string employeeId, string dateAction,int inIndex)
+        public ActionResult Check(string[] assetId, string officeId, string employeeId, string dateAction, int inIndex)
         {
             foreach (var item in assetId)
             {
                 var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
                 if (assetIdFind != null)
                 {
-                    assetIdFind.IsActive = false;
+                    string officeFromId = assetIdFind.OfficeId;
+                    string employeeFromId = assetIdFind.EmployeeId;
+                    string officeToId = officeId;
+                    string employeeToId = employeeId;
+
+
+                    var OfficeFind = _context.Offices.FirstOrDefault(a => a.Id == officeId);
+
+                    assetIdFind.InStock = false;
+                    if (OfficeFind.IsMain)
+                    {
+                        assetIdFind.InStock = true;
+                    }
+
                     assetIdFind.OfficeId = officeId;
+                    assetIdFind.EmployeeId = employeeId;
                     _context.Update(assetIdFind);
                     _context.SaveChanges();
 
                     //DateTime dateStart = DateTime.Parse(dateAction);
                     DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
-                    DateTime dateEnd = DateTime.Parse("2100-01-01");
+                    DateTime dateEnd = DateTime.Parse("2100-01-01 0:00");
 
                     AssetsMoveStory assetsMoveStory = new AssetsMoveStory
                     {
                         AssetId = assetIdFind.Id,
-                        EmployeeFromId = assetIdFind.EmployeeId,
-                        OfficeFromId = assetIdFind.OfficeId,
-                        EmployeeToId = employeeId,
-                        OfficeToId = officeId,
+                        EmployeeFromId = employeeFromId,
+                        OfficeFromId = officeFromId,
+                        EmployeeToId = employeeToId,
+                        OfficeToId = officeToId,
                         DateStart = dateStart,
                         DateEnd = dateEnd
                     };
@@ -589,15 +606,16 @@ namespace inventory_accounting_system.Controllers
 
                 }
             }
-            if (inIndex == 1) {
+            if (inIndex == 1)
+            {
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-               // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
+                // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
                 return RedirectToAction("Index", "Offices");
             }
-            
+
             //
         }
 

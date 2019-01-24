@@ -111,7 +111,7 @@
                             <div class="form-group" id="dateAction">
                                 <label class="control-label">Дата</label>
                                 <input id="dateAction" type="date" value="@dateAction" class="form-control" style=" width: 270px !important;" />
-                               
+
                             </div>
                         </form>
                     </div>
@@ -141,9 +141,9 @@
 
         function modalShowHendler() {
             $("#newAssetModal").modal();
-            officeId = document.getElementById('officeIdSelect').children[0].value;
-            employeeId = document.getElementById('employeeIdSelect').children[0].value;
-            dateAction = document.getElementById('dateAction').value;
+            officeId = document.querySelector('#officeIdSelect').value;
+            employeeId = document.querySelector('#employeeIdSelect').value;
+            dateAction = document.querySelector('#dateAction').value;
         }
 
         checkedCheckBox = [];
@@ -169,18 +169,17 @@
 
 
         function getCheckedCheckBoxes() {
-            employeeId = document.getElementById('employeeIdSelect').children[0].value;
-            dateAction = document.getElementById('dateAction').children[0].value;
+            employeeId = document.querySelector('#employeeIdSelect').value;
+            dateAction = document.querySelector('#dateAction').value;
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("CheckOnMainStorage", "Assets")',
+                url: '@Url.Action("Check", "Assets")',
                 data: {
                     officeId: officeId,
                     assetId: checkedCheckBox,
                     employeeId: employeeId,
                     dateAction: dateAction,
-                    inIndex:0
-           
+                    inIndex: 0
                 },
                 success: function (data) {
                     console.log('success!');

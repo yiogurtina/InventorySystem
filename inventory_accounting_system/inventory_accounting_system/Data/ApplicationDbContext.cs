@@ -29,10 +29,54 @@ namespace inventory_accounting_system.Data
         }
 
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<AssetsMoveStory>()
+              .HasOne(p => p.OfficeFrom)
+              .WithMany(p => p.assetsMoveStoriesFrom)
+              .HasForeignKey(p => p.OfficeFromId);
+
+            modelBuilder.Entity<Office>()
+                .HasMany(c => c.assetsMoveStoriesFrom)
+                .WithOne(c => c.OfficeFrom)
+                .HasPrincipalKey(c => c.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AssetsMoveStory>()
+              .HasOne(p => p.OfficeTo)
+              .WithMany(p => p.assetsMoveStoriesTo)
+              .HasForeignKey(p => p.OfficeToId);
+
+            modelBuilder.Entity<Office>()
+                .HasMany(c => c.assetsMoveStoriesTo)
+                .WithOne(c => c.OfficeTo)
+                .HasPrincipalKey(c => c.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<AssetsMoveStory>()
+              .HasOne(p => p.EmployeeFrom)
+              .WithMany(p => p.assetsMoveStoriesFrom)
+              .HasForeignKey(p => p.EmployeeFromId);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(c => c.assetsMoveStoriesFrom)
+                .WithOne(c => c.EmployeeFrom)
+                .HasPrincipalKey(c => c.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AssetsMoveStory>()
+              .HasOne(p => p.EmployeeTo)
+              .WithMany(p => p.assetsMoveStoriesTo)
+              .HasForeignKey(p => p.EmployeeToId);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(c => c.assetsMoveStoriesTo)
+                .WithOne(c => c.EmployeeTo)
+                .HasPrincipalKey(c => c.Id)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

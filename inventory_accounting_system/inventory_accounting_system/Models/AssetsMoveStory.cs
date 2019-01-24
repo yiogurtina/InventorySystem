@@ -35,6 +35,13 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Дата конец")]
         public DateTime DateEnd { get; set; }
 
+        [Display(Name = "Дата системная")]
+        public DateTime DateCurrent { get; set; }
+
+        public AssetsMoveStory()
+        {
+            DateCurrent = DateTime.Now;
+        }
 
     }
 }
