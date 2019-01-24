@@ -190,7 +190,7 @@ namespace inventory_accounting_system.Controllers
 
         #region OrderSendAdmin
         //[Authorize(Roles = "User, Admin")]
-        public async Task<ActionResult> OrderSendAdmin(
+        public ActionResult OrderSendAdmin(
             string officeIdAdmin,
             string titleAdmin,
             string contentAdmin,

@@ -1,57 +1,58 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
-namespace inventory_accounting_system.Models
-{
-    public class Asset : Entity
-    {
-        [Required(ErrorMessage = "Название актива не должно быть пустым")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage="Название актива не должно быть короче 3 символов и длиннее 20")]
-        [RegularExpression("^[а-яА-Яa-zA-Z0-9 -]*$", ErrorMessage = "Можно использовать только буквы и цифры")]
-        [Display(Name = "Название")]
+namespace inventory_accounting_system.Models {
+    public class Asset : Entity {
+        [Required (ErrorMessage = "Название актива не должно быть пустым")]
+        [StringLength (20, MinimumLength = 3, ErrorMessage = "Название актива не должно быть короче 3 символов и длиннее 20")]
+        [RegularExpression ("^[а-яА-Яa-zA-Z0-9 -]*$", ErrorMessage = "Можно использовать только буквы и цифры")]
+        [Display (Name = "Название")]
         public string Name { get; set; }
 
-        [Display(Name = "Категория")]
+        [Display (Name = "Категория")]
         public string CategoryId { get; set; }
         public Category Category { get; set; }
 
         public string OfficeId { get; set; }
-        [Display(Name = "Офис")]
+
+        [Display (Name = "Офис")]
         public Office Office { get; set; }
 
         public string EmployeeId { get; set; }
-        [Display(Name = "Сотрудник")]
+
+        [Display (Name = "Сотрудник")]
         public Employee Employee { get; set; }
 
-        [Display(Name = "Инвентарный номер")]
+        [Display (Name = "Инвентарный номер")]
         public string InventNumber { get; set; }
 
-//        [StringLength(10, MinimumLength = 3, ErrorMessage = "Маска не должна быть ментше 3 и больше 10")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Можно использовать только цифры")]
-        [Display(Name = "По умолчанию маска сотоит из 6 цифр")]
+        
+        
+        [Display (Name = "Маска не может быть меньше 6")]
         public int InventPrefix { get; set; }
 
-        [Display(Name = "Дата")]
+        [Display (Name = "Дата")]
         public DateTime Date { get; set; } = DateTime.Now;
 
-        [Display(Name = "Поставщик")]
+        [Display (Name = "Поставщик")]
         public string SupplierId { get; set; }
         public Supplier Supplier { get; set; }
 
         public string SerialNum { get; set; }
 
         [NotMapped]
-        [Display(Name = "Изображение")]
+        [Display (Name = "Изображение")]
         public IFormFile Image { get; set; }
         public string ImagePath { get; set; }
 
         [NotMapped]
-        [Display(Name = "Технические документы")]
+        [Display (Name = "Технические документы")]
         public IFormFile Document { get; set; }
-        [Display(Name = "Технические документы")]
+
+        [Display (Name = "Технические документы")]
         public string DocumentPath { get; set; }
 
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
@@ -59,7 +60,7 @@ namespace inventory_accounting_system.Models
         public bool InStock { get; set; }
 
         public bool IsActive { get; set; }
-        
+
         public IEnumerable<EventAsset> AssetEvents { get; set; }
 
     }

@@ -1,38 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
+using inventory_accounting_system.Data;
+using inventory_accounting_system.Models;
+using inventory_accounting_system.Services;
+using inventory_accounting_system.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using inventory_accounting_system.Data;
-using inventory_accounting_system.Models;
-using System.IO;
-using System.Net.Mime;
-using Microsoft.AspNetCore.Hosting;
-using inventory_accounting_system.Services;
-using Microsoft.AspNetCore.Http;
-using inventory_accounting_system.ViewModel;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
-namespace inventory_accounting_system.Controllers
-{
+namespace inventory_accounting_system.Controllers {
     [Authorize]
-    public class AssetsController : Controller
-    {
+    public class AssetsController : Controller {
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;
-        static Random generator = new Random();
+        static Random generator = new Random ();
         private readonly IHostingEnvironment _appEnvironment;
         private readonly FileUploadService _fileUploadService;
         private readonly UserManager<Employee> _userManager;
 
-        public AssetsController(ApplicationDbContext context, IHostingEnvironment appEnvironment,
-            FileUploadService fileUploadService, UserManager<Employee> userManager)
-        {
+        public AssetsController (ApplicationDbContext context, IHostingEnvironment appEnvironment,
+            FileUploadService fileUploadService, UserManager<Employee> userManager) {
             _context = context;
             _appEnvironment = appEnvironment;
             _fileUploadService = fileUploadService;
@@ -42,12 +39,11 @@ namespace inventory_accounting_system.Controllers
         #endregion
 
         #region Index
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index(string searchString, Sorting sorting = Sorting.NameAsc)
-        {
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
-            ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
+        [Authorize (Roles = "Admin")]
+        public async Task<IActionResult> Index (string searchString, Sorting sorting = Sorting.NameAsc) {
+            ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
+            ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
+            ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
 
             var mainStorage = _context.Offices.FirstOrDefault(s => s.IsMain);
             var assets = _context.Assets
@@ -68,52 +64,49 @@ namespace inventory_accounting_system.Controllers
             ViewData["CategorySort"] = sorting == Sorting.CategoryAsc ? Sorting.CategoryDesc : Sorting.CategoryAsc;
             ViewData["SupplierSort"] = sorting == Sorting.SupplierAsc ? Sorting.SupplierDesc : Sorting.SupplierAsc;
 
-            switch (sorting)
-            {
+            switch (sorting) {
                 case Sorting.IsActiveDesc:
-                    assets = assets.OrderByDescending(s => s.IsActive.Equals(true));
+                    assets = assets.OrderByDescending (s => s.IsActive.Equals (true));
                     break;
                 case Sorting.NameDesc:
-                    assets = assets.OrderByDescending(s => s.Name);
+                    assets = assets.OrderByDescending (s => s.Name);
                     break;
                 case Sorting.InventNumberDesc:
-                    assets = assets.OrderByDescending(s => s.InventNumber.Length);
+                    assets = assets.OrderByDescending (s => s.InventNumber.Length);
                     break;
                 case Sorting.DateDesc:
-                    assets = assets.OrderByDescending(s => s.Date.Minute);
+                    assets = assets.OrderByDescending (s => s.Date.Minute);
                     break;
                 case Sorting.ImageDesc:
-                    assets = assets.OrderByDescending(s => s.Image.FileName);
+                    assets = assets.OrderByDescending (s => s.Image.FileName);
                     break;
                 case Sorting.DocumentDesc:
-                    assets = assets.OrderByDescending(s => s.Document);
+                    assets = assets.OrderByDescending (s => s.Document);
                     break;
                 case Sorting.CategoryDesc:
-                    assets = assets.OrderByDescending(s => s.Category.Name);
+                    assets = assets.OrderByDescending (s => s.Category.Name);
                     break;
                 case Sorting.SupplierDesc:
-                    assets = assets.OrderByDescending(s => s.Supplier.Name);
+                    assets = assets.OrderByDescending (s => s.Supplier.Name);
                     break;
                 default:
-                    assets = assets.OrderBy(s => s.Name);
+                    assets = assets.OrderBy (s => s.Name);
                     break;
             }
 
             #endregion
 
-            if (searchString != null)
-            {
+            if (searchString != null) {
                 var assets1 = from m in _context.Assets
                               select m;
 
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    assets1 = assets1.Where(s => s.Name.Contains(searchString));
+                if (!string.IsNullOrEmpty (searchString)) {
+                    assets1 = assets1.Where (s => s.Name.Contains (searchString));
                 }
-                return View(await assets1.ToListAsync());
+                return View (await assets1.ToListAsync ());
             }
 
-            return View(await assets.ToListAsync());
+            return View (await assets.ToListAsync ());
 
         }
 
@@ -121,12 +114,10 @@ namespace inventory_accounting_system.Controllers
 
         #region CategoryAssets
 
-        public async Task<IActionResult> CategoryAssets(string officeId, string categoryId)
-        {
-            ViewData["OfficeId"] = new SelectList(_context.Offices, "Id", "Title");
-            ViewData["EmployeeId"] = new SelectList(_context.Users, "Id", "Name");
-            ViewData["dateAction"] = DateTime.Now.ToString("yyyy-MM-dd");
-
+        public async Task<IActionResult> CategoryAssets (string officeId, string categoryId) {
+            ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
+            ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
+            ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
 
             var assets = _context.Assets
                 .Include(a => a.Category)
@@ -142,24 +133,20 @@ namespace inventory_accounting_system.Controllers
 
         #region Details
 
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+        public async Task<IActionResult> Details (string id) {
+            if (id == null) {
+                return NotFound ();
             }
 
             var asset = await _context.Assets
-                .Include(a => a.Category)
-                .Include(a => a.Supplier)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (asset == null)
-            {
-                return NotFound();
+                .Include (a => a.Category)
+                .Include (a => a.Supplier)
+                .SingleOrDefaultAsync (m => m.Id == id);
+            if (asset == null) {
+                return NotFound ();
             }
 
-            DetailsAssetViewModel model = new DetailsAssetViewModel()
-            {
+            DetailsAssetViewModel model = new DetailsAssetViewModel () {
                 Asset = asset,
                 AssetsMoveStories = _context.AssetsMoveStories
                                     .Where(f => f.AssetId == id)
@@ -170,103 +157,97 @@ namespace inventory_accounting_system.Controllers
                                     .OrderBy(t => t.DateCurrent)
             };
 
-            return View(model);
+            return View (model);
             //return View(asset);
         }
 
         #endregion
 
-        public string GetCategoryEvents(string categoryId)
-        {
-            if (categoryId == null) throw new Exception();
-            var events = _context.Events.Where(e => e.CategoryId == categoryId);
-            
-            return JsonConvert.SerializeObject(events);
+        public string GetCategoryEvents (string categoryId) {
+            if (categoryId == null) throw new Exception ();
+            var events = _context.Events.Where (e => e.CategoryId == categoryId);
+
+            return JsonConvert.SerializeObject (events);
         }
 
         #region Create
 
-        public IActionResult Create()
-        {
-            string usrId =_userManager.GetUserId(User);
-            var user = _context.Users.Find(usrId);
+        public IActionResult Create () {
+            string usrId = _userManager.GetUserId (User);
+            var user = _context.Users.Find (usrId);
 
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
-            if (User.IsInRole("Admin"))
-            {
-                ViewData["EmployeeId"] = new SelectList(_userManager.Users, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name");
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name");
+            if (User.IsInRole ("Admin")) {
+                ViewData["EmployeeId"] = new SelectList (_userManager.Users, "Id", "Name");
+            } else {
+                ViewData["EmployeeId"] = new SelectList (_userManager.Users.Where (u => u.OfficeId == user.OfficeId), "Id", "Name");
             }
-            else
-            {
-                ViewData["EmployeeId"] = new SelectList(_userManager.Users.Where(u => u.OfficeId == user.OfficeId), "Id", "Name");
-            }
-            return View();
+            return View ();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")]
-            Asset asset, 
-            string serialNum, 
-            string eventId, 
-            int inventPrefix)
-        {
-            var storage = _context.Offices.FirstOrDefault(s => s.IsMain);
-            var categoryPrefix = _context.Categories
-                .Where(c => c.Id == asset.CategoryId)
-                .Select(c => c.Prefix)
-                .FirstOrDefaultAsync();
-            var admin = await _userManager.FindByNameAsync("admin");
+        public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset,
+            string serialNum,
+            string eventId,
+            int inventPrefix) {
 
-            if (ModelState.IsValid)
-            {
-                if (inventPrefix != null)
-                {
-                    asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString($"D{inventPrefix}") + asset.InventPrefix;
-                }
-                else
-                {
-                    asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D6") + asset.InventPrefix;
-                }
-                
+            var storage = _context.Offices.FirstOrDefault (s => s.IsMain);
+            var categoryPrefix = _context.Categories
+                .Where (c => c.Id == asset.CategoryId)
+                .Select (c => c.Prefix)
+                .FirstOrDefaultAsync ();
+            var admin = await _userManager.FindByNameAsync ("admin");
+
+            if (inventPrefix < 6) {
+
+                ModelState.AddModelError ("InventPrefix", "Число должно быть не меньше 6");
+            }
+
+            if (inventPrefix >10) {
+
+                ModelState.AddModelError ("InventPrefix", "Число должно быть меньше 10");
+            }
+
+            if (inventPrefix > 3 & inventPrefix < 10) {
+
+                asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ($"D{inventPrefix}");
+            } else {
+                asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D6");
+            }
+
+            if (ModelState.IsValid) {
+
                 asset.SerialNum = serialNum;
-                
-                InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory
-                {
+
+                InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory {
                     Been = asset.InventNumber,
                     CreateDate = DateTime.Now,
                     AssetIdCreate = asset.Id
-                   
+
                 };
-                _context.Add(inventoryNumberHistory);
+                _context.Add (inventoryNumberHistory);
 
                 asset.IsActive = true;
-                if (storage != null)
-                {
+                if (storage != null) {
                     asset.OfficeId = storage.Id;
                     asset.EmployeeId = admin.Id;
                 }
 
-                if (asset.Image != null)
-                {
-                    UploadPhoto(asset);
-                }
-                else
-                {
+                if (asset.Image != null) {
+                    UploadPhoto (asset);
+                } else {
                     asset.ImagePath = "images/default-image.jpg";
                 }
-                if (asset.Document != null)
-                {
-                    UploadDocument(asset);
+                if (asset.Document != null) {
+                    UploadDocument (asset);
                 }
 
-                if (eventId != null)
-                {
+                if (eventId != null) {
                     int period;
-                    var _event = _context.Events.Find(eventId);
-                    switch (_event.Periodicity)
-                    {
+                    var _event = _context.Events.Find (eventId);
+                    switch (_event.Periodicity) {
                         case "Ежедневно":
                             period = 1;
                             break;
@@ -283,255 +264,214 @@ namespace inventory_accounting_system.Controllers
                             period = 0;
                             break;
                     }
-                    var assetEvent = new EventAsset()
-                    {
+                    var assetEvent = new EventAsset () {
                         Title = _event.Title,
                         Content = _event.Content,
                         Period = period,
                         CreationDate = DateTime.Now,
-                        DeadLine = DateTime.Now.AddDays(period),
+                        DeadLine = DateTime.Now.AddDays (period),
                         AssetId = asset.Id,
                         EmployeeId = asset.EmployeeId
                     };
-                    _context.Add(assetEvent);
+                    _context.Add (assetEvent);
                 }
 
-                _context.Add(asset);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Add (asset);
+                await _context.SaveChangesAsync ();
+                return RedirectToAction (nameof (Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
-            return View(asset);
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
+            return View (asset);
         }
 
         #endregion
-        
+
         #region Edit
 
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+        public async Task<IActionResult> Edit (string id) {
+            if (id == null) {
+                return NotFound ();
             }
 
-            var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
+            var asset = await _context.Assets.SingleOrDefaultAsync (m => m.Id == id);
 
-            if (asset == null)
-            {
-                return NotFound();
+            if (asset == null) {
+                return NotFound ();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
-            return View(asset);
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
+            return View (asset);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, 
-            [Bind("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")]
-            Asset asset, 
+        public async Task<IActionResult> Edit (string id, [Bind ("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset,
             InventoryNumberHistory inventNumberHistory,
-            string serialNum, 
-            string currentPath,     
-            string inventNumber)
-        {
-            if (id != asset.Id)
-            {
-                return NotFound();
+            string serialNum,
+            string currentPath,
+            string inventNumber) {
+            if (id != asset.Id) {
+                return NotFound ();
             }
-            
+
             var inventNumSearch = _context.Assets
-                .FirstOrDefault(i => i.InventNumber == inventNumber);
+                .FirstOrDefault (i => i.InventNumber == inventNumber);
 
-            if (inventNumSearch != null)
-            {
-                ModelState.AddModelError("InventNumber", "Такой номер уже существует");
+            if (inventNumSearch != null) {
+                ModelState.AddModelError ("InventNumber", "Такой номер уже существует");
             }
 
-            var oldInventoryNumber = _context.InventoryNumberHistories.FirstOrDefault(i => i.AssetIdCreate == asset.Id);
-           
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (oldInventoryNumber != null)
-                    {
+            var oldInventoryNumber = _context.InventoryNumberHistories.FirstOrDefault (i => i.AssetIdCreate == asset.Id);
+
+            if (ModelState.IsValid) {
+                try {
+                    if (oldInventoryNumber != null) {
                         oldInventoryNumber.Become = inventNumber;
                         oldInventoryNumber.ChangeDate = DateTime.Now;
-                        _context.Update(oldInventoryNumber);
+                        _context.Update (oldInventoryNumber);
                     }
 
                     asset.SerialNum = serialNum;
-                    if (asset.Image != null)
-                    {
-                        UploadPhoto(asset);
-                    }
-                    else
-                    {
+                    if (asset.Image != null) {
+                        UploadPhoto (asset);
+                    } else {
                         asset.ImagePath = currentPath;
                     }
 
                     asset.InventNumber = inventNumber;
                     asset.IsActive = true;
-                    _context.Update(asset);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AssetExists(asset.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
+                    _context.Update (asset);
+                    await _context.SaveChangesAsync ();
+                } catch (DbUpdateConcurrencyException) {
+                    if (!AssetExists (asset.Id)) {
+                        return NotFound ();
+                    } else {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction (nameof (Index));
             }
 
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
-            return View(asset);
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
+            return View (asset);
         }
         #endregion
 
         #region Delete
 
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+        public async Task<IActionResult> Delete (string id) {
+            if (id == null) {
+                return NotFound ();
             }
 
             var asset = await _context.Assets
-                .Include(a => a.Category)
-                .Include(a => a.Supplier)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (asset == null)
-            {
-                return NotFound();
+                .Include (a => a.Category)
+                .Include (a => a.Supplier)
+                .SingleOrDefaultAsync (m => m.Id == id);
+            if (asset == null) {
+                return NotFound ();
             }
 
-            return View(asset);
+            return View (asset);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName ("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
+        public async Task<IActionResult> DeleteConfirmed (string id) {
+            var asset = await _context.Assets.SingleOrDefaultAsync (m => m.Id == id);
             asset.IsActive = false;
-            _context.Update(asset);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            _context.Update (asset);
+            await _context.SaveChangesAsync ();
+            return RedirectToAction (nameof (Index));
         }
 
         #endregion
 
         #region Move
 
-        public async Task<IActionResult> Move(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+        public async Task<IActionResult> Move (string id) {
+            if (id == null) {
+                return NotFound ();
             }
 
-            var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
-            if (asset == null)
-            {
-                return NotFound();
+            var asset = await _context.Assets.SingleOrDefaultAsync (m => m.Id == id);
+            if (asset == null) {
+                return NotFound ();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
             ViewData["AssetId"] = id;
 
-            var assetsMoveStory = new AssetsMoveStory();
-            ViewData["EmployeeFromId"] = new SelectList(_context.Users, "Id", "Login");
-            ViewData["OfficeFromId"] = new SelectList(_context.Offices, "Id", "Title");
+            var assetsMoveStory = new AssetsMoveStory ();
+            ViewData["EmployeeFromId"] = new SelectList (_context.Users, "Id", "Login");
+            ViewData["OfficeFromId"] = new SelectList (_context.Offices, "Id", "Title");
 
-            ViewData["EmployeeToId"] = new SelectList(_context.Users, "Id", "Login");
-            ViewData["OfficeToId"] = new SelectList(_context.Offices, "Id", "Title");
+            ViewData["EmployeeToId"] = new SelectList (_context.Users, "Id", "Login");
+            ViewData["OfficeToId"] = new SelectList (_context.Offices, "Id", "Title");
 
-
-
-            return View("Move", new MoveViewModel()
-            {
+            return View ("Move", new MoveViewModel () {
                 Asset = asset,
-                AssetsMoveStory = assetsMoveStory,
-                AssetsMoveStories = _context.AssetsMoveStories
-                                    .Where(f => f.AssetId == id)
-                                    .Include(t => t.EmployeeFrom)
-                                    .Include(t => t.OfficeFrom)
-                                    .Include(t => t.EmployeeTo)
-                                    .Include(t => t.OfficeTo)
+                    AssetsMoveStory = assetsMoveStory,
+                    AssetsMoveStories = _context.AssetsMoveStories
+                    .Where (f => f.AssetId == id)
+                    .Include (t => t.EmployeeFrom)
+                    .Include (t => t.OfficeFrom)
+                    .Include (t => t.EmployeeTo)
+                    .Include (t => t.OfficeTo)
             });
             //return View(asset);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Move(AssetsMoveStory assetsMoveStory)
-        {
+        public async Task<IActionResult> Move (AssetsMoveStory assetsMoveStory) {
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Add(assetsMoveStory);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AssetExists(assetsMoveStory.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
+            if (ModelState.IsValid) {
+                try {
+                    _context.Add (assetsMoveStory);
+                    await _context.SaveChangesAsync ();
+                } catch (DbUpdateConcurrencyException) {
+                    if (!AssetExists (assetsMoveStory.Id)) {
+                        return NotFound ();
+                    } else {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction (nameof (Index));
             }
-            ViewData["EmployeeFromId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeFromId);
-            ViewData["OfficeFromId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeFromId);
+            ViewData["EmployeeFromId"] = new SelectList (_context.Users, "Id", "Login", assetsMoveStory.EmployeeFromId);
+            ViewData["OfficeFromId"] = new SelectList (_context.Offices, "Id", "Title", assetsMoveStory.OfficeFromId);
 
-            ViewData["EmployeeToId"] = new SelectList(_context.Users, "Id", "Login", assetsMoveStory.EmployeeToId);
-            ViewData["OfficeToId"] = new SelectList(_context.Offices, "Id", "Title", assetsMoveStory.OfficeToId);
-            return View(assetsMoveStory);
+            ViewData["EmployeeToId"] = new SelectList (_context.Users, "Id", "Login", assetsMoveStory.EmployeeToId);
+            ViewData["OfficeToId"] = new SelectList (_context.Offices, "Id", "Title", assetsMoveStory.OfficeToId);
+            return View (assetsMoveStory);
         }
         #endregion
 
         #region AssetExists
 
-        private bool AssetExists(string id)
-        {
-            return _context.Assets.Any(e => e.Id == id);
+        private bool AssetExists (string id) {
+            return _context.Assets.Any (e => e.Id == id);
         }
 
         #endregion
 
         #region UploadPhoto
 
-        private void UploadPhoto(Asset asset)
-        {
-            var path = Path.Combine(_appEnvironment.WebRootPath, $"images\\{asset.Name}\\image");
-            _fileUploadService.Upload(path, asset.Image.FileName, asset.Image);
+        private void UploadPhoto (Asset asset) {
+            var path = Path.Combine (_appEnvironment.WebRootPath, $"images\\{asset.Name}\\image");
+            _fileUploadService.Upload (path, asset.Image.FileName, asset.Image);
             asset.ImagePath = $"images/{asset.Name}/image/{asset.Image.FileName}";
         }
         #endregion
 
         #region UploadDocument
 
-        private void UploadDocument(Asset asset)
-        {
-            var path = Path.Combine(_appEnvironment.WebRootPath, $"documents\\{asset.Name}\\document");
-            _fileUploadService.Upload(path, asset.Document.FileName, asset.Document);
+        private void UploadDocument (Asset asset) {
+            var path = Path.Combine (_appEnvironment.WebRootPath, $"documents\\{asset.Name}\\document");
+            _fileUploadService.Upload (path, asset.Document.FileName, asset.Document);
             ///*asset.DocumentPath = $"documents/{asset.Name}/document/{asset.Document.FileName*/}"
         }
 
@@ -539,20 +479,16 @@ namespace inventory_accounting_system.Controllers
 
         #region Download
 
-        public ActionResult Download(string id)
-        {
-            var assetA = _context.Assets.FirstOrDefault(x => x.Id == id);
+        public ActionResult Download (string id) {
+            var assetA = _context.Assets.FirstOrDefault (x => x.Id == id);
 
             byte[] b;
-            if (assetA.DocumentPath != null)
-            {
-                b = System.IO.File.ReadAllBytes(assetA.DocumentPath);
+            if (assetA.DocumentPath != null) {
+                b = System.IO.File.ReadAllBytes (assetA.DocumentPath);
                 string fileName = "myfile.ext";
-                return File(b, MediaTypeNames.Application.Octet, fileName);
-            }
-            else
-            {
-                return View("Error"); ;
+                return File (b, MediaTypeNames.Application.Octet, fileName);
+            } else {
+                return View ("Error");;
             }
         }
 
@@ -590,8 +526,7 @@ namespace inventory_accounting_system.Controllers
                     DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
                     DateTime dateEnd = DateTime.Parse("2100-01-01 0:00");
 
-                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory
-                    {
+                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
                         AssetId = assetIdFind.Id,
                         EmployeeFromId = employeeFromId,
                         OfficeFromId = officeFromId,
@@ -601,8 +536,8 @@ namespace inventory_accounting_system.Controllers
                         DateEnd = dateEnd
                     };
 
-                    _context.Add(assetsMoveStory);
-                    _context.SaveChanges();
+                    _context.Add (assetsMoveStory);
+                    _context.SaveChanges ();
 
                 }
             }
@@ -623,24 +558,20 @@ namespace inventory_accounting_system.Controllers
 
         #region CheckOnMainStorage
 
-        public ActionResult CheckOnMainStorage(string[] assetId, string officeId, string employeeId, string dateAction, int inIndex)
-        {
-            foreach (var item in assetId)
-            {
-                var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
-                if (assetIdFind != null)
-                {
+        public ActionResult CheckOnMainStorage (string[] assetId, string officeId, string employeeId, string dateAction, int inIndex) {
+            foreach (var item in assetId) {
+                var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
+                if (assetIdFind != null) {
                     assetIdFind.IsActive = true;
                     assetIdFind.OfficeId = officeId;
-                    _context.Update(assetIdFind);
-                    _context.SaveChanges();
+                    _context.Update (assetIdFind);
+                    _context.SaveChanges ();
 
                     //DateTime dateStart = DateTime.Parse(dateAction);
-                    DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
-                    DateTime dateEnd = DateTime.Parse("2100-01-01");
+                    DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
+                    DateTime dateEnd = DateTime.Parse ("2100-01-01");
 
-                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory
-                    {
+                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
                         AssetId = assetIdFind.Id,
                         EmployeeFromId = assetIdFind.EmployeeId,
                         OfficeFromId = assetIdFind.OfficeId,
@@ -650,19 +581,16 @@ namespace inventory_accounting_system.Controllers
                         DateEnd = dateEnd
                     };
 
-                    _context.Add(assetsMoveStory);
-                    _context.SaveChanges();
+                    _context.Add (assetsMoveStory);
+                    _context.SaveChanges ();
 
                 }
             }
-            if (inIndex == 1)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
+            if (inIndex == 1) {
+                return RedirectToAction (nameof (Index));
+            } else {
                 // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
-                return RedirectToAction("Index", "Offices");
+                return RedirectToAction ("Index", "Offices");
             }
 
             //
