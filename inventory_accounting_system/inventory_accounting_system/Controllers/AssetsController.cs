@@ -72,9 +72,10 @@ namespace inventory_accounting_system.Controllers {
             var assets = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Supplier)
+                .Include(a => a.Office)
                 .Where (a => a.IsActive)
-                .Where (a => a.InStock)
-                .Where (a => a.OfficeId == mainStorage.Id);
+                .Where (a => a.InStock);
+                // .Where (a => a.OfficeId == mainStorage.Id);
 
             #region Sorting
 
@@ -213,8 +214,7 @@ namespace inventory_accounting_system.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document, StatusMovingAssets")] Asset asset,
             string serialNum,
-            string eventId,
-            int inventPrefix) {
+            string eventId) {
 
             var storage = _context.Offices.FirstOrDefault (s => s.IsMain);
             var categoryPrefix = _context.Categories
@@ -223,22 +223,7 @@ namespace inventory_accounting_system.Controllers {
                 .FirstOrDefaultAsync ();
             var admin = await _userManager.FindByNameAsync ("admin");
 
-            if (inventPrefix < 6) {
-
-                ModelState.AddModelError ("InventPrefix", "Число должно быть не меньше 6");
-            }
-
-            if (inventPrefix > 10) {
-
-                ModelState.AddModelError ("InventPrefix", "Число должно быть меньше 10");
-            }
-
-            if (inventPrefix > 3 & inventPrefix < 10) {
-
-                asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ($"D{inventPrefix}");
-            } else {
-                asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D6");
-            }
+            asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D7");
 
             if (ModelState.IsValid) {
 
