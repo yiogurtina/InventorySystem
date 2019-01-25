@@ -52,7 +52,7 @@ namespace inventory_accounting_system
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseDatabaseErrorPage();                
             }
             else
             {

@@ -18,8 +18,8 @@ namespace inventory_accounting_system.Services
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Employee>>();
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();              
+
                 if (!await roleManager.RoleExistsAsync("Admin"))
                 {
                     IdentityRole roleAdmin = new IdentityRole("Admin");
@@ -58,17 +58,7 @@ namespace inventory_accounting_system.Services
                         await userManager.AddToRoleAsync(user, "Admin");
                     }
                 }
-                var storage = context.Offices.FirstOrDefault(b => b.IsMain);
-                if (storage == null)
-                {
-                    context.Offices.Add(new Office()
-                     {
-                        Title = "Main storage",
-                         IsMain = true,
-                    });
-                }
-
-                context.SaveChanges();
+               
             }
         }
     }
