@@ -118,10 +118,11 @@
 
 <div>
     <a class="btn btn-primary" onclick="modalShowHendler()">Закрепить</a>
+    <a class="btn btn-primary" onclick="modalShowHendlerSale()">Продажа</a>
 </div>
 
 
-@*Modal window*@
+@*Modal window Закрепить*@
 
 <div class="modal fade" id="newAssetModal">
     <div class="modal-dialog modal-lg" style=" width: 300px !important;">
@@ -164,6 +165,58 @@
     </div>
 </div>
 
+
+@*Modal window Продажа*@
+
+<div class="modal fade" id="newAssetModalSale">
+    <div class="modal-dialog modal-lg" style=" width: 400px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Закрепить</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <form>
+                            <div class="form-group" id="officeSelectSale">
+                                <label class="control-label">Офис/Склад</label>
+                                <select class="form-control" id="officeIdSelectSale" onchange="OnChangeOfficeIdSale(this)" style=" width: 290px !important;" asp-items="ViewBag.OfficeIdSale"></select>
+                            </div>
+                            <div class="form-group" id="employeeSelectSale">
+                                <label class="control-label">Сотрудник</label>
+                                <select class="form-control" id="employeeIdSelectSale" onchange="OnChangeEmployeeIdSale(this)" style=" width: 290px !important;" asp-items="ViewBag.EmployeeIdSale"></select>
+                            </div>
+                            <div class="form-group" id="statusMovingAssets">
+                                <label class="control-label">Статус передачи</label>
+                                <select class="form-control" id="statusMovingAssetsSelect" onchange="OnChangeStatusAssetMoving(this)" style=" width: 290px !important;" asp-items="ViewBag.StatusMovingAssets"></select>
+                            </div>
+
+                            <div class="form-group" id="dateActionSale">
+                                <label class="control-label">Дата</label>
+                                <input id="dateActionSale" type="date" class="form-control" style=" width: 290px !important;" asp-items="ViewBag.dateActionSale" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <form id="NewAssetFormSale">
+                
+                <div class="modal-footer">
+                    <div>
+                        <button id="CreateMethodSale" type="submit" onclick="getCheckedCheckBoxesSale()" class="btn btn-primary">Sale</button>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
 @section scripts{
     <script>
 
@@ -178,15 +231,34 @@
             dateAction = document.getElementById('dateAction').value;
         }
 
+
+        var officeIdSale;
+        var employeeIdSale;
+        var dateActionSale;
+        var statusAssetsMving;
+        
+
+        function modalShowHendlerSale() {
+            $("#newAssetModalSale").modal();
+            officeIdSale = document.getElementById('officeIdSelectSale').children[0].value;
+            console.log(officeIdSale);
+            employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
+            dateActionSale = document.getElementById('dateActionSale').value;
+            statusAssetsMving = document.getElementById('statusMovingAssetsSelect').children[0].value;
+        }
+
         checkedCheckBox = [];
+        checkedCheckBoxSale = [];
 
         function OnChangeCheckBoxFunc(e) {
             var assetId = e.value;
             if (checkedCheckBox.indexOf(assetId) > -1) {
                 var elementIndex = checkedCheckBox.indexOf(assetId);
                 checkedCheckBox.splice(elementIndex, 1);
+                checkedCheckBoxSale.splice(elementIndex, 1);
             } else {
                 checkedCheckBox.push(assetId);
+                checkedCheckBoxSale.push(assetId);
             }
         }
 
@@ -196,6 +268,18 @@
 
         function OnChangeEmployeeId(e) {
             employeeId = e.value;
+        }
+
+        function OnChangeOfficeIdSale(e) {
+            officeIdSale = e.value;
+        }
+
+        function OnChangeEmployeeIdSale(e) {
+            employeeIdSale = e.value;
+        }
+
+        function OnChangeStatusAssetMoving(e) {
+            statusAssetsMving = e.value;
         }
         
 
@@ -219,6 +303,28 @@
             });
         }
 
+        function getCheckedCheckBoxesSale() {
+            
+            employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
+                       
+            dateActionSale = document.getElementById('dateActionSale').children[0].value;
+            console.log(employeeIdSale,'||',dateActionSale,'success!');    
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaleAsste", "Assets")',
+                data: {
+                    officeIdSale: officeIdSale,
+                    assetIdSale: checkedCheckBoxSale,
+                    employeeIdSale: employeeIdSale,
+                    dateActionSale: dateActionSale,
+                    statusAssetsMving: statusAssetsMving,
+                    inIndex: 1
+                },
+                success: function (data) {
+                    console.log('success!');
+                }
+            });
+        }
 
     </script>
 }

@@ -51,6 +51,8 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("SerialNum");
 
+                    b.Property<string>("StatusMovingAssets");
+
                     b.Property<string>("SupplierId");
 
                     b.HasKey("Id");

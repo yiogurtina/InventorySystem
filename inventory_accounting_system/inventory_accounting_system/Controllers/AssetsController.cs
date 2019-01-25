@@ -44,14 +44,22 @@ namespace inventory_accounting_system.Controllers {
             ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
             ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
             ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
+            
+            ViewData["OfficeIdSale"] = new SelectList (_context.Offices, "Id", "Title");
+            ViewData["EmployeeIdSale"] = new SelectList (_context.Users, "Id", "Name");
+            ViewData["dateActionSale"] = DateTime.Now.ToString ("yyyy-MM-dd");
 
-            var mainStorage = _context.Offices.FirstOrDefault(s => s.IsMain);
+            IEnumerable<StatusMovingAssetsEnum> statusAssetsEnums = Enum.GetValues (typeof (StatusMovingAssetsEnum)).Cast<StatusMovingAssetsEnum> ().ToList ();
+
+            ViewData["StatusMovingAssets"] = new SelectList (statusAssetsEnums.ToList ());
+
+            var mainStorage = _context.Offices.FirstOrDefault (s => s.IsMain);
             var assets = _context.Assets
-                .Include(a => a.Category)
-                .Include(a => a.Supplier)
-                .Where(a => a.IsActive)
-                .Where(a => a.InStock)
-                .Where(a => a.OfficeId == mainStorage.Id);
+                .Include (a => a.Category)
+                .Include (a => a.Supplier)
+                .Where (a => a.IsActive)
+                .Where (a => a.InStock)
+                .Where (a => a.OfficeId == mainStorage.Id);
 
             #region Sorting
 
@@ -98,7 +106,7 @@ namespace inventory_accounting_system.Controllers {
 
             if (searchString != null) {
                 var assets1 = from m in _context.Assets
-                              select m;
+                select m;
 
                 if (!string.IsNullOrEmpty (searchString)) {
                     assets1 = assets1.Where (s => s.Name.Contains (searchString));
@@ -120,13 +128,13 @@ namespace inventory_accounting_system.Controllers {
             ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
 
             var assets = _context.Assets
-                .Include(a => a.Category)
-                .Include(a => a.Supplier)
-                .Where(a => a.IsActive == true)
-                .Where(a => a.InStock == false)
-                .Where(a => a.OfficeId == officeId)
-                .Where(a => a.CategoryId == categoryId);
-            return View(await assets.ToListAsync());
+                .Include (a => a.Category)
+                .Include (a => a.Supplier)
+                .Where (a => a.IsActive == true)
+                .Where (a => a.InStock == false)
+                .Where (a => a.OfficeId == officeId)
+                .Where (a => a.CategoryId == categoryId);
+            return View (await assets.ToListAsync ());
         }
 
         #endregion
@@ -149,12 +157,12 @@ namespace inventory_accounting_system.Controllers {
             DetailsAssetViewModel model = new DetailsAssetViewModel () {
                 Asset = asset,
                 AssetsMoveStories = _context.AssetsMoveStories
-                                    .Where(f => f.AssetId == id)
-                                    .Include(t => t.EmployeeFrom)
-                                    .Include(t => t.OfficeFrom)
-                                    .Include(t => t.EmployeeTo)
-                                    .Include(t => t.OfficeTo)
-                                    .OrderBy(t => t.DateCurrent)
+                .Where (f => f.AssetId == id)
+                .Include (t => t.EmployeeFrom)
+                .Include (t => t.OfficeFrom)
+                .Include (t => t.EmployeeTo)
+                .Include (t => t.OfficeTo)
+                .OrderBy (t => t.DateCurrent)
             };
 
             return View (model);
@@ -188,7 +196,7 @@ namespace inventory_accounting_system.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document")] Asset asset,
+        public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document, StatusMovingAssets")] Asset asset,
             string serialNum,
             string eventId,
             int inventPrefix) {
@@ -205,7 +213,7 @@ namespace inventory_accounting_system.Controllers {
                 ModelState.AddModelError ("InventPrefix", "Число должно быть не меньше 6");
             }
 
-            if (inventPrefix >10) {
+            if (inventPrefix > 10) {
 
                 ModelState.AddModelError ("InventPrefix", "Число должно быть меньше 10");
             }
@@ -497,35 +505,30 @@ namespace inventory_accounting_system.Controllers {
 
         #region Check
 
-        public ActionResult Check(string[] assetId, string officeId, string employeeId, string dateAction, int inIndex)
-        {
-            foreach (var item in assetId)
-            {
-                var assetIdFind = _context.Assets.FirstOrDefault(a => a.Id == item);
-                if (assetIdFind != null)
-                {
+        public ActionResult Check (string[] assetId, string officeId, string employeeId, string dateAction, int inIndex) {
+            foreach (var item in assetId) {
+                var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
+                if (assetIdFind != null) {
                     string officeFromId = assetIdFind.OfficeId;
                     string employeeFromId = assetIdFind.EmployeeId;
                     string officeToId = officeId;
                     string employeeToId = employeeId;
 
-
-                    var OfficeFind = _context.Offices.FirstOrDefault(a => a.Id == officeId);
+                    var OfficeFind = _context.Offices.FirstOrDefault (a => a.Id == officeId);
 
                     assetIdFind.InStock = false;
-                    if (OfficeFind.IsMain)
-                    {
+                    if (OfficeFind.IsMain) {
                         assetIdFind.InStock = true;
                     }
 
                     assetIdFind.OfficeId = officeId;
                     assetIdFind.EmployeeId = employeeId;
-                    _context.Update(assetIdFind);
-                    _context.SaveChanges();
+                    _context.Update (assetIdFind);
+                    _context.SaveChanges ();
 
                     //DateTime dateStart = DateTime.Parse(dateAction);
-                    DateTime dateStart = DateTime.Parse("2019-01-18 0:00");
-                    DateTime dateEnd = DateTime.Parse("2100-01-01 0:00");
+                    DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
+                    DateTime dateEnd = DateTime.Parse ("2100-01-01 0:00");
 
                     AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
                         AssetId = assetIdFind.Id,
@@ -542,14 +545,11 @@ namespace inventory_accounting_system.Controllers {
 
                 }
             }
-            if (inIndex == 1)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            else
-            {
+            if (inIndex == 1) {
+                return RedirectToAction (nameof (Index));
+            } else {
                 // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
-                return RedirectToAction("Index", "Offices");
+                return RedirectToAction ("Index", "Offices");
             }
 
             //
@@ -557,14 +557,21 @@ namespace inventory_accounting_system.Controllers {
 
         #endregion
 
-        #region CheckOnMainStorage
+        #region SaleAsste
 
-        public ActionResult CheckOnMainStorage (string[] assetId, string officeId, string employeeId, string dateAction, int inIndex) {
-            foreach (var item in assetId) {
+        public ActionResult SaleAsste (
+            string[] assetIdSale,
+            string officeIdSale,
+            string employeeIdSale,
+            string dateActionSale,
+            int inIndex,
+            string statusAssetsMving) {
+
+            foreach (var item in assetIdSale) {
                 var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
                 if (assetIdFind != null) {
                     assetIdFind.IsActive = true;
-                    assetIdFind.OfficeId = officeId;
+                    assetIdFind.OfficeId = officeIdSale;
                     _context.Update (assetIdFind);
                     _context.SaveChanges ();
 
@@ -576,8 +583,8 @@ namespace inventory_accounting_system.Controllers {
                         AssetId = assetIdFind.Id,
                         EmployeeFromId = assetIdFind.EmployeeId,
                         OfficeFromId = assetIdFind.OfficeId,
-                        EmployeeToId = employeeId,
-                        OfficeToId = officeId,
+                        EmployeeToId = employeeIdSale,
+                        OfficeToId = officeIdSale,
                         DateStart = dateStart,
                         DateEnd = dateEnd
                     };

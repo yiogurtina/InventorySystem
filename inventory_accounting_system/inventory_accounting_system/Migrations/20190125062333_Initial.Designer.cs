@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190124105916_ChangeModelAssetsMoveEmployee")]
-    partial class ChangeModelAssetsMoveEmployee
+    [Migration("20190125062333_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,6 +51,8 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("OfficeId");
 
                     b.Property<string>("SerialNum");
+
+                    b.Property<string>("StatusMovingAssets");
 
                     b.Property<string>("SupplierId");
 

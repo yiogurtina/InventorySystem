@@ -54,6 +54,7 @@ namespace inventory_accounting_system.Models {
 
         [Display (Name = "Технические документы")]
         public string DocumentPath { get; set; }
+        public string StatusMovingAssets { get; set; }
 
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
 
