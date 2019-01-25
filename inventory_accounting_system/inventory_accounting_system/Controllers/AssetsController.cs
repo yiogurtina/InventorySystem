@@ -230,6 +230,7 @@ namespace inventory_accounting_system.Controllers {
                 _context.Add (inventoryNumberHistory);
 
                 asset.IsActive = true;
+                asset.InStock = true;
                 if (storage != null) {
                     asset.OfficeId = storage.Id;
                     asset.EmployeeId = admin.Id;
