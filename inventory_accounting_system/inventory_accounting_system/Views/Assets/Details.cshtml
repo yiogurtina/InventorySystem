@@ -99,6 +99,10 @@
             <th>
                 Дата
             </th>
+            </th>
+            <th>
+                Статус
+            </th>
         </tr>
     </thead>
     @foreach (AssetsMoveStory Story in Model.AssetsMoveStories)
@@ -117,6 +121,7 @@
                 @Story.OfficeTo.Title
             </td>
             <td>@Story.DateStart</td>
+            <td>@Story.StatusMovinHistory</td>
         </tr>
     }
 </table>

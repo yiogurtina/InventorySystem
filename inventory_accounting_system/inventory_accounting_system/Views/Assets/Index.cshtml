@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string dateAction = @ViewBag.dateAction;
+    string dateActionSale = @ViewBag.dateActionSale;
 }
 
 <h2>Имущество</h2>
@@ -178,22 +179,25 @@
                 <div class="row">
                     <div class="col-md-6">
                         <form>
-                            <div class="form-group" id="officeSelectSale">
+                            <div class="form-group hidden" id="officeSelectSale">
                                 <label class="control-label">Офис/Склад</label>
                                 <select class="form-control" id="officeIdSelectSale" onchange="OnChangeOfficeIdSale(this)" style=" width: 290px !important;" asp-items="ViewBag.OfficeIdSale"></select>
                             </div>
+                            <p>@ViewBag.OfficeIdSaleOne</p>
                             <div class="form-group" id="employeeSelectSale">
                                 <label class="control-label">Сотрудник</label>
                                 <select class="form-control" id="employeeIdSelectSale" onchange="OnChangeEmployeeIdSale(this)" style=" width: 290px !important;" asp-items="ViewBag.EmployeeIdSale"></select>
                             </div>
-                            <div class="form-group" id="statusMovingAssets">
+                            <div class="form-group hidden" id="statusMovingAssets">
                                 <label class="control-label">Статус передачи</label>
                                 <select class="form-control" id="statusMovingAssetsSelect" onchange="OnChangeStatusAssetMoving(this)" style=" width: 290px !important;" asp-items="ViewBag.StatusMovingAssets"></select>
                             </div>
-
-                            <div class="form-group" id="dateActionSale">
-                                <label class="control-label">Дата</label>
-                                <input id="dateActionSale" type="date" class="form-control" style=" width: 290px !important;" asp-items="ViewBag.dateActionSale" />
+                            <p><strong>Статус: </strong>@ViewBag.StatusMovingAssetsOne</p>
+                            <div class="form-group" id="dateActionSaleNowDiv">
+                                <label class="control-label">Дата:</label>
+                                <!-- <p id="dateActionSaleNow" type="date" class="form-control" style=" width: 290px !important;" asp-items="ViewBag.dateActionSale"/> -->
+                                <!-- <p id="dateActionSaleNow" type="date" class="form-control" style=" width: 290px !important;" value="@dateActionSale"/> -->
+                                <p>@dateActionSale</p>
                             </div>
                         </form>
                     </div>
@@ -234,16 +238,15 @@
 
         var officeIdSale;
         var employeeIdSale;
-        var dateActionSale;
+        var dateActionSaleNew;
         var statusAssetsMving;
         
 
         function modalShowHendlerSale() {
             $("#newAssetModalSale").modal();
             officeIdSale = document.getElementById('officeIdSelectSale').children[0].value;
-            console.log(officeIdSale);
+            <!-- dateActionSaleNew = document.getElementById('dateActionSaleNow').value; -->
             employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
-            dateActionSale = document.getElementById('dateActionSale').value;
             statusAssetsMving = document.getElementById('statusMovingAssetsSelect').children[0].value;
         }
 
@@ -293,6 +296,7 @@
                 data: {
                     officeId: officeId,
                     assetId: checkedCheckBox,
+                    dateActionSaleNew: dateActionSaleNew,
                     employeeId: employeeId,
                     dateAction: dateAction,
                     inIndex: 1
@@ -306,9 +310,7 @@
         function getCheckedCheckBoxesSale() {
             
             employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
-                       
-            dateActionSale = document.getElementById('dateActionSale').children[0].value;
-            console.log(employeeIdSale,'||',dateActionSale,'success!');    
+
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("SaleAsste", "Assets")',
@@ -316,7 +318,6 @@
                     officeIdSale: officeIdSale,
                     assetIdSale: checkedCheckBoxSale,
                     employeeIdSale: employeeIdSale,
-                    dateActionSale: dateActionSale,
                     statusAssetsMving: statusAssetsMving,
                     inIndex: 1
                 },

@@ -44,14 +44,29 @@ namespace inventory_accounting_system.Controllers {
             ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
             ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
             ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
-            
+
             ViewData["OfficeIdSale"] = new SelectList (_context.Offices, "Id", "Title");
+            var mainStorageOne = _context.Offices;
+            foreach (var item in mainStorageOne) {
+                if (item.Title == "Main storage") {
+
+                    ViewData["OfficeIdSaleOne"] = item.Title;
+                }
+            }
+
             ViewData["EmployeeIdSale"] = new SelectList (_context.Users, "Id", "Name");
             ViewData["dateActionSale"] = DateTime.Now.ToString ("yyyy-MM-dd");
 
             IEnumerable<StatusMovingAssetsEnum> statusAssetsEnums = Enum.GetValues (typeof (StatusMovingAssetsEnum)).Cast<StatusMovingAssetsEnum> ().ToList ();
-
             ViewData["StatusMovingAssets"] = new SelectList (statusAssetsEnums.ToList ());
+
+            foreach (var item in statusAssetsEnums) {
+                if (item.ToString () == "sale") {
+
+                    ViewData["StatusMovingAssetsOne"] = item.ToString ();
+                }
+
+            }
 
             var mainStorage = _context.Offices.FirstOrDefault (s => s.IsMain);
             var assets = _context.Assets
@@ -563,15 +578,17 @@ namespace inventory_accounting_system.Controllers {
             string[] assetIdSale,
             string officeIdSale,
             string employeeIdSale,
-            string dateActionSale,
             int inIndex,
             string statusAssetsMving) {
 
             foreach (var item in assetIdSale) {
                 var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
                 if (assetIdFind != null) {
-                    assetIdFind.IsActive = true;
+                    assetIdFind.IsActive = false;
+                    assetIdFind.StatusMovingAssets = statusAssetsMving;
+                    assetIdFind.InStock = false;
                     assetIdFind.OfficeId = officeIdSale;
+                    assetIdFind.Date = DateTime.Now;
                     _context.Update (assetIdFind);
                     _context.SaveChanges ();
 
@@ -579,18 +596,26 @@ namespace inventory_accounting_system.Controllers {
                     DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
                     DateTime dateEnd = DateTime.Parse ("2100-01-01");
 
-                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
-                        AssetId = assetIdFind.Id,
-                        EmployeeFromId = assetIdFind.EmployeeId,
-                        OfficeFromId = assetIdFind.OfficeId,
-                        EmployeeToId = employeeIdSale,
-                        OfficeToId = officeIdSale,
-                        DateStart = dateStart,
-                        DateEnd = dateEnd
-                    };
+                    foreach (var itemMove in assetIdSale) {
 
-                    _context.Add (assetsMoveStory);
-                    _context.SaveChanges ();
+                        var actionMove = _context.AssetsMoveStories.FirstOrDefault (s => s.Id == itemMove);
+                        if (actionMove == null) {
+
+                            AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
+                            AssetId = assetIdFind.Id,
+                            EmployeeFromId = assetIdFind.EmployeeId,
+                            OfficeFromId = assetIdFind.OfficeId,
+                            EmployeeToId = employeeIdSale,
+                            OfficeToId = officeIdSale,
+                            StatusMovinHistory = statusAssetsMving,
+                            DateStart = dateStart,
+                            DateEnd = dateEnd
+                            };
+
+                            _context.Add (assetsMoveStory);
+                            _context.SaveChanges ();
+                        }
+                    }
 
                 }
             }

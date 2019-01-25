@@ -38,6 +38,8 @@ namespace inventory_accounting_system.Models
         [Display(Name = "Дата системная")]
         public DateTime DateCurrent { get; set; }
 
+        public string StatusMovinHistory { get; set; }
+
         public AssetsMoveStory()
         {
             DateCurrent = DateTime.Now;
