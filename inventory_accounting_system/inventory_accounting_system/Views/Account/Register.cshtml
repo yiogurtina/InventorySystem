@@ -31,24 +31,32 @@
                 <input asp-for="Number" class="form-control" />
                 <span asp-validation-for="Number" class="text-danger"></span>
             </div>*@
-            <div class="form-group">
-                <label asp-for="OfficeId" class="control-label"></label>
-                <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeId"></select>
-            </div>
+
+
             @{
                 if (User.IsInRole("Admin"))
                 {
+                     <div class="form-group">
+                         <label asp-for="OfficeId" class="control-label"></label>
+                         <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeId"></select>
+                     </div>
+
                     <div class="form-group">
                         <label class="control-label">Должность</label>
                         <select class="form-control" asp-items="ViewBag.Roles" name="role"></select>
                     </div>
                 }
                 
-                if (User.IsInRole("Manage"))
+                if (User.IsInRole("Manager"))
                 {
+                      <div class="form-group">
+                         <label asp-for="OfficeId" class="control-label"></label>
+                         <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeIdNumber"></select>
+                     </div>
+
                     <div class="form-group">
                         <label class="control-label">Должность</label>
-                        <p class="form-control" asp-items="ViewBag.Roles" name="role"></p>
+                        <select class="form-control" asp-items="ViewBag.RolesUser" name="role"></select>
                     </div>
                 }
 

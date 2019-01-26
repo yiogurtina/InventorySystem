@@ -202,12 +202,34 @@ namespace inventory_accounting_system.Controllers {
             string usrId = _userManager.GetUserId (User);
             var user = _context.Users.Find (usrId);
             ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
+
+            var officeEmployees = _context.Offices;
+            var usersAllGet = _context.Users.Where (u => u.IsDelete == false);
+            foreach (var item in usersAllGet) {
+
+                if (item.Id == user.Id) {
+                    foreach (var itemOffice in officeEmployees) {
+                        if (itemOffice.Id == item.OfficeId) {
+                            ViewData["OfficeIdNumber"] = new SelectList (_context.Offices.Where (r => r.Id == item.OfficeId), "Id", "Title");
+                        }
+                    }
+
+                }
+            }
+            var rolesUser = _context.Roles;
             List<string> roles = new List<string> ();
             if (User.IsInRole ("Admin")) {
                 roles.Add ("Manager");
                 roles.Add ("User");
             }
             ViewData["Roles"] = new SelectList (roles);
+            foreach (var itemRoles in rolesUser) {
+                if (itemRoles.Name == "User") {
+                    ViewData["RolesUser"] = new SelectList (_context.Roles.Where (r => r.Id == itemRoles.Id), "Name", "Name");
+                }
+
+            }
+
             return View ();
         }
 
@@ -219,9 +241,6 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register (RegisterViewModel model, string role, string email) {
-
-            // var roles = _context.Roles;
-            // ViewData["Roles"] = role;
 
             if (role == "Manager") {
                 var office = _context.Offices.Include (o => o.Employees).FirstOrDefault (o => o.Id == model.OfficeId);
