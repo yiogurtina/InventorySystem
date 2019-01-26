@@ -72,10 +72,10 @@ namespace inventory_accounting_system.Controllers {
             var assets = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Supplier)
-                .Include(a => a.Office)
+                .Include (a => a.Office)
                 .Where (a => a.IsActive)
-                .Where (a => a.InStock);
-                // .Where (a => a.OfficeId == mainStorage.Id);
+                .Where (a => a.InStock)
+                .Where (a => a.OfficeId == mainStorage.Id);
 
             #region Sorting
 

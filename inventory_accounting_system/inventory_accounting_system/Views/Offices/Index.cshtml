@@ -40,7 +40,8 @@
                                 @Model.Office.Title }
                         }
                     </th>
-                    <th scope="col"><a>Вася Пупкин</a></th>
+                     <th scope="col">Пользователь:<a>Администратор сайта</a></th>
+                    
                 </tr>
             </thead>
         </table>
@@ -54,7 +55,6 @@
                                 <tr>
                                     <th scope="col">Категория</th>
                                     <th scope="col">Количество</th>
-                                    <th scope="col">Выбрать</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,7 +63,6 @@
                                     <tr>
                                         <th scope="row"><a asp-controller="Assets" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
                                         <td>@item.AssetsCount</td>
-                                        <td><input type="checkbox"></td>
                                     </tr>
                                 }
                             </tbody>
@@ -83,6 +82,129 @@
                         }
                     }
                 </ul>
+            </div>
+        </div>
+
+    }
+
+    if (User.IsInRole("Manager"))
+    {
+        <h2>Офисы</h2>
+
+        <p>
+            <a class="btn btn-primary" href="/Account/Register">Добавить сотрудника</a>
+        </p>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th id="officeName" scope="col">
+                        @{
+                            if (Model != null)
+                            {
+                                @Model.Office.Title }
+                        }
+                    </th>
+                     @if (Model != null)
+                        {
+                        @foreach (var item in Model.Employees)
+                            {
+                                <th scope="col"><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@ViewBag.OfficeNameManager</a></th>
+                            }
+                        }
+                </tr>
+            </thead>
+        </table>
+        <div class="row">
+            <div class="col-md-8">
+                @{
+                    if (Model != null)
+                    {
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Категория</th>
+                                    <th scope="col">Количество</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CategoryAssetCountViewModels)
+                                {
+                                    <tr>
+                                        <th scope="row"><a asp-controller="Assets" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
+                                        <td>@item.AssetsCount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+
+            </div>
+            <div class="col-md-4">
+                <h4>Сотрудники</h4>
+                <ul>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model.Employees)
+                        {
+
+                          <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
+                                                   
+                        }
+                    }
+                 
+                </ul>
+            </div>
+        </div>
+
+    }
+
+     if (User.IsInRole("User"))
+    {
+        <h2>Офисы</h2>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th id="officeName" scope="col">
+                        @{
+                            if (Model != null)
+                            {
+                                @Model.Office.Title }
+                        }
+                    </th>
+                    
+                        <th scope="col"><a>@ViewBag.OfficeNameUser</a></th>
+                  
+                </tr>
+            </thead>
+        </table>
+        <div class="row">
+            <div class="col-md-8">
+                @{
+                    if (Model != null)
+                    {
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Категория</th>
+                                    <th scope="col">Количество</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CategoryAssetCountViewModels)
+                                {
+                                    <tr>
+                                        <th scope="row"><a asp-controller="Assets" asp-action="CategoryAssets" asp-route-categoryId="@item.Id" asp-route-officeId="@Model.Office.Id">@item.CategoryName</a></th>
+                                        <td>@item.AssetsCount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+
             </div>
         </div>
 
