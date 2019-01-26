@@ -220,63 +220,69 @@ namespace inventory_accounting_system.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register (RegisterViewModel model, string role, string email) {
 
-            // var office = _context.Offices.Include (o => o.Employees).FirstOrDefault (o => o.Id == model.OfficeId);
-            // var officeEmployees = office.Employees;
-            // List<Employee> managers = new List<Employee> ();
-            // foreach (var emp in officeEmployees) {
-            //     if (await _userManager.IsInRoleAsync (emp, "Manager")) {
-            //         managers.Add (emp);
-            //     }
-            // }
+            // var roles = _context.Roles;
+            // ViewData["Roles"] = role;
 
-            // if (managers.Count != 0) {
-            //     ModelState.AddModelError ("OfficeId", "У этого офиса есть менеджер");
-            // }
-
-            EmailService emailService = new EmailService ();
-
-            var userManager = _context.Users.FirstOrDefault (u => u.Email == email);
-
-            if (userManager != null) {
-                ModelState.AddModelError ("Email", "Это email уже занят");
-            }
-
-            if (ModelState.IsValid) {
-                var user = new Employee {
-                    UserName = model.Login,
-                    Login = model.Login,
-                    Email = model.Email,
-                    OfficeId = model.OfficeId,
-                    Name = model.Name,
-                    Surname = model.Surname
-
-                };
-                var result = await _userManager.CreateAsync (user, model.Password = GenerateRandomPassword ());
-                string sendEmail = "Уважаемый(ая) " + model.Name + " " + model.Surname + "<br/>" +
-                    "<br/>Ваш логин: " + "<h4>" + user.Login + "</h4>" +
-                    "Ваш пароль: " + "<h4>" + model.Password + "</h4>" +
-                    "<br/>С Уважением Администрация.";
-
-                if (result.Succeeded) {
-
-                    if (role == null) {
-                        role = "User";
+            if (role == "Manager") {
+                var office = _context.Offices.Include (o => o.Employees).FirstOrDefault (o => o.Id == model.OfficeId);
+                var officeEmployees = office.Employees;
+                List<Employee> managers = new List<Employee> ();
+                foreach (var emp in officeEmployees) {
+                    if (await _userManager.IsInRoleAsync (emp, "Manager")) {
+                        managers.Add (emp);
                     }
-
-                    _logger.LogInformation ("You created a new User");
-
-                    //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    //    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-                    await _userManager.AddToRoleAsync (user, role.ToUpper ());
-
-                    await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
-
-                    return RedirectToAction ("Index", "Home");
                 }
-                AddErrors (result);
-            }
 
+                if (managers.Count != 0) {
+                    ModelState.AddModelError ("OfficeId", "У этого офиса есть менеджер");
+                }
+            } else {
+
+                EmailService emailService = new EmailService ();
+
+                var userManager = _context.Users.FirstOrDefault (u => u.Email == email);
+
+                if (userManager != null) {
+                    ModelState.AddModelError ("Email", "Это email уже занят");
+                }
+
+                if (ModelState.IsValid) {
+                    var user = new Employee {
+                        UserName = model.Login,
+                        Login = model.Login,
+                        Email = model.Email,
+                        OfficeId = model.OfficeId,
+                        Name = model.Name,
+                        Surname = model.Surname
+
+                    };
+                    var result = await _userManager.CreateAsync (user, model.Password = GenerateRandomPassword ());
+                    string sendEmail = "Уважаемый(ая) " + model.Name + " " + model.Surname + "<br/>" +
+                        "<br/>Ваш логин: " + "<h4>" + user.Login + "</h4>" +
+                        "Ваш пароль: " + "<h4>" + model.Password + "</h4>" +
+                        "<br/>С Уважением Администрация.";
+
+                    if (result.Succeeded) {
+
+                        if (role == null) {
+                            role = "User";
+                        }
+
+                        _logger.LogInformation ("You created a new User");
+
+                        //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                        //    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                        await _userManager.AddToRoleAsync (user, role.ToUpper ());
+
+                        await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
+
+                        return RedirectToAction ("Index", "Home");
+                    }
+                    AddErrors (result);
+                }
+
+            }
             // If we got this far, something failed, redisplay form
             return View (model);
         }

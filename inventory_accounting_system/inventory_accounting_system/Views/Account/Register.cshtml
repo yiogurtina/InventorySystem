@@ -43,6 +43,15 @@
                         <select class="form-control" asp-items="ViewBag.Roles" name="role"></select>
                     </div>
                 }
+                
+                if (User.IsInRole("Manage"))
+                {
+                    <div class="form-group">
+                        <label class="control-label">Должность</label>
+                        <p class="form-control" asp-items="ViewBag.Roles" name="role"></p>
+                    </div>
+                }
+
             }
 
             <div class="form-group">
