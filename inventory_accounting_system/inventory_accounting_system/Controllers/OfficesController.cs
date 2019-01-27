@@ -336,5 +336,15 @@ namespace inventory_accounting_system.Controllers {
         }
 
         #endregion
+
+        #region AddOfficeManager
+
+        public async Task<IActionResult> SetManagerOffice(string officeId)
+        {
+            var currOffice = await _context.Offices.FindAsync(officeId);
+            return View();
+        }
+
+        #endregion
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace inventory_accounting_system.Migrations
 {
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -405,7 +405,8 @@ namespace inventory_accounting_system.Migrations
                     EmployeeFromId = table.Column<string>(nullable: true),
                     EmployeeToId = table.Column<string>(nullable: true),
                     OfficeFromId = table.Column<string>(nullable: true),
-                    OfficeToId = table.Column<string>(nullable: true)
+                    OfficeToId = table.Column<string>(nullable: true),
+                    StatusMovinHistory = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -244,10 +244,11 @@ namespace inventory_accounting_system.Controllers {
 
             if (role == "Manager") {
                 var office = _context.Offices.Include (o => o.Employees).FirstOrDefault (o => o.Id == model.OfficeId);
+                var curUserId = _userManager.GetUserId(User);
                 var officeEmployees = office.Employees;
                 List<Employee> managers = new List<Employee> ();
                 foreach (var emp in officeEmployees) {
-                    if (await _userManager.IsInRoleAsync (emp, "Manager")) {
+                    if (await _userManager.IsInRoleAsync (emp, "Manager") && emp.Id!=curUserId) {
                         managers.Add (emp);
                     }
                 }
