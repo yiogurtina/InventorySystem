@@ -2,26 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace inventory_accounting_system.Controllers
-{
-    public class OrderEmployeesController : Controller
-    {
+namespace inventory_accounting_system.Controllers {
+    public class OrderEmployeesController : Controller {
         #region Dependency Injection
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Employee> _userManager;
 
-        public OrderEmployeesController(ApplicationDbContext context, UserManager<Employee> userManager)
-        {
+        public OrderEmployeesController (ApplicationDbContext context, UserManager<Employee> userManager) {
             _context = context;
             _userManager = userManager;
         }
@@ -32,50 +29,40 @@ namespace inventory_accounting_system.Controllers
 
         // GET: OrderEmployees
         //[Authorize(Roles = "User, Admin")]
-        public async Task<IActionResult> Index()
-        {
+        public async Task<IActionResult> Index () {
+
             #region Search office Manager
 
-            var userId = _userManager.GetUserId(User);
+            var userId = _userManager.GetUserId (User);
 
-            var userFromOff = _context.Users.Where(u => u.IsDelete == false);
-            foreach (var usr in userFromOff)
-            {
-                if (await _userManager.IsInRoleAsync(usr, "Manager"))
-                {
-                    if (usr.Id == userId)
-                    {
+            var userFromOff = _context.Users.Where (u => u.IsDelete == false);
+            foreach (var usr in userFromOff) {
+                if (await _userManager.IsInRoleAsync (usr, "Manager")) {
+                    if (usr.Id == userId) {
                         #region Search office Admin
 
-                        var userIdAdmin = _userManager.GetUserId(User);
-                        var userNameAdmin = _userManager.GetUserName(User);
+                        var userIdAdmin = _userManager.GetUserId (User);
+                        var userNameAdmin = _userManager.GetUserName (User);
 
                         ViewData["UserIdAdmin"] = userNameAdmin;
 
                         var officeIdEmployeeAdmin = _context.Offices;
 
-                        var userFromOffAdmin = _context.Users.Where(u => u.IsDelete == false);
-                        foreach (var usrAdmin in userFromOffAdmin)
-                        {
-                            if (await _userManager.IsInRoleAsync(usrAdmin, "Manager") && usrAdmin.Id == userIdAdmin)
-                            {
-                                ViewData["EmployeeToIdAdmin"] = new SelectList(_context.Users.Where(u => u.Id == usrAdmin.Id), "Id", "Name");
+                        var userFromOffAdmin = _context.Users.Where (u => u.IsDelete == false);
+                        foreach (var usrAdmin in userFromOffAdmin) {
+                            if (await _userManager.IsInRoleAsync (usrAdmin, "Manager") && usrAdmin.Id == userIdAdmin) {
+                                ViewData["EmployeeToIdAdmin"] = new SelectList (_context.Users.Where (u => u.Id == usrAdmin.Id), "Id", "Name");
                                 var userOfficeIdAdmin = usrAdmin.OfficeId;
 
-                                foreach (var office in officeIdEmployeeAdmin)
-                                {
-                                    if (userOfficeIdAdmin == office.Id)
-                                    {
-                                        foreach (var usrAdminOffice in userFromOffAdmin)
-                                        {
-                                            ViewData["OfficeIdAdmin"] = new SelectList(_context.Offices.Where(o => o.Id == usrAdmin.OfficeId), "Id", "Title");
+                                foreach (var office in officeIdEmployeeAdmin) {
+                                    if (userOfficeIdAdmin == office.Id) {
+                                        foreach (var usrAdminOffice in userFromOffAdmin) {
+                                            ViewData["OfficeIdAdmin"] = new SelectList (_context.Offices.Where (o => o.Id == usrAdmin.OfficeId), "Id", "Title");
                                             ViewData["OfficeIdTitleAdmin"] = office.Title;
 
-                                            foreach (var admin in userFromOffAdmin)
-                                            {
-                                                if (await _userManager.IsInRoleAsync(admin, "Admin"))
-                                                {
-                                                    ViewData["EmployeeFromIdAdmin"] = new SelectList(_context.Users.Where(u => u.Id == admin.Id), "Id", "Name");
+                                            foreach (var admin in userFromOffAdmin) {
+                                                if (await _userManager.IsInRoleAsync (admin, "Admin")) {
+                                                    ViewData["EmployeeFromIdAdmin"] = new SelectList (_context.Users.Where (u => u.Id == admin.Id), "Id", "Name");
 
                                                     ViewData["EmployeeFromIdNameAdmin"] = admin.Name;
                                                 }
@@ -91,35 +78,35 @@ namespace inventory_accounting_system.Controllers
                         #endregion
 
                         var applicationDbContext = _context.OrderEmployees
-                            .Where(u => u.EmployeeFromId == usr.Id)
-                            .Include(o => o.EmployeeFrom)
-                            .Include(o => o.EmployeeTo)
-                            .Include(o => o.Office);
+                            .Where (u => u.EmployeeToId == usr.Id)
+                            .Include (o => o.EmployeeFrom)
+                            .Include (o => o.EmployeeTo)
+                            .Include (o => o.Asset)
+                            .Include (o => o.Office);
 
-                        return View(await applicationDbContext.ToListAsync());
+                        return View (await applicationDbContext.ToListAsync ());
                     }
 
                 }
 
             }
             #endregion
-            
+
             var applicationDbContextAll = _context.OrderEmployees
-                .Include(o => o.EmployeeFrom)
-                .Include(o => o.EmployeeToId)
-                .Include(o => o.Office);
-            return View(await applicationDbContextAll.ToListAsync());
+                .Include (o => o.EmployeeFrom)
+                .Include (o => o.EmployeeToId)
+                .Include(o => o.Asset)
+                .Include (o => o.Office);
+            return View (await applicationDbContextAll.ToListAsync ());
         }
 
         #endregion
 
         #region OrderSend
         //[Authorize(Roles = "User, Admin")]
-        public ActionResult OrderSend(string officeId, string title, string content, string employeeFromId, string employeeToId)
-        {
+        public ActionResult OrderSend (string officeId, string title, string content, string employeeFromId, string employeeToId) {
 
-            var orderSend = new OrderEmployee
-            {
+            var orderSend = new OrderEmployee {
                 OfficeId = officeId,
                 Title = title,
                 Content = content,
@@ -128,81 +115,70 @@ namespace inventory_accounting_system.Controllers
                 DateFrom = DateTime.Now,
                 DateTo = null
             };
-            _context.Add(orderSend);
-            _context.SaveChanges();
+            _context.Add (orderSend);
+            _context.SaveChanges ();
 
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction (nameof (Index));
         }
 
         #endregion
 
         #region Status
 
-        public IActionResult OrderStatus(string idMessage)
-        {
-            
-            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessage);
-            if (messageId != null && messageId.Status == "New")
-            {
+        public IActionResult OrderStatus (string idMessage) {
+
+            var messageId = _context.OrderEmployees.SingleOrDefault (m => m.Id == idMessage);
+            if (messageId != null && messageId.Status == "New") {
                 messageId.Status = "Open";
-                _context.Update(messageId);
-                _context.SaveChanges();
+                _context.Update (messageId);
+                _context.SaveChanges ();
 
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction (nameof (Index));
         }
 
-        public string GetMsgOrderStatus(string idMessage)
-        {
+        public string GetMsgOrderStatus (string idMessage) {
             var msgStatusJson = String.Empty;
-            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessage);
-            if (messageId != null)
-            {
+            var messageId = _context.OrderEmployees.SingleOrDefault (m => m.Id == idMessage);
+            if (messageId != null) {
                 string status = messageId.Status;
                 string statusMsg = status;
                 msgStatusJson = statusMsg;
             }
-            return JsonConvert.SerializeObject(msgStatusJson);
+            return JsonConvert.SerializeObject (msgStatusJson);
         }
-
-
 
         #endregion
 
         #region StatusOpen
 
-        public ActionResult OrderStatusOpen(string idMessageOpen)
-        {
-            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessageOpen);
-            if (messageId != null && messageId.Status == "Open")
-            {
+        public ActionResult OrderStatusOpen (string idMessageOpen) {
+            var messageId = _context.OrderEmployees.SingleOrDefault (m => m.Id == idMessageOpen);
+            if (messageId != null && messageId.Status == "Open") {
 
                 messageId.Status = "Open";
 
-                _context.Update(messageId);
-                _context.SaveChanges();
+                _context.Update (messageId);
+                _context.SaveChanges ();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction (nameof (Index));
         }
 
         #endregion
 
         #region OrderSendAdmin
         //[Authorize(Roles = "User, Admin")]
-        public ActionResult OrderSendAdmin(
+        public ActionResult OrderSendAdmin (
             string officeIdAdmin,
             string titleAdmin,
             string contentAdmin,
             string employeeFromIdAdmin,
             string employeeToIdAdmin,
             string idMessageOpen,
-            OrderEmployee orderStatus)
-        {
-            OrderStatusInprogress(idMessageOpen);
+            OrderEmployee orderStatus) {
+            OrderStatusInprogress (idMessageOpen);
 
-            var orderSend = new OrderEmployeeAdmin
-            {
+            var orderSend = new OrderEmployeeAdmin {
                 OfficeAdminId = officeIdAdmin,
                 TitleAdmin = titleAdmin,
                 ContentAdmin = contentAdmin,
@@ -213,40 +189,34 @@ namespace inventory_accounting_system.Controllers
             };
 
             var msg = _context.OrderEmployees;
-            foreach (var orderEmployee in msg)
-            {
-                if (orderEmployee.Id == idMessageOpen)
-                {
+            foreach (var orderEmployee in msg) {
+                if (orderEmployee.Id == idMessageOpen) {
                     string contentUsr = orderEmployee.Content;
                     orderSend.ContentUser = contentUsr;
                 }
             }
-            _context.Add(orderSend);
-            _context.SaveChanges();
+            _context.Add (orderSend);
+            _context.SaveChanges ();
 
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction (nameof (Index));
         }
 
         #endregion
 
         #region OrderStatusInprogress
 
-        public ActionResult OrderStatusInprogress(string idMessageOpen)
-        {
-            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessageOpen);
-            if (messageId != null && messageId.Status == "Open")
-            {
+        public ActionResult OrderStatusInprogress (string idMessageOpen) {
+            var messageId = _context.OrderEmployees.SingleOrDefault (m => m.Id == idMessageOpen);
+            if (messageId != null && messageId.Status == "Open") {
 
                 messageId.Status = "Inprogress";
                 messageId.DateTo = DateTime.Now;
 
-                _context.Update(messageId);
-                _context.SaveChanges();
+                _context.Update (messageId);
+                _context.SaveChanges ();
             }
 
-
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction (nameof (Index));
         }
 
         #endregion
@@ -254,64 +224,85 @@ namespace inventory_accounting_system.Controllers
         #region Details
 
         // GET: OrderEmployees/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+        public async Task<IActionResult> Details (string id) {
+            if (id == null) {
+                return NotFound ();
             }
 
             var orderEmployee = await _context.OrderEmployees
-                .Include(o => o.EmployeeFrom)
-                .Include(o => o.Office)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (orderEmployee == null)
-            {
-                return NotFound();
+                .Include (o => o.EmployeeFrom)
+                .Include (o => o.Office)
+                .SingleOrDefaultAsync (m => m.Id == id);
+            if (orderEmployee == null) {
+                return NotFound ();
             }
 
-            return View(orderEmployee);
+            return View (orderEmployee);
         }
-        
 
         #endregion
 
         #region Delete
 
         // GET: OrderEmployees/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+        public async Task<IActionResult> Delete (string id) {
+            if (id == null) {
+                return NotFound ();
             }
 
             var orderEmployee = await _context.OrderEmployees
-                .Include(o => o.EmployeeFrom)
-                .Include(o => o.Office)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (orderEmployee == null)
-            {
-                return NotFound();
+                .Include (o => o.EmployeeFrom)
+                .Include (o => o.Office)
+                .SingleOrDefaultAsync (m => m.Id == id);
+            if (orderEmployee == null) {
+                return NotFound ();
             }
 
-            return View(orderEmployee);
+            return View (orderEmployee);
         }
 
         // POST: OrderEmployees/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName ("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var orderEmployee = await _context.OrderEmployees.SingleOrDefaultAsync(m => m.Id == id);
-            _context.OrderEmployees.Remove(orderEmployee);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+        public async Task<IActionResult> DeleteConfirmed (string id) {
+            var orderEmployee = await _context.OrderEmployees.SingleOrDefaultAsync (m => m.Id == id);
+            _context.OrderEmployees.Remove (orderEmployee);
+            await _context.SaveChangesAsync ();
+            return RedirectToAction (nameof (Index));
         }
 
-        private bool OrderEmployeeExists(string id)
-        {
-            return _context.OrderEmployees.Any(e => e.Id == id);
+        private bool OrderEmployeeExists (string id) {
+            return _context.OrderEmployees.Any (e => e.Id == id);
+        }
+
+        #endregion
+
+        #region Check
+
+        public ActionResult CheckViewComponent (string[] assetId, string officeId, string employeeId, string content) {
+
+            foreach (var item in assetId) {
+                var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
+                var assetIdFindOrder = _context.OrderEmployees.FirstOrDefault (a => a.AssetId == item || a.AssetId == null);
+
+                if (assetIdFind != null && assetIdFindOrder == null) {
+
+                    var orderSend = new OrderEmployee {
+                    AssetId = assetIdFind.Id,
+                    OfficeId = officeId,
+                    Content = content,
+                    EmployeeToId = employeeId,
+                    DateFrom = DateTime.Now,
+                    DateTo = null
+                    };
+                    _context.Add (orderSend);
+                    _context.SaveChanges ();
+
+                } else {
+                    ModelState.AddModelError ("AssetId", "Заявка на этот товар уже отправлена.");
+                }
+            }
+            return Content ("Ок");
         }
 
         #endregion

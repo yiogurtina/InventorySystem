@@ -18,13 +18,13 @@
             <div class="panel-heading">
                 <a class="btn btn-success" data-toggle="collapse" id="clickNew" href="#imageGalleryNew-@item.Id" style="width: 100%">
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
-                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
+                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
                     </h4>
                 </a>
             </div>
             <div class="panel-body collapse" data-id="openId" id="imageGalleryNew-@item.Id">
-                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
+                <strong style="color: dimgrey">Название запрошенного актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.Name)</h5><br />
+                <strong style="color: dimgrey">Номер инвентарного номера актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.InventNumber)</h5><br />
                 <div style="width: 100%">
                     <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
                 </div> <br /><hr />
@@ -48,13 +48,13 @@
             <div class="panel-heading">
                 <a class="btn btn-info" data-toggle="collapse" id="clickIdOpen" href="#imageGalleryOpen-@item.Id" style="width: 100%">
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
-                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
+                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
                     </h4>
                 </a>
             </div>
             <div class="panel-body collapse in" data-name="clasS"  id="imageGalleryOpen-@item.Id">
-                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
+                <strong style="color: dimgrey">Название запрошенного актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.Name)</h5><br />
+                <strong style="color: dimgrey">Номер инвентарного номера актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.InventNumber)</h5><br />
                 <div style="width: 100%">
                     <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
                 </div> <br /><hr />

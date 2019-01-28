@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group hidden" id="EmployeeSelect">
                     <label class="control-label">Кому:</label>
-                    <select class="form-control" id="EmployeeIdSelect"
+                    <select class="form-control" id="employeeIdSelectComponent"
                             onchange="OnChangeEmployeeId(this)"
                             style=" width: 270px !important;"
                             asp-items="ViewBag.EmployeeFromId"></select>
@@ -39,7 +39,7 @@
             </form>
         </div>
     </div>
-    
+
 <table class="table table-hover table-bordered">
     <thead>
     <tr style="background-color: whitesmoke">
@@ -115,7 +115,7 @@
 
 <div class="form-group" id="contentOrder">
     <label class="control-label">Такст заявки</label>
-        <textarea class="form-control" id="contentOrderI"
+        <textarea class="form-control" id="contentOrderIComponent"
         style=" width: 270px !important;"></textarea>
 </div>
 
@@ -127,7 +127,7 @@
 <script>
     window.onload = function(){
         officeId = document.getElementById('officeIdSelect').children[0].value;
-        employeeId = document.getElementById('employeeIdSelect').children[0].value;
+        employeeId = document.getElementById('employeeIdSelectComponent').children[0].value;
     }
     checkedCheckBox = [];
     function OnChangeCheckBoxFunc(e) {
@@ -146,15 +146,15 @@
         employeeId = e.value;
     }
     function getCheckedCheckBoxes() {
-        employeeId = document.getElementById('employeeIdSelect').children[0].value;
+        employeeId = document.getElementById('employeeIdSelectComponent').children[0].value;
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("Check", "Assets")',
+            url: '@Url.Action("CheckViewComponent", "OrderEmployees")',
             data: {
                 officeId: officeId,
                 assetId: checkedCheckBox,
                 employeeId: employeeId,
-                content: $("#contentOrderI").val()
+                content: $("#contentOrderIComponent").val()
             },
             success: function (data) {
                 window.location.reload();
