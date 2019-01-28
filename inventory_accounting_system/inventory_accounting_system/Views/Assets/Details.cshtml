@@ -57,6 +57,12 @@
         <dd>
             @Html.DisplayFor(model => model.Asset.Supplier.Name)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Price)
+        </dd>
         @if (Model.Asset.DocumentPath != null)
         {
             <dt>

@@ -87,6 +87,7 @@ namespace inventory_accounting_system.Controllers {
             ViewData["DocumentSort"] = sorting == Sorting.DocumentAsc ? Sorting.DocumentDesc : Sorting.DocumentAsc;
             ViewData["CategorySort"] = sorting == Sorting.CategoryAsc ? Sorting.CategoryDesc : Sorting.CategoryAsc;
             ViewData["SupplierSort"] = sorting == Sorting.SupplierAsc ? Sorting.SupplierDesc : Sorting.SupplierAsc;
+            ViewData["PriceSort"] = sorting == Sorting.PriceAsc ? Sorting.PriceDesc : Sorting.PriceAsc;
 
             switch (sorting) {
                 case Sorting.IsActiveDesc:
@@ -112,6 +113,9 @@ namespace inventory_accounting_system.Controllers {
                     break;
                 case Sorting.SupplierDesc:
                     assets = assets.OrderByDescending (s => s.Supplier.Name);
+                    break;
+                case Sorting.PriceDesc:
+                    assets = assets.OrderByDescending(s => s.Price);
                     break;
                 default:
                     assets = assets.OrderBy (s => s.Name);
@@ -212,7 +216,7 @@ namespace inventory_accounting_system.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document, StatusMovingAssets")] Asset asset,
+        public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document, StatusMovingAssets, Price")] Asset asset,
             string serialNum,
             string eventId) {
 
@@ -315,7 +319,7 @@ namespace inventory_accounting_system.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit (string id, [Bind ("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id")] Asset asset,
+        public async Task<IActionResult> Edit (string id, [Bind ("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id, Price")] Asset asset,
             InventoryNumberHistory inventNumberHistory,
             string serialNum,
             string currentPath,

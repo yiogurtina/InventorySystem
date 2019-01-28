@@ -17,6 +17,8 @@
         CategoryAsc,
         CategoryDesc,
         SupplierAsc,
-        SupplierDesc
+        SupplierDesc,
+        PriceAsc,
+        PriceDesc
     }
 }

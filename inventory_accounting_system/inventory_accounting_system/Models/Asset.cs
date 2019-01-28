@@ -28,8 +28,6 @@ namespace inventory_accounting_system.Models {
 
         [Display (Name = "Инвентарный номер")]
         public string InventNumber { get; set; }
-
-        
         
         [Display (Name = "Маска не может быть меньше 6")]
         public int InventPrefix { get; set; }
@@ -55,6 +53,9 @@ namespace inventory_accounting_system.Models {
         [Display (Name = "Технические документы")]
         public string DocumentPath { get; set; }
         public string StatusMovingAssets { get; set; }
+
+        [Display(Name = "Цена")]
+        public double Price { get; set; }
 
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
 
