@@ -9,7 +9,9 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
+.catInput {
+    margin-top: 20px;
+}
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;
@@ -32,4 +34,20 @@
     .carousel-caption {
         display: none;
     }
+}
+
+
+.field-validation-error {
+    color: #f00;
+}
+.validation-summary-errors {
+    color: #f00;
+    font-weight: bold;
+}
+.input-validation-error {
+    border: 2px solid #f00;
+    background-color: #fee;
+}
+input[type="checkbox"].input-validation-error {
+    outline: 2px solid #f00;
 }

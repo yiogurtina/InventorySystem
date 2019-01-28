@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Asset>
+@{
+    ViewData["Title"] = "UserAssets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UserAssets</h2>
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Prefix</th>
+        <th scope="col">Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{
+        if (Model != null)
+        {
+            foreach (var item in Model)
+             {
+                 <tr>
+                     <th scope="row">@item.Name</th>
+                     <td>@item.InventPrefix</td>
+                     <td>@item.Date</td>
+                 </tr>
+             }
+        }
+    }
+    </tbody>
+</table>

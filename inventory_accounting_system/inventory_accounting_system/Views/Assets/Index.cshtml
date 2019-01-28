@@ -3,82 +3,335 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string dateAction = @ViewBag.dateAction;
+    string dateActionSale = @ViewBag.dateActionSale;
 }
 
-<h2>Index</h2>
+<h2>Имущество</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Создать</a>
 </p>
-<table class="table">
+@using (Html.BeginForm("Index", "Assets", FormMethod.Post))
+{
+    <div>
+        <p>Search by Name: @Html.TextBox("searchString")
+            <input id="Submit1" type="submit" value="Filter"></p>
+    </div>
+}
+<table class="table table-hover table-bordered">
     <thead>
-        <tr>
-                <th>
+        <tr style="background-color: whitesmoke">
+            <th class="text-left">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.IsActiveSort">
+                    <strong>Выбрать</strong>
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
                     @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
                     @Html.DisplayNameFor(model => model.InventNumber)
-                </th>
-                <th>
+                </a>
+            </th>
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DateSort">
                     @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImagesUrl)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee)
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.ImageSort">
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Office)
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DocumentSort">
+                    @Html.DisplayNameFor(model => model.Document)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Storage)
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.CategorySort">
+                    @Html.DisplayNameFor(model => model.Category)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Supplier)
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.PriceSort">
+                    @Html.DisplayNameFor(model => model.Price)
+                </a>
             </th>
-            <th></th>
+            <th class="text-center">
+                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.SupplierSort">
+                    @Html.DisplayNameFor(model => model.Supplier)
+                </a>
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+    @foreach (var item in Model)
+    {
+        <tr >
             <td>
+                <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
+            </td>
+            <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                 @Html.DisplayFor(modelItem => item.InventNumber)
             </td>
-            <td>
+            <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagesUrl)
+            <td class="text-center"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
+                <img src="@item.ImagePath" width="100" height="100" />
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
+            @if (@item.DocumentPath != null)
+            {
+                <td class="text-center col-sm-1">
+                    <a style="color: dodgerblue; text-decoration: none" asp-controller="Assets" asp-action="Download" asp-route-id="@item.Id">@item.Name</a>
+                </td>
+            }
+            else
+            {
+                <td class="text-center col-sm-1">
+                    <a style="color: darkgrey; text-decoration: none " asp-controller="Assets" asp-action="Download" asp-route-id="@item.Id">@item.Name</a>
+                </td>
+            }
+            <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Id)
+            <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
+                @Html.DisplayFor(modelItem => item.Price)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Office.Id)
+            <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Storage.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Supplier.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            @*<td class="col-sm-3">
+            <div>
+                <a class="btn btn-default" asp-action="Move" asp-route-id="@item.Id">Move</a>
+                <a class="btn btn-default" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a class="btn btn-default" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </div>
+        </td>*@
         </tr>
-}
+
+    }
     </tbody>
 </table>
+
+<div>
+    <a class="btn btn-primary" onclick="modalShowHendler()">Закрепить</a>
+    <a class="btn btn-primary" onclick="modalShowHendlerSale()">Продажа</a>
+</div>
+
+
+@*Modal window Закрепить*@
+
+<div class="modal fade" id="newAssetModal">
+    <div class="modal-dialog modal-lg" style=" width: 300px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Закрепить</h4>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <form>
+                            <div class="form-group" id="officeSelect">
+                                <label class="control-label">Офис/Склад</label>
+                                <select class="form-control" id="officeIdSelect" onchange="OnChangeOfficeId(this)" style=" width: 270px !important;" asp-items="ViewBag.OfficeId"></select>
+                            </div>
+                            <div class="form-group" id="employeeSelect">
+                                <label class="control-label">Сотрудник</label>
+                                <select class="form-control" id="employeeIdSelect" onchange="OnChangeEmployeeId(this)" style=" width: 270px !important;" asp-items="ViewBag.EmployeeId"></select>
+                            </div>
+                            <div class="form-group" id="dateAction">
+                                <label class="control-label">Дата</label>
+                                <input id="dateAction" type="date" class="form-control" style=" width: 270px !important;" value="@dateAction" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <form id="NewAssetForm">
+                
+                <div class="modal-footer">
+                    <div>
+                        <button id="CreateMethod" type="submit" onclick="getCheckedCheckBoxes()" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@*Modal window Продажа*@
+
+<div class="modal fade" id="newAssetModalSale">
+    <div class="modal-dialog modal-lg" style=" width: 400px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Закрепить</h4>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <form>
+                            <div class="form-group hidden" id="officeSelectSale">
+                                <label class="control-label">Офис/Склад</label>
+                                <select class="form-control" id="officeIdSelectSale" onchange="OnChangeOfficeIdSale(this)" style=" width: 290px !important;" asp-items="ViewBag.OfficeIdSale"></select>
+                            </div>
+                            <p>@ViewBag.OfficeIdSaleOne</p>
+                            <div class="form-group" id="employeeSelectSale">
+                                <label class="control-label">Сотрудник</label>
+                                <select class="form-control" id="employeeIdSelectSale" onchange="OnChangeEmployeeIdSale(this)" style=" width: 290px !important;" asp-items="ViewBag.EmployeeIdSale"></select>
+                            </div>
+                            <div class="form-group hidden" id="statusMovingAssets">
+                                <label class="control-label">Статус передачи</label>
+                                <select class="form-control" id="statusMovingAssetsSelect" onchange="OnChangeStatusAssetMoving(this)" style=" width: 290px !important;" asp-items="ViewBag.StatusMovingAssets"></select>
+                            </div>
+                            <p><strong>Статус: </strong>@ViewBag.StatusMovingAssetsOne</p>
+                            <div class="form-group" id="dateActionSaleNowDiv">
+                                <label class="control-label">Дата:</label>
+                                <!-- <p id="dateActionSaleNow" type="date" class="form-control" style=" width: 290px !important;" asp-items="ViewBag.dateActionSale"/> -->
+                                <!-- <p id="dateActionSaleNow" type="date" class="form-control" style=" width: 290px !important;" value="@dateActionSale"/> -->
+                                <p>@dateActionSale</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <form id="NewAssetFormSale">
+                
+                <div class="modal-footer">
+                    <div>
+                        <button id="CreateMethodSale" type="submit" onclick="getCheckedCheckBoxesSale()" class="btn btn-primary">Sale</button>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+
+        var officeId;
+        var employeeId;
+        var dateAction;
+
+        function modalShowHendler() {
+            $("#newAssetModal").modal();
+            officeId = document.getElementById('officeIdSelect').children[0].value;
+            employeeId = document.getElementById('employeeIdSelect').children[0].value;
+            dateAction = document.getElementById('dateAction').value;
+        }
+
+
+        var officeIdSale;
+        var employeeIdSale;
+        var dateActionSaleNew;
+        var statusAssetsMving;
+        
+
+        function modalShowHendlerSale() {
+            $("#newAssetModalSale").modal();
+            officeIdSale = document.getElementById('officeIdSelectSale').children[0].value;
+            <!-- dateActionSaleNew = document.getElementById('dateActionSaleNow').value; -->
+            employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
+            statusAssetsMving = document.getElementById('statusMovingAssetsSelect').children[0].value;
+        }
+
+        checkedCheckBox = [];
+        checkedCheckBoxSale = [];
+
+        function OnChangeCheckBoxFunc(e) {
+            var assetId = e.value;
+            if (checkedCheckBox.indexOf(assetId) > -1) {
+                var elementIndex = checkedCheckBox.indexOf(assetId);
+                checkedCheckBox.splice(elementIndex, 1);
+                checkedCheckBoxSale.splice(elementIndex, 1);
+            } else {
+                checkedCheckBox.push(assetId);
+                checkedCheckBoxSale.push(assetId);
+            }
+        }
+
+        function OnChangeOfficeId(e) {
+            officeId = e.value;
+        }
+
+        function OnChangeEmployeeId(e) {
+            employeeId = e.value;
+        }
+
+        function OnChangeOfficeIdSale(e) {
+            officeIdSale = e.value;
+        }
+
+        function OnChangeEmployeeIdSale(e) {
+            employeeIdSale = e.value;
+        }
+
+        function OnChangeStatusAssetMoving(e) {
+            statusAssetsMving = e.value;
+        }
+        
+
+
+        function getCheckedCheckBoxes() {
+            employeeId = document.getElementById('employeeIdSelect').children[0].value;
+            dateAction = document.getElementById('dateAction').children[0].value;
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Check", "Assets")',
+                data: {
+                    officeId: officeId,
+                    assetId: checkedCheckBox,
+                    dateActionSaleNew: dateActionSaleNew,
+                    employeeId: employeeId,
+                    dateAction: dateAction,
+                    inIndex: 1
+                },
+                success: function (data) {
+                    console.log('success!');
+                }
+            });
+        }
+
+        function getCheckedCheckBoxesSale() {
+            
+            employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaleAsste", "Assets")',
+                data: {
+                    officeIdSale: officeIdSale,
+                    assetIdSale: checkedCheckBoxSale,
+                    employeeIdSale: employeeIdSale,
+                    statusAssetsMving: statusAssetsMving,
+                    inIndex: 1
+                },
+                success: function (data) {
+                    console.log('success!');
+                }
+            });
+        }
+
+    </script>
+}

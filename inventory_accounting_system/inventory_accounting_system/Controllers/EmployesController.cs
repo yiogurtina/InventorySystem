@@ -9,11 +9,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace inventory_accounting_system.Controllers
 {
     public class EmployesController : Controller
     {
+        #region Dependency Injection
+
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<Employee> _userManager;
@@ -25,17 +28,30 @@ namespace inventory_accounting_system.Controllers
 
         }
 
+        #endregion
+
+        #region Index
+
         // GET: Employes
         public ActionResult Index()
         {
             return View();
         }
 
+        #endregion
+
+        #region Details
+
         // GET: Employes/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var user = _context.Users.Find(id);
+            return View(user);
         }
+
+        #endregion
+
+        #region Create
 
         // GET: Employes/Create
         public ActionResult Create()
@@ -60,6 +76,10 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region Edit
+
         // GET: Employes/Edit/5
         public ActionResult Edit(int id)
         {
@@ -83,28 +103,47 @@ namespace inventory_accounting_system.Controllers
             }
         }
 
+        #endregion
+
+        #region Delete
+
         // GET: Employes/Delete/5
-        public ActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
         {
+            var user = await _userManager.FindByIdAsync(id);
+            ViewData["Name"] = user.Name;
+            ViewData["Surname"] = user.Surname;
+            ViewData["UserId"] = id;
             return View();
         }
 
         // POST: Employes/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             try
             {
                 // TODO: Add delete logic here
+                var user = await _userManager.FindByIdAsync(id);
+                user.IsDelete = true;
 
-                return RedirectToAction(nameof(Index));
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Users));
             }
             catch
             {
                 return View();
             }
         }
+
+        #endregion
+
+        #region ChangeRole
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRole(string id)
         {
@@ -114,13 +153,32 @@ namespace inventory_accounting_system.Controllers
             ViewData["UserId"] = id;
             return View();
         }
-        [Authorize(Roles = "Admin")]
+
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> Users()
         {
             var user = await _userManager.GetUserAsync(User);
-            var users = _context.Users.Where(u => u.Id != user.Id);
-            return View(users);
+            if (User.IsInRole("Admin"))
+            {
+                return View(_context.Users.Where(u => u.Id != user.Id).Where(u => !u.IsDelete));
+            }
+            else
+            {
+                return View(_context.Users.Where(u => u.OfficeId == user.OfficeId).Where(u=>u.Id!=user.Id).Where(u => !u.IsDelete));
+            }
         }
+
+        public IActionResult UserAssets(string id)
+        {
+            var user = _context.Users.Include(u=>u.Assets).First(u=>u.Id==id );
+            var assets = user.Assets;
+            return View(assets);
+        }
+
+        #endregion
+
+        #region CreateRole
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateRole(string role, string id)
         {
@@ -137,5 +195,7 @@ namespace inventory_accounting_system.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        #endregion
     }
 }

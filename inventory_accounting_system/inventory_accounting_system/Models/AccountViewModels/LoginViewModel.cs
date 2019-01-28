@@ -9,15 +9,18 @@ namespace inventory_accounting_system.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
+        [Display(Name = "Логин")]
         public string Login { get; set; }
-        [EmailAddress]
-        public string Email { get; set; }
 
-        [Required]
+        [Required]        
         [DataType(DataType.Password)]
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Запомнить?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Показать пароль")]
+        public bool ShowPassword { get; set; }
     }
 }

@@ -1,0 +1,145 @@
+﻿@using inventory_accounting_system.ViewModel
+@using Microsoft.AspNetCore.Identity
+
+
+@model inventory_accounting_system.ViewModel.MoveViewModel
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+@{
+    ViewData["Title"] = "Передать актив";
+}
+
+<h2>Передать актив</h2>
+
+<div>
+    <h4>Asset</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Name)
+        </dd>
+        @if (Model.Asset.SerialNum != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Asset.SerialNum)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Asset.SerialNum)
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.InventNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.InventNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.ImagePath)
+        </dt>
+        <dd>
+            <img src="../@Model.Asset.ImagePath" width="100" height="100" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Category)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Category.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Supplier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Supplier.Name)
+        </dd>
+    </dl>
+</div>
+
+<table class="table-bordered table " style="width: 90%; border-radius: 5px;  padding: 10px;box-shadow: 0px 3px 18px -1px rgba(0,0,0,0.75); left: 20%; ">
+    <thead>
+
+        <tr>
+            <th>
+                Офис/Склад
+            </th>
+            <th>
+                Сотрудник
+            </th>
+            <th>
+                Дата
+            </th>
+        </tr>
+    </thead>
+    @foreach (AssetsMoveStory Story in Model.AssetsMoveStories)
+    {
+    <tr>
+        <td>
+            @Story.EmployeeFrom.Login
+        </td>
+        <td>
+            @Story.OfficeFrom.Title
+        </td>
+        <td>
+            @Story.EmployeeTo.Login
+        </td>
+        <td>
+            @Story.OfficeTo.Title
+        </td>
+        <td>@Story.DateStart</td>
+    </tr>
+    }
+</table>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @using (Html.BeginForm("Move", "Assets", FormMethod.Post, true))
+    {
+<div style="width: 700px; border-radius: 5px;  padding: 10px;box-shadow: 0px 3px 18px -1px rgba(0,0,0,0.75); left: 20%; ">
+    <div>
+        <label asp-for="AssetsMoveStory.OfficeFromId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.OfficeFromId" class="target form-control" asp-items="ViewBag.OfficeFromId" id="onChangeText"></select>
+    </div>
+    <div>
+        <label asp-for="AssetsMoveStory.EmployeeFromId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.EmployeeFromId" class="target form-control" asp-items="ViewBag.EmployeeFromId" id="onChangeText"></select>
+    </div>
+
+    <div>
+        <label asp-for="AssetsMoveStory.OfficeToId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.OfficeToId" class="target form-control" asp-items="ViewBag.OfficeToId" id="onChangeText"></select>
+    </div>
+    <div>
+        <label asp-for="AssetsMoveStory.EmployeeToId" class="control-label"></label>
+        <select asp-for="AssetsMoveStory.EmployeeToId" class="target form-control" asp-items="ViewBag.EmployeeToId" id="onChangeText"></select>
+    </div>
+    <div>
+        <label asp-for="AssetsMoveStory.DateStart" class="control-label"></label>
+        <input asp-for="AssetsMoveStory.DateStart" class="form-control" />
+        <span asp-validation-for="AssetsMoveStory.DateStart" class="text-danger"></span>
+    </div>
+    <div>
+        <input type="hidden" name="DateEnd" value="2100-01-01 00" />
+        <input type="hidden" name="AssetId" value="@ViewBag.AssetId" />
+    </div>
+    <div>
+        <input style="margin-top: 10px;" type="submit" class="btn btn-success form-control" />
+    </div>
+</div>
+    }
+    ///await Html.RenderPartialAsync("_MoveAssetView", Model.AssetsMoveStory);
+}

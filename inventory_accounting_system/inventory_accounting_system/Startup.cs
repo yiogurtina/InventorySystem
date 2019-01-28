@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using inventory_accounting_system.Data;
+using inventory_accounting_system.Interface;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.Services;
+using inventory_accounting_system.Hubs;
 
 namespace inventory_accounting_system
 {
@@ -23,7 +25,6 @@ namespace inventory_accounting_system
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -31,26 +32,27 @@ namespace inventory_accounting_system
 
             services.AddIdentity<Employee, IdentityRole>(options => {
                     options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 3;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
-                })
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequiredLength = 3;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddScoped<FileUploadService>();
             services.AddMvc();
+            services.AddSignalR();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseDatabaseErrorPage();                
             }
             else
             {
@@ -61,12 +63,19 @@ namespace inventory_accounting_system
 
             app.UseAuthentication();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}");
             });
+
+            new AppDBInitializer().SeedAsync(app).GetAwaiter();
 
         }
     }

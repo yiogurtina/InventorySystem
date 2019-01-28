@@ -31,40 +31,28 @@
             @Html.DisplayFor(model => model.Date)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ImagesUrl)
+            @Html.DisplayNameFor(model => model.ImagePath)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ImagesUrl)
+            <img src="../@Model.ImagePath" width="100" height="100" />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Category)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Category.Id)
+            @Html.DisplayFor(model => model.Category.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Employee)
+            @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Employee.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Office)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Office.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Storage)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Storage.Id)
+            @Html.DisplayFor(model => model.Price)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Supplier)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Supplier.Id)
+            @Html.DisplayFor(model => model.Supplier.Name)
         </dd>
     </dl>
     

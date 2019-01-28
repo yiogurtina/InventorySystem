@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Employee>
+@{
+    ViewData["Title"] = "GetAllManagers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAllManagers</h2>
+@{
+    foreach (var emp in Model)
+    {
+        <div>@emp.Id</div>
+    }
+}

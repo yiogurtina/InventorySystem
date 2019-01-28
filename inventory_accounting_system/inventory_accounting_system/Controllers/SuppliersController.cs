@@ -12,6 +12,8 @@ namespace inventory_accounting_system.Controllers
 {
     public class SuppliersController : Controller
     {
+        #region Dependency Injection
+
         private readonly ApplicationDbContext _context;
 
         public SuppliersController(ApplicationDbContext context)
@@ -19,11 +21,19 @@ namespace inventory_accounting_system.Controllers
             _context = context;
         }
 
+        #endregion
+
+        #region Index
+
         // GET: Suppliers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Suppliers.ToListAsync());
         }
+
+        #endregion
+
+        #region Details
 
         // GET: Suppliers/Details/5
         public async Task<IActionResult> Details(string id)
@@ -42,6 +52,10 @@ namespace inventory_accounting_system.Controllers
 
             return View(supplier);
         }
+
+        #endregion
+
+        #region Create
 
         // GET: Suppliers/Create
         public IActionResult Create()
@@ -64,6 +78,10 @@ namespace inventory_accounting_system.Controllers
             }
             return View(supplier);
         }
+
+        #endregion
+
+        #region Edit
 
         // GET: Suppliers/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -116,6 +134,10 @@ namespace inventory_accounting_system.Controllers
             return View(supplier);
         }
 
+        #endregion
+
+        #region Delete
+
         // GET: Suppliers/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
@@ -145,9 +167,15 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region SupplierExists
+
         private bool SupplierExists(string id)
         {
             return _context.Suppliers.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }

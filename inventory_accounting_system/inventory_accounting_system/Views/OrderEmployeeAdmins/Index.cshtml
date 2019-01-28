@@ -1,0 +1,236 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<inventory_accounting_system.Models.OrderEmployeeAdmin>
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+
+@foreach (var item in Model)
+{
+    if (item.StatusAdmin == "New")
+    {
+
+        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageId(this)">
+            <div class="panel-heading">
+                <a class="btn btn-success" data-toggle="collapse" id="clickId" href="#imageGallery-@item.Id" style="width: 100%">
+
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) -
+                        <strong> @Html.DisplayFor(modelItem => item.TitleAdmin)</strong>
+                    </h4>
+
+                </a>
+            </div>
+            <div class="panel-body collapse" id="imageGallery-@item.Id">
+
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.TitleAdmin)</h5><br />
+                <div style="width: 100%">
+                    <strong style="color: dimgrey">Прекреплённое сообщение:</strong> <h5>@Html.DisplayFor(modelItem => item.ContentUser)</h5>
+                </div> <br />
+                <strong style="color: dimgrey">Сообщение:</strong> <h4>@Html.DisplayFor(modelItem => item.ContentAdmin)</h4>
+                
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFromAdmin) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateToAdmin) </p>
+
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Ответить</a>
+            </div>
+
+        </div>
+
+    }
+}
+
+@foreach (var item in Model)
+{
+    if (item.StatusAdmin == "Open")
+    {
+        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdOpen(this)">
+            <div class="panel-heading">
+                <a class="btn btn-primary" data-toggle="collapse"  id="clickIdOpen" href="#imageGallery-@item.Id" style="width: 100%">
+                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
+                        От: @Html.DisplayFor(modelItem => item.EmployeeToAdmin.Name) -
+                        <strong> @Html.DisplayFor(modelItem => item.TitleAdmin)</strong>
+                    </h4>
+
+                </a>    
+            </div>
+            <div class="panel-body collapse" id="imageGallery-@item.Id">
+
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.TitleAdmin)</h5><br />
+                <div style="width: 100%">
+                    <strong style="color: dimgrey">Прекреплённое сообщение:</strong> <h5>@Html.DisplayFor(modelItem => item.ContentUser)</h5>
+                </div> <br />
+                <strong style="color: dimgrey">Сообщение:</strong> <h4>@Html.DisplayFor(modelItem => item.ContentAdmin)</h4>
+
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFromAdmin) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateToAdmin) </p>
+
+                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Ответить</a>
+            </div>
+        </div>
+    }
+}
+
+
+@*Modal Window*@
+
+<div class="modal fade" id="newModalOrderAdmin">
+    <div class="modal-dialog modal-lg" style=" width: 500px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Отправить заявку</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <form>
+                            <div class="form-group hidden" id="officeSelectAdmin">
+                                <label class="control-label">Офисы</label>
+                                <select class="form-control" id="officeIdSelectAdmin"
+                                        onchange="OnChangeOfficeIdAdmin(this)"
+                                        style=" width: 270px !important;"
+                                        asp-items="ViewBag.OfficeIdAdmin"></select>
+                            </div>
+
+                            <div class="form-group" id="officeSelect" style="width: 150px">
+
+                                <h5>Менеджер - @ViewBag.OfficeIdTitleAdmin</h5>
+                                <p>@ViewBag.UserIdAdmin</p>
+                                <strong>Кому:</strong><p> @ViewBag.EmployeeFromIdNameAdmin </p><br />
+
+
+                                <select class="form-control hidden" id="EmployeeToIdSelectAdmin"
+                                        onchange="OnChangeEmployeeToIdAdmin(this)"
+                                        style=" width: 270px !important;"
+                                        asp-items="ViewBag.EmployeeToIdAdmin"></select>
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">Заголовок</label>
+                                <input style=" width: 270px !important;" class="form-control" id="titleContentAdmin" />
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group hidden" id="EmployeeSelectAdmin">
+                                <label class="control-label">Кому:</label>
+                                <select class="form-control" id="EmployeeIdSelectAdmin"
+                                        onchange="OnChangeEmployeeIdAdmin(this)"
+                                        style=" width: 270px !important;"
+                                        asp-items="ViewBag.EmployeeFromIdAdmin"></select>
+                            </div>
+
+                            <div class="form-group" id="contentOrder">
+                                <label class="control-label">Такст заявки</label>
+                                <textarea class="form-control" id="contentOrderIAdmin"
+                                          style=" width: 270px !important;"
+                                          asp-items="ViewBag.OfficeIdAdmin"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <form id="NewAssetForm">
+
+                <div class="modal-footer">
+                    <div>
+                        <button id="CreateMethod" type="submit" onclick="GetOrderEmployeeAdmin()" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var idMessage;
+
+    function GetMessageId(event) {
+        idMessage = event.getAttribute('data-id');
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatusAdmin", "OrderEmployeeAdmins")',
+            data: {
+                idMessage: idMessage
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+
+    var idMessageOpen;
+    var messageOnId = [];
+    var messageIdOpen;
+
+    function GetMessageIdOpen() {
+        idMessageOpen = event.getAttribute('data-id');
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatusOpenAdmin", "OrderEmployeeAdmins")',
+            data: {
+                idMessageOpen: idMessageOpen
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+
+
+    var officeIdAdmin;
+    var employeeFromIdAdmin;
+    var employeeToIdAdmin;
+
+    var messageOnIdOpen = [];
+    var messageOnIdOpenUser;
+
+
+    function showModalSendOrderAdmin() {
+        $("#newModalOrderAdmin").modal();
+        officeIdAdmin = document.getElementById('officeIdSelectAdmin').children[0].value;
+        employeeFromIdAdmin = document.getElementById('EmployeeIdSelectAdmin').children[0].value;
+        employeeToIdAdmin = document.getElementById('EmployeeToIdSelectAdmin').children[0].value;
+
+    }
+
+    function OnChangeOfficeIdAdmin(e) {
+        officeIdAdmin = e.value;
+    }
+    function OnChangeEmployeeIdAdmin(e) {
+        employeeFromIdAdmin = e.value;
+    }
+    function OnChangeEmployeeToIdAdmin(e) {
+        employeeToIdAdmin = e.value;
+    }
+
+
+    function GetOrderEmployeeAdmin() {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderSendAdmin", "OrderEmployeeAdmins")',
+            data: {
+                idMessageOpen: idMessageOpen,
+                messageOnIdOpenUser: messageOnIdOpenUser,
+                officeIdAdmin: officeIdAdmin,
+                employeeFromIdAdmin: employeeFromIdAdmin,
+                employeeToIdAdmin: employeeToIdAdmin,
+                titleAdmin: $("#titleContentAdmin").val(),
+                contentAdmin: $("#contentOrderIAdmin").val()
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+</script>

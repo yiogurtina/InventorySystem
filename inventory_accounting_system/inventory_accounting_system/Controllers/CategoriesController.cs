@@ -6,26 +6,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using inventory_accounting_system.Data;
+using inventory_accounting_system.Interface;
 using inventory_accounting_system.Models;
+using Moq;
 
 namespace inventory_accounting_system.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        #region Dependency Injection
 
+        private readonly ApplicationDbContext _context;
         public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Categories
-        public async Task<IActionResult> Index()
+        #endregion
+
+        #region Index
+
+        public IActionResult Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(_context.Categories.ToList());
         }
 
-        // GET: Categories/Details/5
+        #endregion
+
+        #region Test Mock
+
+        //        // GET: Categories
+        //                public async Task<IActionResult> Index()
+        //        {
+        //            mock.Setup(m => m.Categories).Returns(new List<Category>
+        //            {
+        //                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Мебель", Prefix = "F_"},
+        //                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Компутеры", Prefix = "F_"},
+        //                new Category(){Id = "1c200a82-81f2-40f1-86b3-772014cb1e63", Name = "Машины", Prefix = "Fльвытдм_"}
+        //            });
+        //
+        //            return View(mock.Object.Categories.ToList());
+        //        }
+
+        #endregion
+
+        #region Details
+
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -43,15 +69,16 @@ namespace inventory_accounting_system.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        #endregion
+
+        #region Create
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Prefix,Id")] Category category)
@@ -62,10 +89,10 @@ namespace inventory_accounting_system.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(category);
         }
 
-        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -78,12 +105,16 @@ namespace inventory_accounting_system.Controllers
             {
                 return NotFound();
             }
+
             return View(category);
         }
 
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
+        #endregion
+
+        #region Edit
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,Prefix,Id")] Category category)
@@ -111,12 +142,17 @@ namespace inventory_accounting_system.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(category);
         }
 
-        // GET: Categories/Delete/5
+        #endregion
+
+        #region Delete
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -134,7 +170,6 @@ namespace inventory_accounting_system.Controllers
             return View(category);
         }
 
-        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -145,9 +180,15 @@ namespace inventory_accounting_system.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region CategoryExists
+
         private bool CategoryExists(string id)
         {
             return _context.Categories.Any(e => e.Id == id);
         }
+
+        #endregion
     }
 }

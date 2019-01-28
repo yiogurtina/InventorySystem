@@ -1,69 +1,128 @@
-﻿@model inventory_accounting_system.Models.Asset
+﻿
+@model inventory_accounting_system.Models.Asset
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var events = (List<Event>) ViewData["Events"];
 }
+<body onload="myFunction()">
 
-<h2>Create</h2>
+    <h2>Create</h2>
+    <h4>Asset</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group" id="catSelect">
+                    <label asp-for="CategoryId" class="control-label"></label>
+                    <select asp-for="CategoryId" class="target form-control" id="onChangeText" asp-items="ViewBag.CategoryId"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Событие</label>
+                    <select name="eventId" class="form-control" id="eventId"></select>
+                    <!-- </div>
+        <div class="form-group">
+            <label asp-for="InventPrefix" class="control-label"  style="color: lightslategray; font-size: 10pt"></label>
+            <input asp-for="InventPrefix" class="form-control" />
+            <span asp-validation-for="InventPrefix" class="text-danger"></span> -->
+                </div>@*
+        <div class="form-group">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" class="form-control" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>*@
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SupplierId" class="control-label"></label>
+                    <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                </div>
 
-<h4>Asset</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="InventNumber" class="control-label"></label>
-                <input asp-for="InventNumber" class="form-control" />
-                <span asp-validation-for="InventNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OfficeId" class="control-label"></label>
-                <select asp-for="OfficeId" class ="form-control" asp-items="ViewBag.OfficeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="StorageId" class="control-label"></label>
-                <select asp-for="StorageId" class ="form-control" asp-items="ViewBag.StorageId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierId" class="control-label"></label>
-                <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.SupplierId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class ="form-control" asp-items="ViewBag.EmployeeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImagesUrl" class="control-label"></label>
-                <input asp-for="ImagesUrl" class="form-control" />
-                <span asp-validation-for="ImagesUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="Image" class="control-label"></label>
+                    <input type="file" asp-for="Image" class="form-control" id="asd" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Document" class="control-label"></label>
+                    <input type="file" asp-for="Document" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+            <div class="container"></div>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</body>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(".target").change(myFunction);
+
+        function myFunction() {
+            var selectText = document.getElementById("onChangeText");
+            var selectedText = selectText.options[selectText.selectedIndex].text;
+            if (selectedText === "Компьютеры") {
+                var input = document.createElement('input');
+                var label = document.createElement('label');
+
+                label.style.marginTop = ".15in";
+                label.setAttribute("id", "labelId");
+
+                input.className = "form-control";
+                input.setAttribute("id", "inputId");
+                input.setAttribute("name", "serialNum");
+                document.getElementById('catSelect').appendChild(label);
+                document.getElementById('catSelect').appendChild(input);
+
+                document.getElementById("labelId").innerHTML = "Серийный номер";
+            } else {
+                var input = document.getElementById("inputId");
+                var label = document.getElementById("labelId");
+                if (input != null) {
+                    input.parentNode.removeChild(input);
+                }
+                if (label != null) {
+                    label.parentNode.removeChild(label);
+                }
+            }
+            if ($("#onChangeText").val() != null) {
+                var select = document.getElementById('eventId');
+                select.innerHTML = ""; //clear events list
+
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetCategoryEvents", "Assets")',
+                    data: { categoryId: $("#onChangeText").val() },
+                    success: function(result) { //get responce
+                        var obj = JSON.parse(result);
+
+                        for (var i = 0; i < obj.length; i++) { //adding events
+                            var opt = document.createElement('option');
+
+                            opt.value = obj[i].Id;
+                            opt.innerHTML = obj[i].Title;
+
+                            select.appendChild(opt);
+                        }
+                    }
+                });
+            }
+
+        }
+    </script>
 }
