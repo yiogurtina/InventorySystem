@@ -271,7 +271,7 @@
 
                 </div>
                 <form id="NewAssetForm">
-
+               
                     <div class="modal-footer">
                         <div>
                             <button id="CreateMethod" type="submit" onclick="GetOrderEmployee()" class="btn btn-primary">Ok</button>
@@ -281,9 +281,38 @@
             </div>
         </div>
     </div>
+
+
+    
+
+ 
+
     if (User.IsInRole("User"))
     {
-        <a class="btn btn-primary" onclick="showModalSendOrder()" style="margin-top: 150px;">Отправить заявку</a>
+        @*Modal Window Component*@
+
+    <div class="modal fade" id="newModalOfficeComponent">
+        <div class="modal-dialog modal-lg" style=" width: 50% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form>
+                                @await Component.InvokeAsync("AssetsList", 
+                                new {
+                                officeId = @ViewBag.OfficeId, 
+                                userId = @ViewBag.EmployeeToId
+                                })
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <a class="btn btn-primary" onclick="showModalSendOrderComponents()" style="margin-top: 150px;">Отправить заявку</a>
     }
 
 }
@@ -316,6 +345,14 @@
     var employeeToId;
     function showModalSendOrder() {
         $("#newModalOffice").modal();
+        officeId = document.getElementById('officeIdSelect').children[0].value;
+        employeeFromId = document.getElementById('EmployeeIdSelect').children[0].value;
+        employeeToId = document.getElementById('EmployeeToIdSelect').children[0].value;
+        console.log(employeeToId);
+    }
+
+    function showModalSendOrderComponents() {
+        $("#newModalOfficeComponent").modal();
         officeId = document.getElementById('officeIdSelect').children[0].value;
         employeeFromId = document.getElementById('EmployeeIdSelect').children[0].value;
         employeeToId = document.getElementById('EmployeeToIdSelect').children[0].value;

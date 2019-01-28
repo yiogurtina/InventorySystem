@@ -1,0 +1,165 @@
+﻿@model IEnumerable<inventory_accounting_system.Models.Asset>
+
+@{
+    ViewData["Title"] = "Index";
+    string dateAction = @ViewBag.dateAction;
+    string dateActionSale = @ViewBag.dateActionSale;
+}
+
+<h2>Имущество</h2>
+
+<div class="row">
+        <div class="col-md-4">
+            <form>
+                <div class="form-group hidden" id="officeSelect">
+                    <label class="control-label">Офисы</label>
+                    <select class="form-control" id="officeIdSelect"
+                            onchange="OnChangeOfficeId(this)"
+                            style=" width: 270px !important;"
+                            asp-items="ViewBag.OfficeId"></select>
+                </div>
+                
+                <div class="form-group" id="officeSelect" style="width: 150px;">
+                    <h5>Менеджеру - @ViewBag.OfficeIdTitle</h5>
+                    <strong>Кому:</strong><p> @ViewBag.EmployeeFromIdName </p><br />
+                    <strong>От:</strong> <p>@ViewBag.UserId</p>
+                    
+                    <select class="form-control hidden" id="EmployeeToIdSelect"
+                            onchange="OnChangeEmployeeToId(this)"
+                            style=" width: 270px !important;"
+                            asp-items="ViewBag.EmployeeToId"></select>
+                </div>
+                <div class="form-group hidden" id="EmployeeSelect">
+                    <label class="control-label">Кому:</label>
+                    <select class="form-control" id="EmployeeIdSelect"
+                            onchange="OnChangeEmployeeId(this)"
+                            style=" width: 270px !important;"
+                            asp-items="ViewBag.EmployeeFromId"></select>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+<table class="table table-hover table-bordered">
+    <thead>
+    <tr style="background-color: whitesmoke">
+        <th class="text-left">
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.IsActiveSort">
+                <strong>Выбрать</strong>
+            </a>
+        </th>
+        <th class="text-center">
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
+                @Html.DisplayNameFor(model => model.Name)
+            </a>
+        </th>
+        <th class="text-center">
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
+                @Html.DisplayNameFor(model => model.InventNumber)
+            </a>
+        </th>
+        <th class="text-center">
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DateSort">
+                 @Html.DisplayNameFor(model => model.Date)
+            </a>
+        </th>
+        <th class="text-center">
+            <a asp-action="Index"  style="text-decoration: none;" asp-route-sorting="@ViewBag.ImageSort">
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </a>
+        </th>
+        <th class="text-center">
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.CategorySort">
+                @Html.DisplayNameFor(model => model.Category)
+            </a>
+        </th>
+
+        <th class="text-center">
+            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.SupplierSort">
+                @Html.DisplayNameFor(model => model.Supplier)
+            </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr >
+            <td>
+                <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
+            </td>
+            <td class="text-center col-sm-4">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="text-center col-sm-4">
+                @Html.DisplayFor(modelItem => item.InventNumber)
+            </td>
+            <td class="text-center col-sm-4">
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td class="text-center">
+                <img src="@item.ImagePath" width="50" height="50" />
+            </td>
+            <td class="text-center col-sm-4">
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+
+            <td class="text-center col-sm-4">
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
+            </td>
+        </tr>
+
+    }
+    </tbody>
+</table>
+
+<div class="form-group" id="contentOrder">
+    <label class="control-label">Такст заявки</label>
+        <textarea class="form-control" id="contentOrderI"
+        style=" width: 270px !important;"></textarea>
+</div>
+
+<div>
+    <a class="btn btn-primary" onclick="getCheckedCheckBoxes(this)">Отправить</a>
+</div>
+
+
+<script>
+    window.onload = function(){
+        officeId = document.getElementById('officeIdSelect').children[0].value;
+        employeeId = document.getElementById('employeeIdSelect').children[0].value;
+    }
+    checkedCheckBox = [];
+    function OnChangeCheckBoxFunc(e) {
+        var assetId = e.value;
+        if (checkedCheckBox.indexOf(assetId) > -1) {
+            var elementIndex = checkedCheckBox.indexOf(assetId);
+            checkedCheckBox.splice(elementIndex, 1);
+        } else {
+            checkedCheckBox.push(assetId);
+        }
+    }
+    function OnChangeOfficeId(e) {
+        officeId = e.value;
+    }
+    function OnChangeEmployeeId(e) {
+        employeeId = e.value;
+    }
+    function getCheckedCheckBoxes() {
+        employeeId = document.getElementById('employeeIdSelect').children[0].value;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Check", "Assets")',
+            data: {
+                officeId: officeId,
+                assetId: checkedCheckBox,
+                employeeId: employeeId,
+                content: $("#contentOrderI").val()
+            },
+            success: function (data) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
+  
