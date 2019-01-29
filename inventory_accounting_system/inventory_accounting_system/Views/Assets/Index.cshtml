@@ -47,11 +47,7 @@
                     @Html.DisplayNameFor(model => model.ImagePath)
                 </a>
             </th>
-            <th class="text-center">
-                <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DocumentSort">
-                    @Html.DisplayNameFor(model => model.Document)
-                </a>
-            </th>
+          
             <th class="text-center">
                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.CategorySort">
                     @Html.DisplayNameFor(model => model.Category)
@@ -88,18 +84,7 @@
             <td class="text-center"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                 <img src="@item.ImagePath" width="100" height="100" />
             </td>
-            @if (@item.DocumentPath != null)
-            {
-                <td class="text-center col-sm-1">
-                    <a style="color: dodgerblue; text-decoration: none" asp-controller="Assets" asp-action="Download" asp-route-id="@item.Id">@item.Name</a>
-                </td>
-            }
-            else
-            {
-                <td class="text-center col-sm-1">
-                    <a style="color: darkgrey; text-decoration: none " asp-controller="Assets" asp-action="Download" asp-route-id="@item.Id">@item.Name</a>
-                </td>
-            }
+           
             <td class="text-center col-sm-4"  onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
@@ -251,7 +236,6 @@
         function modalShowHendlerSale() {
             $("#newAssetModalSale").modal();
             officeIdSale = document.getElementById('officeIdSelectSale').children[0].value;
-            <!-- dateActionSaleNew = document.getElementById('dateActionSaleNow').value; -->
             employeeIdSale = document.getElementById('employeeIdSelectSale').children[0].value;
             statusAssetsMving = document.getElementById('statusMovingAssetsSelect').children[0].value;
         }

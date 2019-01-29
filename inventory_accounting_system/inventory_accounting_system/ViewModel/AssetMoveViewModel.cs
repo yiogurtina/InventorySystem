@@ -19,6 +19,7 @@ namespace inventory_accounting_system.ViewModel
     public class DetailsAssetViewModel
     {
         public Asset Asset { get; set; }
+        public IEnumerable<Document> Documents { get; set; }
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
     }
 
