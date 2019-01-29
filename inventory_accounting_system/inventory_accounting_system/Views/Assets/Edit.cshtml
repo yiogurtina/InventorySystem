@@ -1,4 +1,7 @@
-﻿@model inventory_accounting_system.Models.Asset
+﻿@using Microsoft.AspNetCore.Identity
+@using inventory_accounting_system.ViewModel
+
+@model EditAssetViewModel
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -48,16 +51,15 @@
                 <input type="file" asp-for="Image" class="form-control" />
             </div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" name="currentPath" value="@Model.ImagePath" />
-            <div class="form-group">
-                <label asp-for="Document" class="control-label"></label>
-                <input type="file" asp-for="Document" class="form-control" />
-            </div>
+            <input type="hidden" asp-for="OfficeId" value="@Model.OfficeId" />
+            <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
+            <input type="hidden" name="ImagePath" value="@Model.ImagePath" />
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
 
-            <input type="hidden" id="passingToJs" value=@serialNum>
+            <input type="hidden" asp-for="SerialNum" id="passingToJs" value="@Model.SerialNum">
         </form>
     </div>
 </div>
