@@ -162,6 +162,7 @@ namespace inventory_accounting_system.Controllers {
         #region Details
 
         public async Task<IActionResult> Details (string id) {
+
             if (id == null) {
                 return NotFound ();
             }
@@ -177,19 +178,32 @@ namespace inventory_accounting_system.Controllers {
             DetailsAssetViewModel model = new DetailsAssetViewModel () {
                 Asset = asset,
                 AssetsMoveStories = _context.AssetsMoveStories
-                .Where (f => f.AssetId == id)
-                .Include (t => t.EmployeeFrom)
-                .Include (t => t.OfficeFrom)
-                .Include (t => t.EmployeeTo)
-                .Include (t => t.OfficeTo)
-                .OrderBy (t => t.DateCurrent)
+                    .Where (f => f.AssetId == id)
+                    .Include (t => t.EmployeeFrom)
+                    .Include (t => t.OfficeFrom)
+                    .Include (t => t.EmployeeTo)
+                    .Include (t => t.OfficeTo)
+                    .OrderBy (t => t.DateCurrent),
+                Documents = _context.Documents
+                    .Where(f => f.AssetId == id)               
             };
 
             return View (model);
-            //return View(asset);
         }
 
-        #endregion
+        public IActionResult GetFile(string documentId)
+        {
+            var doc = _context.Documents.FirstOrDefault(d=>d.Id==documentId);
+
+            string filePath = Path.Combine("~", doc.Path);
+
+            string fileName = doc.Name;
+
+            //return PhysicalFile(filePath, fileName);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/force-download", fileName);
+        }
 
         public string GetCategoryEvents (string categoryId) {
             if (categoryId == null) throw new Exception ();
@@ -197,6 +211,8 @@ namespace inventory_accounting_system.Controllers {
 
             return JsonConvert.SerializeObject (events);
         }
+
+        #endregion
 
         #region Create
 
@@ -254,10 +270,7 @@ namespace inventory_accounting_system.Controllers {
                 } else {
                     asset.ImagePath = "images/default-image.jpg";
                 }
-                if (asset.Document != null) {
-                    UploadDocument (asset);
-                }
-
+                
                 if (eventId != null) {
                     int period;
                     var _event = _context.Events.Find (eventId);
@@ -533,10 +546,36 @@ namespace inventory_accounting_system.Controllers {
 
         #region UploadDocument
 
-        private void UploadDocument (Asset asset) {
-            var path = Path.Combine (_appEnvironment.WebRootPath, $"documents\\{asset.Name}\\document");
-            _fileUploadService.Upload (path, asset.Document.FileName, asset.Document);
-            ///*asset.DocumentPath = $"documents/{asset.Name}/document/{asset.Document.FileName*/}"
+        [HttpPost]
+        public async Task<IActionResult> UploadDocument(IFormFile uploadedFile, string assetId)
+        {
+            if (uploadedFile != null)
+            {
+
+                var uniqueFileName = GetUniqueFileName(uploadedFile.FileName);
+                var uploads = "/Documents/";
+                var path = Path.Combine(uploads, uniqueFileName);
+
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await uploadedFile.CopyToAsync(fileStream);
+                }
+
+                Document file = new Document {AssetId= assetId, Name = uploadedFile.FileName, Path = path };
+                _context.Documents.Add(file);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Details", "Assets", new { id = assetId});
+        }
+
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
         }
 
         #endregion

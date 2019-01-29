@@ -58,6 +58,7 @@ namespace inventory_accounting_system.Models {
         public double Price { get; set; }
 
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
+        public IEnumerable<Document> Documents { get; set; }
 
         public bool InStock { get; set; }
 
