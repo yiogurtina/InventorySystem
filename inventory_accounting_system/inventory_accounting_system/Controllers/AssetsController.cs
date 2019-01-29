@@ -115,7 +115,7 @@ namespace inventory_accounting_system.Controllers {
                     assets = assets.OrderByDescending (s => s.Supplier.Name);
                     break;
                 case Sorting.PriceDesc:
-                    assets = assets.OrderByDescending(s => s.Price);
+                    assets = assets.OrderByDescending (s => s.Price);
                     break;
                 default:
                     assets = assets.OrderBy (s => s.Name);
@@ -178,31 +178,30 @@ namespace inventory_accounting_system.Controllers {
             DetailsAssetViewModel model = new DetailsAssetViewModel () {
                 Asset = asset,
                 AssetsMoveStories = _context.AssetsMoveStories
-                    .Where (f => f.AssetId == id)
-                    .Include (t => t.EmployeeFrom)
-                    .Include (t => t.OfficeFrom)
-                    .Include (t => t.EmployeeTo)
-                    .Include (t => t.OfficeTo)
-                    .OrderBy (t => t.DateCurrent),
+                .Where (f => f.AssetId == id)
+                .Include (t => t.EmployeeFrom)
+                .Include (t => t.OfficeFrom)
+                .Include (t => t.EmployeeTo)
+                .Include (t => t.OfficeTo)
+                .OrderBy (t => t.DateCurrent),
                 Documents = _context.Documents
-                    .Where(f => f.AssetId == id)               
+                .Where (f => f.AssetId == id)
             };
 
             return View (model);
         }
 
-        public IActionResult GetFile(string documentId)
-        {
-            var doc = _context.Documents.FirstOrDefault(d=>d.Id==documentId);
+        public IActionResult GetFile (string documentId) {
+            var doc = _context.Documents.FirstOrDefault (d => d.Id == documentId);
 
-            string filePath = Path.Combine("~", doc.Path);
+            string filePath = Path.Combine ("~", doc.Path);
 
             string fileName = doc.Name;
 
             //return PhysicalFile(filePath, fileName);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            byte[] fileBytes = System.IO.File.ReadAllBytes (filePath);
 
-            return File(fileBytes, "application/force-download", fileName);
+            return File (fileBytes, "application/force-download", fileName);
         }
 
         public string GetCategoryEvents (string categoryId) {
@@ -270,7 +269,7 @@ namespace inventory_accounting_system.Controllers {
                 } else {
                     asset.ImagePath = "images/default-image.jpg";
                 }
-                
+
                 if (eventId != null) {
                     int period;
                     var _event = _context.Events.Find (eventId);
@@ -317,22 +316,19 @@ namespace inventory_accounting_system.Controllers {
         #region Edit
 
         public async Task<IActionResult> Edit (string id) {
-            if (id == null)
-            {
-                return NotFound();
+            if (id == null) {
+                return NotFound ();
             }
 
-            var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
+            var asset = await _context.Assets.SingleOrDefaultAsync (m => m.Id == id);
 
-            if (asset == null)
-            {
-                return NotFound();
+            if (asset == null) {
+                return NotFound ();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
 
-            EditAssetViewModel model = new EditAssetViewModel()
-            {
+            EditAssetViewModel model = new EditAssetViewModel () {
                 Id = asset.Id,
                 Name = asset.Name,
                 CategoryId = asset.CategoryId,
@@ -348,38 +344,29 @@ namespace inventory_accounting_system.Controllers {
                 IsActive = asset.IsActive
             };
 
-            return View(model);
+            return View (model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit (EditAssetViewModel editAsset) {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var asset = _context.Assets.FirstOrDefault(i => i.Id == editAsset.Id);
+            if (ModelState.IsValid) {
+                try {
+                    var asset = _context.Assets.FirstOrDefault (i => i.Id == editAsset.Id);
 
-                   
-                    if (editAsset.OldInventNumber != editAsset.InventNumber)
-                    {
-                        InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory
-                        {
-                            Been = editAsset.OldInventNumber,
-                            Become = editAsset.InventNumber,
-                            CreateDate = DateTime.Now,
-                            AssetIdCreate = asset.Id
+                    if (editAsset.OldInventNumber != editAsset.InventNumber) {
+                        InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory {
+                        Been = editAsset.OldInventNumber,
+                        Become = editAsset.InventNumber,
+                        CreateDate = DateTime.Now,
+                        AssetIdCreate = asset.Id
                         };
-                        _context.Add(inventoryNumberHistory);
+                        _context.Add (inventoryNumberHistory);
                     }
 
-
-                    if (asset.Image != null)
-                    {
-                        UploadPhoto(asset);
-                    }
-                    else
-                    {
+                    if (asset.Image != null) {
+                        UploadPhoto (asset);
+                    } else {
                         asset.ImagePath = editAsset.ImagePath;
                     }
 
@@ -393,30 +380,23 @@ namespace inventory_accounting_system.Controllers {
                     asset.Price = asset.Price;
                     //asset.InStock = true;
                     asset.IsActive = true;
-                    _context.Update(asset);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AssetExists(editAsset.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
+                    _context.Update (asset);
+                    await _context.SaveChangesAsync ();
+                } catch (DbUpdateConcurrencyException) {
+                    if (!AssetExists (editAsset.Id)) {
+                        return NotFound ();
+                    } else {
                         throw;
                     }
                 }
 
-
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction (nameof (Index));
             }
 
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", editAsset.CategoryId);
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", editAsset.SupplierId);
+            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", editAsset.CategoryId);
+            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", editAsset.SupplierId);
 
-            EditAssetViewModel model = new EditAssetViewModel()
-            {
+            EditAssetViewModel model = new EditAssetViewModel () {
                 Id = editAsset.Id,
                 Name = editAsset.Name,
                 CategoryId = editAsset.CategoryId,
@@ -432,7 +412,7 @@ namespace inventory_accounting_system.Controllers {
                 IsActive = editAsset.IsActive
             };
 
-            return View(model);
+            return View (model);
         }
         #endregion
 
@@ -547,35 +527,31 @@ namespace inventory_accounting_system.Controllers {
         #region UploadDocument
 
         [HttpPost]
-        public async Task<IActionResult> UploadDocument(IFormFile uploadedFile, string assetId)
-        {
-            if (uploadedFile != null)
-            {
+        public async Task<IActionResult> UploadDocument (IFormFile uploadedFile, string assetId) {
+            if (uploadedFile != null) {
 
-                var uniqueFileName = GetUniqueFileName(uploadedFile.FileName);
+                var uniqueFileName = GetUniqueFileName (uploadedFile.FileName);
                 var uploads = "/Documents/";
-                var path = Path.Combine(uploads, uniqueFileName);
+                var path = Path.Combine (uploads, uniqueFileName);
 
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-                {
-                    await uploadedFile.CopyToAsync(fileStream);
+                using (var fileStream = new FileStream (_appEnvironment.WebRootPath + path, FileMode.Create)) {
+                    await uploadedFile.CopyToAsync (fileStream);
                 }
 
-                Document file = new Document {AssetId= assetId, Name = uploadedFile.FileName, Path = path };
-                _context.Documents.Add(file);
-                _context.SaveChanges();
+                Document file = new Document { AssetId = assetId, Name = uploadedFile.FileName, Path = path };
+                _context.Documents.Add (file);
+                _context.SaveChanges ();
             }
 
-            return RedirectToAction("Details", "Assets", new { id = assetId});
+            return RedirectToAction ("Details", "Assets", new { id = assetId });
         }
 
-        private string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                      + "_"
-                      + Guid.NewGuid().ToString().Substring(0, 4)
-                      + Path.GetExtension(fileName);
+        private string GetUniqueFileName (string fileName) {
+            fileName = Path.GetFileName (fileName);
+            return Path.GetFileNameWithoutExtension (fileName) +
+                "_" +
+                Guid.NewGuid ().ToString ().Substring (0, 4) +
+                Path.GetExtension (fileName);
         }
 
         #endregion
@@ -599,7 +575,13 @@ namespace inventory_accounting_system.Controllers {
 
         #region Check
 
-        public ActionResult Check (string[] assetId, string officeId, string employeeId, string dateAction, int inIndex) {
+        public ActionResult Check (
+            string[] assetId,
+            string officeId,
+            string employeeId,
+            string dateAction,
+            int inIndex) {
+
             foreach (var item in assetId) {
                 var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
                 if (assetIdFind != null) {
@@ -633,6 +615,12 @@ namespace inventory_accounting_system.Controllers {
                         DateStart = dateStart,
                         DateEnd = dateEnd
                     };
+
+                    if (assetIdFind.InStock == false) {
+                        assetsMoveStory.StatusMovinHistory = "transfer_in";
+                    } else {
+                        assetsMoveStory.StatusMovinHistory = "transfer_out";
+                    }
 
                     _context.Add (assetsMoveStory);
                     _context.SaveChanges ();
