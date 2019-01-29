@@ -235,6 +235,7 @@ namespace inventory_accounting_system.Controllers {
 
                 InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory {
                     Been = asset.InventNumber,
+                    Become = asset.InventNumber,
                     CreateDate = DateTime.Now,
                     AssetIdCreate = asset.Id
 
@@ -346,13 +347,17 @@ namespace inventory_accounting_system.Controllers {
                 {
                     var asset = _context.Assets.FirstOrDefault(i => i.Id == editAsset.Id);
 
-                    var oldInventoryNumber = _context.InventoryNumberHistories.FirstOrDefault(i => i.AssetIdCreate == editAsset.Id);
-                    if (oldInventoryNumber != null)
+                   
+                    if (editAsset.OldInventNumber != editAsset.InventNumber)
                     {
-                        oldInventoryNumber.Been = editAsset.OldInventNumber;
-                        oldInventoryNumber.Become = editAsset.InventNumber;
-                        oldInventoryNumber.ChangeDate = DateTime.Now;
-                        _context.Update(oldInventoryNumber);
+                        InventoryNumberHistory inventoryNumberHistory = new InventoryNumberHistory
+                        {
+                            Been = editAsset.OldInventNumber,
+                            Become = editAsset.InventNumber,
+                            CreateDate = DateTime.Now,
+                            AssetIdCreate = asset.Id
+                        };
+                        _context.Add(inventoryNumberHistory);
                     }
 
 
