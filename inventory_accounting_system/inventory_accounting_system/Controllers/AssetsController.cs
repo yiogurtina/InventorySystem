@@ -303,72 +303,118 @@ namespace inventory_accounting_system.Controllers {
         #region Edit
 
         public async Task<IActionResult> Edit (string id) {
-            if (id == null) {
-                return NotFound ();
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            var asset = await _context.Assets.SingleOrDefaultAsync (m => m.Id == id);
+            var asset = await _context.Assets.SingleOrDefaultAsync(m => m.Id == id);
 
-            if (asset == null) {
-                return NotFound ();
+            if (asset == null)
+            {
+                return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
-            return View (asset);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", asset.CategoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", asset.SupplierId);
+
+            EditAssetViewModel model = new EditAssetViewModel()
+            {
+                Id = asset.Id,
+                Name = asset.Name,
+                CategoryId = asset.CategoryId,
+                OfficeId = asset.OfficeId,
+                EmployeeId = asset.EmployeeId,
+                InventNumber = asset.InventNumber,
+                Date = asset.Date,
+                SupplierId = asset.SupplierId,
+                SerialNum = asset.SerialNum,
+                ImagePath = asset.ImagePath,
+                Price = asset.Price,
+                InStock = asset.InStock,
+                IsActive = asset.IsActive
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit (string id, [Bind ("Name,CategoryId,InventNumber,Date,OfficeId,StorageId,SupplierId,EmployeeId,Image,Id, Price")] Asset asset,
-            InventoryNumberHistory inventNumberHistory,
-            string serialNum,
-            string currentPath,
-            string inventNumber) {
-            if (id != asset.Id) {
-                return NotFound ();
-            }
+        public async Task<IActionResult> Edit (EditAssetViewModel editAsset) {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var asset = _context.Assets.FirstOrDefault(i => i.Id == editAsset.Id);
 
-            var inventNumSearch = _context.Assets
-                .FirstOrDefault (i => i.InventNumber == inventNumber);
-
-            if (inventNumSearch != null) {
-                ModelState.AddModelError ("InventNumber", "Такой номер уже существует");
-            }
-
-            var oldInventoryNumber = _context.InventoryNumberHistories.FirstOrDefault (i => i.AssetIdCreate == asset.Id);
-
-            if (ModelState.IsValid) {
-                try {
-                    if (oldInventoryNumber != null) {
-                        oldInventoryNumber.Become = inventNumber;
+                    var oldInventoryNumber = _context.InventoryNumberHistories.FirstOrDefault(i => i.AssetIdCreate == editAsset.Id);
+                    if (oldInventoryNumber != null)
+                    {
+                        oldInventoryNumber.Been = editAsset.OldInventNumber;
+                        oldInventoryNumber.Become = editAsset.InventNumber;
                         oldInventoryNumber.ChangeDate = DateTime.Now;
-                        _context.Update (oldInventoryNumber);
+                        _context.Update(oldInventoryNumber);
                     }
 
-                    asset.SerialNum = serialNum;
-                    if (asset.Image != null) {
-                        UploadPhoto (asset);
-                    } else {
-                        asset.ImagePath = currentPath;
+
+                    if (asset.Image != null)
+                    {
+                        UploadPhoto(asset);
+                    }
+                    else
+                    {
+                        asset.ImagePath = editAsset.ImagePath;
                     }
 
-                    asset.InventNumber = inventNumber;
+                    asset.Name = editAsset.Name;
+                    asset.CategoryId = editAsset.CategoryId;
+                    asset.SupplierId = editAsset.SupplierId;
+                    asset.EmployeeId = editAsset.EmployeeId;
+                    asset.OfficeId = editAsset.OfficeId;
+                    asset.InventNumber = editAsset.InventNumber;
+                    asset.SerialNum = asset.SerialNum;
+                    asset.Price = asset.Price;
+                    //asset.InStock = true;
                     asset.IsActive = true;
-                    _context.Update (asset);
-                    await _context.SaveChangesAsync ();
-                } catch (DbUpdateConcurrencyException) {
-                    if (!AssetExists (asset.Id)) {
-                        return NotFound ();
-                    } else {
+                    _context.Update(asset);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AssetExists(editAsset.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
                         throw;
                     }
                 }
-                return RedirectToAction (nameof (Index));
+
+
+                return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CategoryId"] = new SelectList (_context.Categories, "Id", "Name", asset.CategoryId);
-            ViewData["SupplierId"] = new SelectList (_context.Suppliers, "Id", "Name", asset.SupplierId);
-            return View (asset);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", editAsset.CategoryId);
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", editAsset.SupplierId);
+
+            EditAssetViewModel model = new EditAssetViewModel()
+            {
+                Id = editAsset.Id,
+                Name = editAsset.Name,
+                CategoryId = editAsset.CategoryId,
+                OfficeId = editAsset.OfficeId,
+                EmployeeId = editAsset.EmployeeId,
+                InventNumber = editAsset.InventNumber,
+                Date = editAsset.Date,
+                SupplierId = editAsset.SupplierId,
+                SerialNum = editAsset.SerialNum,
+                ImagePath = editAsset.ImagePath,
+                Price = editAsset.Price,
+                InStock = editAsset.InStock,
+                IsActive = editAsset.IsActive
+            };
+
+            return View(model);
         }
         #endregion
 
