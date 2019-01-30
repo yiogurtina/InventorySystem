@@ -699,8 +699,7 @@ namespace inventory_accounting_system.Controllers {
 
         #endregion
 
-
-#region Report 
+        #region Report 
 
         public IActionResult ReportOnStockChoice () {
 
@@ -725,7 +724,22 @@ namespace inventory_accounting_system.Controllers {
             return View (assetsMs.ToList ());
         }
 
-#endregion
+        [HttpPost]
+        public IActionResult ReportOnStockNew (string datefrom) {
+
+            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            var assetsNew = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier)
+                .Where (a => a.Date.Year == dtFrom.Year);
+
+            return View (assetsNew.ToList ());
+        }
+
+        #endregion
 
     }
 }
