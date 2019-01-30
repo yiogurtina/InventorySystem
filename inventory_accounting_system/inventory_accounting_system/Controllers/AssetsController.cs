@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
@@ -697,6 +698,34 @@ namespace inventory_accounting_system.Controllers {
         }
 
         #endregion
+
+
+#region Report 
+
+        public IActionResult ReportOnStockChoice () {
+
+            return View ();
+        }
+
+        [HttpPost]
+        public IActionResult ReportOnStockResult (string datefrom, string dateto) {
+
+            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            var assetsMs = _context.AssetsMoveStories
+                .Include (a => a.OfficeFrom)
+                .Include (a => a.OfficeTo)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Include (a => a.Asset)
+                .Where (a => a.DateStart >= dtFrom && a.DateStart <= dtTo);
+
+            return View (assetsMs.ToList ());
+        }
+
+#endregion
 
     }
 }

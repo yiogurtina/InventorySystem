@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<inventory_accounting_system.Models.Asset>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+    
 
 @{
     ViewData["Title"] = "Index";
@@ -9,9 +13,9 @@
 
 <h2>Имущество</h2>
 
-<p>
+<P>
     <a class="btn btn-primary" asp-action="Create">Создать</a>
-</p>
+</P>
 @using (Html.BeginForm("Index", "Assets", FormMethod.Post))
 {
     <div>
@@ -111,6 +115,8 @@
 <div>
     <a class="btn btn-primary" onclick="modalShowHendler()">Закрепить</a>
     <a class="btn btn-primary" onclick="modalShowHendlerSale()">Продажа</a>
+    <!-- <a class="btn btn-primary" onclick="showModalReportOnStockComponents()" style="margin-left: 700px;">Получить отчёт</a> -->
+    <a class="btn btn-primary" asp-action="ReportOnStockChoice" style="margin-left: 700px;">Получить отчёт</a>
 </div>
 
 
@@ -209,11 +215,60 @@
     </div>
 </div>
 
+@if (User.IsInRole("Admin"))
+{
+    @*Modal Window Report*@
 
+    <div class="modal fade" id="newModalOfficeComponent">
+        <div class="modal-dialog modal-lg" style=" width: 16% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="color: darkgray">Укажите периуд</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post">
+                                <div class="form-group" id="dateActionFrom">                
+                                    <label class="control-label">от :</label>
+                                    <input id="dateActionFromAsset" type="date" class="form-control" name="dateActionFrom" style=" width: 270px !important;"/>
+                                </div>
 
+                                <div class="form-group" id="dateActionTo">
+                                    <label class="control-label">до: </label>
+                                    <input id="dateActionToAsset" type="date" class="form-control" name="dateActionTo" style=" width: 270px !important;"/>
+                                </div>
+                            </form>
+                            <a onclick="ReportOnStockDateFromTo()" class="btn btn-primary">Ок</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
 
 @section scripts{
     <script>
+
+        function showModalReportOnStockComponents() {
+        $("#newModalOfficeComponent").modal();
+        }
+
+        function ReportOnStockDateFromTo() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReportOnStockResult", "Assets")',
+                data: {
+                    dateActionFrom: $("#dateActionFromAsset").val(),
+                    dateActionTo: $("#dateActionToAsset").val()
+                },
+                success: function (date) {
+                    window.location.reload();
+                    //location.href = '@Url.Action("ReportOnStockResult", "Assets")'
+                }
+            });
+        }
 
         var officeId;
         var employeeId;

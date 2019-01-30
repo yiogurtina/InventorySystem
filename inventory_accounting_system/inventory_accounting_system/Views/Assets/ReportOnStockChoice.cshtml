@@ -1,0 +1,92 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+
+<h1>Отчёты</h1>
+<div class="container">
+    <div class="row">
+        <div style="margin: 10px;">
+            <strong>Отчёт отчёта по перемещению актива: </strong>
+            <a onclick="showModalReportOnStocktransfer()" class="btn btn-primary">Получить</a> 
+        </div>
+        <div style="margin: 10px;">
+            <strong>Отчёт о активах которые находяться на складе: </strong><p class="btn btn-primary">Получить</p><br/>
+        </div>
+        <div style="margin: 10px;">
+            <strong>Отчёт отчёта по списанию актива: </strong><p class="btn btn-primary">Получить</p><br/>
+        </div>
+        <div style="margin: 10px;">
+            <strong>Отчёт отчёта по приобретениям актива: </strong><p class="btn btn-primary">Получить</p>
+        </div>
+    </div>
+</div>
+
+@if (User.IsInRole("Admin"))
+{
+    @*Modal Window Component*@
+
+    <div class="modal fade" id="newModalOfficetransfer">
+        <div class="modal-dialog modal-lg" style=" width: 16% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form method="post" asp-action="ReportOnStockResult">
+                                <div class="form-group" id="dateActionFrom">                
+                                    <label class="control-label">от :</label>
+                                    <input 
+                                    id="dateActionFromAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    style=" width: 270px !important;"
+                                    name="datefrom"
+                                    />
+                                </div>
+
+                                <div class="form-group" id="dateActionTo">
+                                    <label class="control-label">до: </label>
+                                    <input 
+                                    id="dateActionToAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    style=" width: 270px !important;"
+                                    name="dateto"
+                                    />
+                                </div>
+                                <input type="submit" value="Send">
+                            </form>
+                            
+                            <!-- <a onclick="ReportOnStockDateFromTo()" class="btn btn-primary">Ок</a>  -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+<script>
+    function showModalReportOnStocktransfer() {
+        $("#newModalOfficetransfer").modal();
+    }
+
+function ReportOnStockDateFromTo() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ReportOnStock", "Assets")',
+                data: {
+                    dateActionFrom: $("#dateActionFromAsset").val(),
+                    dateActionTo: $("#dateActionToAsset").val()
+                },
+                success: function (data) {
+                    console.log('success!');
+                }
+            });
+        }
+
+</script>
+
