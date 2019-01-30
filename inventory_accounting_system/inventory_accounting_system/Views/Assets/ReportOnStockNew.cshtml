@@ -1,0 +1,64 @@
+@model IEnumerable<inventory_accounting_system.Models.Asset>
+
+@{
+    ViewData["Title"] = "ReportOnStockResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ReportOnStockResult</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название актива
+            </th>
+            <th>
+               Категория
+            </th>
+            <th>
+                Дата перемещения
+            </th>
+            <th>
+                Цена ($)
+            </th>
+            <th>
+                Офис
+            </th>
+            <th>
+                сотрудник
+            </th>
+            <th>
+                поставщик
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Office.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
