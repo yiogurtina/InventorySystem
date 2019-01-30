@@ -1,0 +1,70 @@
+@model IEnumerable<inventory_accounting_system.Models.AssetsMoveStory>
+
+@{
+    ViewData["Title"] = "ReportOnStockResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ReportOnStockResult</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Название актива
+            </th>
+            <th>
+               Категория
+            </th>
+            <th>
+                Дата перемещения
+            </th>
+            <th>
+                Офис from
+            </th>
+            <th>
+                Офис to
+            </th>
+            <th>
+                сотрудник from
+            </th>
+            <th>
+                сотрудник to
+            </th>
+            <th>
+                статус
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Asset.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Asset.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OfficeFrom.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OfficeTo.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeFrom.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusMovinHistory)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
