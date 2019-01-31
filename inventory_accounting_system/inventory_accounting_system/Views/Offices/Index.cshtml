@@ -17,6 +17,17 @@
     {
         <h2>Офисы</h2>
 
+        @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post))
+        {
+            <div>
+                <p>
+                    Поиск по инвентарному номеру: @Html.TextBox("InventNumber")
+                    <input id="InventNumberSearch" type="submit" value="Поиск">
+
+                </p>
+            </div>
+        }
+
         <p>
             <a class="btn btn-primary" href="/Account/Register">Добавить сотрудника</a>
         </p>
@@ -40,11 +51,12 @@
                                 @Model.Office.Title }
                         }
                     </th>
-                     <th scope="col">Пользователь:<a>Администратор сайта</a></th>
-                    
+                    <th scope="col">Пользователь:<a>Администратор сайта</a></th>
+
                 </tr>
             </thead>
         </table>
+
         <div class="row">
             <div class="col-md-8">
                 @{
@@ -105,13 +117,13 @@
                                 @Model.Office.Title }
                         }
                     </th>
-                     @if (Model != null)
-                        {
+                    @if (Model != null)
+                    {
                         @foreach (var item in Model.Employees)
-                            {
-                                <th scope="col"><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@ViewBag.OfficeNameManager</a></th>
-                            }
+                        {
+                            <th scope="col"><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@ViewBag.OfficeNameManager</a></th>
                         }
+                    }
                 </tr>
             </thead>
         </table>
@@ -149,18 +161,18 @@
                         @foreach (var item in Model.Employees)
                         {
 
-                          <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
-                                                   
+                            <li><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></li>
+
                         }
                     }
-                 
+
                 </ul>
             </div>
         </div>
 
     }
 
-     if (User.IsInRole("User"))
+    if (User.IsInRole("User"))
     {
         <h2>Офисы</h2>
 
@@ -174,9 +186,9 @@
                                 @Model.Office.Title }
                         }
                     </th>
-                    
-                        <th scope="col"><a>@ViewBag.OfficeNameUser</a></th>
-                  
+
+                    <th scope="col"><a>@ViewBag.OfficeNameUser</a></th>
+
                 </tr>
             </thead>
         </table>
@@ -230,13 +242,13 @@
                                             style=" width: 270px !important;"
                                             asp-items="ViewBag.OfficeId"></select>
                                 </div>
-                                
+
                                 <div class="form-group" id="officeSelect" style="width: 150px">
 
                                     <h5>Менеджеру - @ViewBag.OfficeIdTitle</h5>
                                     <strong>Кому:</strong><p> @ViewBag.EmployeeFromIdName </p><br />
                                     <strong>От:</strong> <p>@ViewBag.UserId</p>
-                                    
+
                                     <select class="form-control hidden" id="EmployeeToIdSelect"
                                             onchange="OnChangeEmployeeToId(this)"
                                             style=" width: 270px !important;"
@@ -271,7 +283,7 @@
 
                 </div>
                 <form id="NewAssetForm">
-               
+
                     <div class="modal-footer">
                         <div>
                             <button id="CreateMethod" type="submit" onclick="GetOrderEmployee()" class="btn btn-primary">Ok</button>
@@ -283,34 +295,34 @@
     </div>
 
 
-    
 
- 
+
+
 
     if (User.IsInRole("User"))
     {
         @*Modal Window Component*@
 
-    <div class="modal fade" id="newModalOfficeComponent">
-        <div class="modal-dialog modal-lg" style=" width: 50% !important;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form>
-                                @await Component.InvokeAsync("AssetsList", 
-                                new {
-                                officeId = @ViewBag.OfficeId, 
-                                userId = @ViewBag.EmployeeToId
-                                })
-                            </form>
+        <div class="modal fade" id="newModalOfficeComponent">
+            <div class="modal-dialog modal-lg" style=" width: 50% !important;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    @await Component.InvokeAsync("AssetsList",
+                                    new {
+                                    officeId = @ViewBag.OfficeId,
+                                    userId = @ViewBag.EmployeeToId
+                                    })
+                                </form>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <a class="btn btn-primary" onclick="showModalSendOrderComponents()" style="margin-top: 150px;">Отправить заявку</a>
     }
