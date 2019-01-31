@@ -3,25 +3,59 @@
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
 
-<h1>Отчёты</h1>
+
 <div class="container">
+    <h1 style="color: #2e728b">Отчёты</h1>
     <div class="row">
-        <div style="margin: 10px;">
-            <strong>Отчёт отчёта по перемещению актива: </strong>
-            <a onclick="showModalReportOnStocktransfer()" class="btn btn-primary">Получить</a> 
-        </div>
-        <div style="margin: 10px;">
-            <strong>Отчёт о активах которые находяться на складе: </strong>
-            <a  onclick="showModalReportOnStock()" class="btn btn-primary">Получить</a><br/>
-        </div>
-        <div style="margin: 10px;">
-            <strong>Отчёт отчёта по списанию актива: </strong><p class="btn btn-primary">Получить</p><br/>
-        </div>
-        <div style="margin: 10px;">
-            <strong>Отчёт отчёта по приобретениям актива: </strong><p class="btn btn-primary">Получить</p>
-        </div>
+
+<div class="card" 
+style="width: 18rem; background-color: whitesmoke; border-block-end-color: gray; padding: 10px; float: right; margin: 10px;" >
+  <div class="card-img-top" style="background-color: #0091d7; width: 100%; height: 120px; padding: 5px; text-align: center">
+      <h3 class="card-title" style="color: #ffffff;">Отчёт отчёта по списанию актива: </h3>
+  </div>
+  <div class="card-body">    
+    <p class="card-text">Для получения отчёта нажмите получить</p>
+    <a onclick="showModalReportOnStocktransfer()" class="btn" style="background-color: #0091d7; color: white">Получить</a>
+  </div>
+</div>
+
+<div class="card" 
+style="width: 18rem; background-color: whitesmoke; border-block-end-color: gray; padding: 10px; float: right; margin: 10px;" >
+  <div class="card-img-top" style="background-color: #eb2972; width: 100%; height: 120px; padding: 5px; text-align: center">
+      <h3 class="card-title" style="color: #ffffff;">Отчёт отчёта по приобретённым актива: </h3>
+  </div>
+  <div class="card-body">    
+    <p class="card-text">Для получения отчёта нажмите получить</p>
+    <a onclick="showModalReportOnStockAdd()" class="btn" style="background-color: #0091d7; color: white">Получить</a>
+  </div>
+
+</div>
+
+<div class="card" 
+style="width: 18rem; background-color: whitesmoke; border-block-end-color: gray; padding: 10px; float: right; margin: 10px;" >
+  <div class="card-img-top" style="background-color: #f88b14; width: 100%; height: 120px; padding: 5px; text-align: center">
+      <h3 class="card-title" style="color: #ffffff;">Отчёт о активах которые находяться на складе: </h3>
+  </div>
+  <div class="card-body">    
+    <p class="card-text">Для получения отчёта нажмите получить</p>
+    <a onclick="showModalReportOnStock()" class="btn" style="background-color: #0091d7; color: white">Получить</a>
+  </div>
+</div>
+
+<div class="card" 
+style="width: 18rem; background-color: whitesmoke; border-block-end-color: gray; padding: 10px; float: right; margin: 10px;" >
+  <div class="card-img-top" style="background-color: #38b8ab; width: 100%; height: 120px; padding: 5px; text-align: center">
+      <h3 class="card-title" style="color: #ffffff;">Отчёт о перемещению актива: </h3>
+  </div>
+  <div class="card-body">    
+    <p class="card-text">Для получения отчёта нажмите получить</p>
+    <a onclick="showModalReportOnStocktransfer()" class="btn" style="background-color: #0091d7; color: white">Получить</a>
+  </div>
+</div>
     </div>
 </div>
+
+
 
 @if (User.IsInRole("Admin"))
 {
@@ -99,6 +133,50 @@
         </div>
     </div>
 
+
+    @*Modal Window ReportOnStockAdd*@
+
+    <div class="modal fade" id="newModalOnStockAdd">
+        <div class="modal-dialog modal-lg" style=" width: 16% !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <form method="post" asp-action="ReportOnStockAdd">
+                                <div class="form-group" id="dateActionFrom">                
+                                    <label class="control-label">от :</label>
+                                    <input 
+                                    id="dateActionFromAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    style=" width: 270px !important;"
+                                    name="datefrom"
+                                    />
+                                </div>
+
+                                <div class="form-group" id="dateActionTo">
+                                    <label class="control-label">до: </label>
+                                    <input 
+                                    id="dateActionToAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    style=" width: 270px !important;"
+                                    name="dateto"
+                                    />
+                                </div>
+                                <input type="submit" value="Send">
+                            </form>
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 }
 
 
@@ -110,6 +188,10 @@
 
     function showModalReportOnStock() {
         $("#newModalOnStock").modal();
+    }
+
+    function showModalReportOnStockAdd() {
+        $("#newModalOnStockAdd").modal();
     }
 
    

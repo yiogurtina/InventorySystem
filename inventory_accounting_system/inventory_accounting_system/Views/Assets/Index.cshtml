@@ -14,7 +14,7 @@
 <h2>Имущество</h2>
 
 <P>
-    <a class="btn btn-primary" asp-action="Create">Создать</a>
+    <a class="btn" style="background-color: #0091d7; color: white" asp-action="Create">Создать</a>
 </P>
 @using (Html.BeginForm("Index", "Assets", FormMethod.Post))
 {
@@ -23,9 +23,9 @@
             <input id="Submit1" type="submit" value="Filter"></p>
     </div>
 }
-<table class="table table-hover table-bordered">
-    <thead>
-        <tr style="background-color: whitesmoke">
+<table class="table tablemy table-hover table-bordered">
+    <thead class="caption">
+        <tr>
             <th class="text-left">
                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.IsActiveSort">
                     <strong>Выбрать</strong>
@@ -100,10 +100,10 @@
             </td>
             @*<td class="col-sm-3">
             <div>
-                <a class="btn btn-default" asp-action="Move" asp-route-id="@item.Id">Move</a>
-                <a class="btn btn-default" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a class="btn btn-default" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a  asp-action="Move" asp-route-id="@item.Id" class="btn" style="background-color: #0091d7; color: white">Move</a>
+                <a  asp-action="Edit" asp-route-id="@item.Id" class="btn" style="background-color: #0091d7; color: white">Edit</a>
+                <a  asp-action="Details" asp-route-id="@item.Id" class="btn" style="background-color: #0091d7; color: white">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn" style="background-color: #0091d7; color: white">Delete</a>
             </div>
         </td>*@
         </tr>
@@ -113,10 +113,10 @@
 </table>
 
 <div>
-    <a class="btn btn-primary" onclick="modalShowHendler()">Закрепить</a>
-    <a class="btn btn-primary" onclick="modalShowHendlerSale()">Продажа</a>
+    <a class="btn" style="background-color: #0091d7; color: white" onclick="modalShowHendler()">Закрепить</a>
+    <a class="btn" style="background-color: #0091d7; color: white" onclick="modalShowHendlerSale()">Продажа</a>
     <!-- <a class="btn btn-primary" onclick="showModalReportOnStockComponents()" style="margin-left: 700px;">Получить отчёт</a> -->
-    <a class="btn btn-primary" asp-action="ReportOnStockChoice" style="margin-left: 700px;">Получить отчёт</a>
+    <a class="btn" asp-action="ReportOnStockChoice" style="margin-left: 700px; background-color: #0091d7; color: white">Получить отчёт</a>
 </div>
 
 

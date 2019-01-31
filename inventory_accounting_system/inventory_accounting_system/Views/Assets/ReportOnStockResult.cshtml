@@ -5,34 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ReportOnStockResult</h2>
+<h2 style="color: #2e728b">Отчёт о перемещения актива</h2>
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
+<table class="table tablemy">
+    <thead class="caption">
+        <tr class="trmy">
+            <th class="thmy">
                 Название актива
             </th>
-            <th>
+            <th class="thmy">
                Категория
             </th>
-            <th>
+            <th class="thmy">
                 Дата перемещения
             </th>
-            <th>
+            <th class="thmy">
                 Офис from
             </th>
-            <th>
+            <th class="thmy">
                 Офис to
             </th>
-            <th>
+            <th class="thmy">
                 сотрудник from
             </th>
-            <th>
+            <th class="thmy">
                 сотрудник to
             </th>
-            <th>
+            <th class="thmy">
                 статус
             </th>
         </tr>
@@ -40,28 +40,28 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.Asset.Name)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.Asset.Category.Name)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.DateStart)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.OfficeFrom.Title)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.OfficeTo.Title)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.EmployeeFrom.Name)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
             </td>
-            <td>
+            <td class="tdmy">
                 @Html.DisplayFor(modelItem => item.StatusMovinHistory)
             </td>
         </tr>
