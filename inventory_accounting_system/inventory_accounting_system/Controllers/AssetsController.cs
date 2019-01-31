@@ -17,6 +17,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ZXing;
+using ZXing.Common;
+using ZXing.CoreCompat.System.Drawing;
 
 namespace inventory_accounting_system.Controllers {
     [Authorize]
@@ -178,6 +181,7 @@ namespace inventory_accounting_system.Controllers {
 
             DetailsAssetViewModel model = new DetailsAssetViewModel () {
                 Asset = asset,
+                Barcode = GetBarcode(asset.InventNumber),
                 AssetsMoveStories = _context.AssetsMoveStories
                 .Where (f => f.AssetId == id)
                 .Include (t => t.EmployeeFrom)
@@ -191,6 +195,8 @@ namespace inventory_accounting_system.Controllers {
 
             return View (model);
         }
+
+        
 
         public IActionResult GetFile (string documentId) {
             var doc = _context.Documents.FirstOrDefault (d => d.Id == documentId);
@@ -210,6 +216,34 @@ namespace inventory_accounting_system.Controllers {
             var events = _context.Events.Where (e => e.CategoryId == categoryId);
 
             return JsonConvert.SerializeObject (events);
+        }
+
+        #endregion
+
+        #region GetBarcode
+
+        public string GetBarcode(string invent)
+        {
+            BarcodeWriter writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.CODE_128,
+                Options = new EncodingOptions
+                {
+                    Height = 70,
+                    Width = 170,
+                    PureBarcode = false, 
+                    Margin = 10
+                }
+            };
+
+            var barCodeImage = writer.Write(invent);
+            byte[] byteImage;
+            using (var stream = new MemoryStream())
+            {
+                barCodeImage.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                byteImage = stream.ToArray();
+                return Convert.ToBase64String(byteImage);
+            }
         }
 
         #endregion

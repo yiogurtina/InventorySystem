@@ -1,5 +1,4 @@
-# Inventory_accounting_System
+# Inventory accounting System
 
 Инвентаризация, система учета
 
-Прикольно
