@@ -39,6 +39,16 @@
             @Html.DisplayFor(model => model.Asset.Date)
         </dd>
         <dt>
+            Штрих-код
+        </dt>
+        <dd>
+            <div id="printMe">
+                <img style="margin:5px;" src="@String.Format("data:image/png;base64,{0}", @Model.Barcode)" />
+            </div>
+            <button onclick="printDiv('printMe');">Печать</button>
+        </dd>
+        <dt>
+        <dt>
             @Html.DisplayNameFor(model => model.Asset.ImagePath)
         </dt>
         <dd>
@@ -63,24 +73,6 @@
         <dd>
             @Html.DisplayFor(model => model.Asset.Price)
         </dd>
-        @if (Model.Asset.DocumentPath != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Asset.Document)
-            </dt>
-            <dd>
-                <a style="color: dodgerblue;" asp-controller="Assets" asp-action="Download" asp-route-id="@Model.Asset.Id" class="not-filled recent">@Model.Asset.Name</a>
-            </dd>
-        }
-        else
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Asset.Document)
-            </dt>
-            <dd>
-                <a style="color: darkgrey;" asp-controller="Assets" asp-action="Download" asp-route-id="@Model.Asset.Id" class="not-filled recent">@Model.Asset.Name</a>
-            </dd>
-        }
 
     </dl>
 </div>
@@ -89,9 +81,9 @@
 <ul class="list-group">
     @foreach (Document Doc in Model.Documents)
     {
-    <li class="list-group-item">
-        <a style="color: darkgrey;" asp-controller="Assets" asp-action="GetFile" asp-route-documentId="@Doc.Id" class="not-filled recent">@Doc.Name</a>
-    </li>
+        <li class="list-group-item">
+            <a style="color: darkgrey;" asp-controller="Assets" asp-action="GetFile" asp-route-documentId="@Doc.Id" class="not-filled recent">@Doc.Name</a>
+        </li>
     }
 </ul>
 
@@ -158,6 +150,22 @@
 
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Asset.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Asset.Id">Изменить</a> |
+    <a asp-action="Index">Назад</a>
 </div>
+@section scripts{
+    <script>
+        function printDiv(eleId) {
+            var PW = window.open('', '_blank', 'Print content');
+
+            //IF YOU HAVE DIV STYLE IN CSS, REMOVE BELOW COMMENT AND ADD CSS ADDRESS
+            //PW.document.write('<link rel="stylesheet" type="text/css" href="CSS-FILE-ADDRESS"/>');
+
+            PW.document.write(document.getElementById(eleId).innerHTML);
+            PW.document.close();
+            PW.focus();
+            PW.print();
+            PW.close();
+        }
+    </script>
+}

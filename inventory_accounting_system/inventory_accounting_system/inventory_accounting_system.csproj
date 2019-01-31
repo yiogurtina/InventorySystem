@@ -18,6 +18,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" PrivateAssets="All" />
     <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="ZXing.Net" Version="0.16.4" />
+    <PackageReference Include="ZXing.Net.Bindings.CoreCompat.System.Drawing" Version="0.16.5-beta" />
   </ItemGroup>
 
   <ItemGroup>
