@@ -542,6 +542,23 @@ namespace inventory_accounting_system.Controllers {
         }
         #endregion
 
+        #region InventNumberSearch
+        public ActionResult InventNumberSearch(string inventNumber)
+        {
+            var asset= _context.Assets.FirstOrDefault(s => s.InventNumber== inventNumber);
+
+            if (asset != null)
+            {
+                return RedirectToAction("Details", "Assets", new { id = asset.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Offices");
+            }
+
+        }
+        #endregion
+
         #region AssetExists
 
         private bool AssetExists (string id) {
