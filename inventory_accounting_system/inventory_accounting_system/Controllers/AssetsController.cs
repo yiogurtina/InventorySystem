@@ -785,7 +785,24 @@ namespace inventory_accounting_system.Controllers {
                 .Include (a => a.Office)
                 .Include (a => a.Employee)
                 .Include (a => a.Supplier)
-                .Where (a => a.Date.Year == dtFrom.Year);
+                .Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month);
+
+            return View (assetsNew.ToList ());
+        }
+
+        [HttpPost]
+        public IActionResult ReportOnStockAdd (string datefrom, string dateto) {
+
+            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            var assetsNew = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier)
+                .Where (a => a.Date >= dtFrom && a.Date <= dtTo);
 
             return View (assetsNew.ToList ());
         }

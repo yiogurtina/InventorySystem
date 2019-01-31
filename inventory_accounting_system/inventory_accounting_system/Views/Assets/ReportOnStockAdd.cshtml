@@ -1,0 +1,64 @@
+@model IEnumerable<inventory_accounting_system.Models.Asset>
+
+@{
+    ViewData["Title"] = "ReportOnStockResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color: #2e728b">Отчёт о преобретении актива</h2>
+
+
+<table class="table tablemy">
+    <thead class="caption">
+        <tr class="trmy">
+            <th class="tdmy">
+                Название актива
+            </th>
+            <th class="tdmy">
+               Категория
+            </th>
+            <th class="tdmy">
+                Дата поступления
+            </th>
+            <th class="tdmy">
+                Цена ($)
+            </th>
+            <th class="tdmy">
+                Офис
+            </th>
+            <th class="tdmy">
+                сотрудник
+            </th>
+            <th class="tdmy">
+                поставщик
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Office.Title)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Employee.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
