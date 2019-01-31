@@ -6,7 +6,7 @@
 .caption {
   padding: 10px;
   color: rgb(255, 255, 255);
-  background: #0091d7;
+  background: #2c4267;
   font-size: 15px;
   text-align: left;
   font-weight: lighter;
@@ -19,9 +19,10 @@
 .tdmy {
   padding: 10px;
   border-bottom: 1px solid rgb(170, 185, 197);
+  font-size: 16pt;
 }
 .trmy:nth-child(odd) {
-  background: #0091d7;
+  background: #2c4267;
 }
 .trmy:nth-child(even) {
   background: rgb(226, 214, 212);
