@@ -807,6 +807,24 @@ namespace inventory_accounting_system.Controllers {
             return View (assetsNew.ToList ());
         }
 
+        [HttpPost]
+        public IActionResult ReportOnStockShortFile (string datefrom, string dateto) {
+
+            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            var assetsNew = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier)
+                .Where (a => a.Date >= dtFrom && a.Date <= dtTo)
+                .Where (a => a.StatusMovingAssets == "short_file");
+
+            return View (assetsNew.ToList ());
+        }
+
         #endregion
 
     }

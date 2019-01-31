@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 style="color: #2e728b">Отчёт о перемещения актива</h2>
-
+<div id="printMe">
+<h2 style="color: #000000">Отчёт о перемещения актива</h2>
 
 <table class="table tablemy">
     <thead class="caption">
@@ -68,3 +68,23 @@
 }
     </tbody>
 </table>
+</div>
+
+<a class="btn" style="background-color: #0091d7; color: white" onclick="printDiv('printMe');">Печать</a>
+
+@section scripts{
+    <script>
+        function printDiv(eleId) {
+            var PW = window.open('', '_blank', 'Print content');
+
+            //IF YOU HAVE DIV STYLE IN CSS, REMOVE BELOW COMMENT AND ADD CSS ADDRESS
+            //PW.document.write('<link rel="stylesheet" type="text/css" href="CSS-FILE-ADDRESS"/>');
+
+            PW.document.write(document.getElementById(eleId).innerHTML);
+            PW.document.close();
+            PW.focus();
+            PW.print();
+            PW.close();
+        }
+    </script>
+}
