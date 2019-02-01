@@ -75,7 +75,7 @@ namespace inventory_accounting_system
                     template: "{controller=Home}/{action=Index}");
             });
 
-            new AppDBInitializer().SeedAsync(app).GetAwaiter();
+            //new AppDBInitializer().SeedAsync(app).GetAwaiter();
 
         }
     }

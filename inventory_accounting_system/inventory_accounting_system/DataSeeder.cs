@@ -62,4 +62,66 @@ namespace inventory_accounting_system
 
 
     }
+
+    public static class IdentityDataInit
+    {
+        public static void SeedData(
+            UserManager<Employee> userManager,
+            RoleManager<IdentityRole> roleManager)
+        {
+            SeedRoles(roleManager);
+            SeedUsers(userManager);
+
+        }
+
+        public static void SeedUsers(UserManager<Employee> userManager)
+        {
+
+            if (userManager.FindByNameAsync("admin").Result == null)
+            {
+                Employee user = new Employee(){
+                    Id= Guid.NewGuid().ToString(),
+                    Name = "admin",
+                    Surname = "admin",
+                    UserName = "admin", 
+                    Email = "admin@admin.com",
+                    Login = "admin"
+                };
+
+                var result = userManager.CreateAsync(user, "admin").Result;  //Password
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(user,"admin").Wait();
+                }
+            }
+
+        }
+
+        public static void SeedRoles
+            (RoleManager<IdentityRole> roleManager)
+        {
+            if (!roleManager.RoleExistsAsync("Admin").Result)
+            {
+                IdentityRole role = new IdentityRole();
+                role.Name = "Admin";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+
+
+            if (!roleManager.RoleExistsAsync("Manager").Result)
+            {
+                IdentityRole role = new IdentityRole();
+                role.Name = "Manager";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+
+            if (!roleManager.RoleExistsAsync("User").Result)
+            {
+                IdentityRole role = new IdentityRole();
+                role.Name = "User";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+        }
+    }
 }
