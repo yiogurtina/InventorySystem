@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190128061954_AddPropertyAssetIdonOrderEmployee")]
-    partial class AddPropertyAssetIdonOrderEmployee
+    [Migration("20190203113126_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,8 @@ namespace inventory_accounting_system.Migrations
                         .HasMaxLength(20);
 
                     b.Property<string>("OfficeId");
+
+                    b.Property<double>("Price");
 
                     b.Property<string>("SerialNum");
 
@@ -145,6 +147,24 @@ namespace inventory_accounting_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Document", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Path");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>
@@ -589,6 +609,13 @@ namespace inventory_accounting_system.Migrations
                         .WithMany("assetsMoveStoriesTo")
                         .HasForeignKey("OfficeToId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Document", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany("Documents")
+                        .HasForeignKey("AssetId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>

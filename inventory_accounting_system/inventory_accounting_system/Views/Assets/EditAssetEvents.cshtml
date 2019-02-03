@@ -1,0 +1,35 @@
+﻿@model IEnumerable<EventAsset>
+@{
+    ViewData["Title"] = "EditAssetEvents";
+    string assetId = (string)ViewData["AssetId"];
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Event Title</th>
+        <th scope="col">Event content</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.Title</th>
+                <td>@item.Content</td>
+                <td>@item.Period</td>
+                <td><a asp-controller="AssetEvent" asp-action="DeleteEvent" asp-route-id="@item.Id">Delete</a></td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+<a asp-controller="AssetEvent" asp-action="AddEvent" asp-route-assetId="@assetId">Add event</a>
+
+<h2>EditAssetEvents</h2>
+
