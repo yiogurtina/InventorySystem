@@ -151,6 +151,7 @@
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Asset.Id">Изменить</a> |
+    <a asp-controller="Assets" asp-action="EditAssetEvents" asp-route-assetId="@Model.Asset.Id">События</a> |
     <a asp-action="Index">Назад</a>
 </div>
 @section scripts{

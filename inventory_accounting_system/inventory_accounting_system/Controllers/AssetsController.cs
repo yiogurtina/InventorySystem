@@ -827,5 +827,16 @@ namespace inventory_accounting_system.Controllers {
 
         #endregion
 
+        #region AssetEvents
+
+        public IActionResult EditAssetEvents(string assetId)
+        {
+            ViewData["AssetId"] = assetId;
+            var asset = _context.Assets.Include(a=>a.AssetEvents).FirstOrDefault(a=>a.Id==assetId);
+            var _events = asset.AssetEvents;
+            return View(_events);
+        }
+
+        #endregion
     }
 }
