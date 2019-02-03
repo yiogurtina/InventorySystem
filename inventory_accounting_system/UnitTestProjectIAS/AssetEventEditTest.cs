@@ -11,13 +11,14 @@ using Moq;
 namespace UnitTestProjectIAS {
     [TestClass]
     public class AssetEventEdit {
+
         [TestMethod]
         public void FindAssetEventsTest () {
             //  Mock<IAssetRepository> assetMock = new Mock<IAssetRepository>();
             var context = UseInMemoryDataBase ();
 
             context.Assets.Add (new Asset () {
-                Id = "dc7d4bef-e835-4537-807c-2e481dd4913d",
+                    Id = "dc7d4bef-e835-4537-807c-2e481dd4913d",
                     Name = "car",
                     InventPrefix = 123
             });
