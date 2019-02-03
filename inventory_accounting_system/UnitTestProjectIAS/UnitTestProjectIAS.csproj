@@ -9,6 +9,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2"/>
     <PackageReference Include="xunit" Version="2.4.1"/>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0-preview.19074.3"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\inventory_accounting_system\inventory_accounting_system.csproj"/>
