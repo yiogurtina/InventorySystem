@@ -83,7 +83,7 @@ namespace UnitTestProjectIAS {
 
         private ApplicationDbContext UseInMemoryDataBase () {
             var options = new DbContextOptionsBuilder<ApplicationDbContext> ()
-                .UseInMemoryDatabase (Guid.NewGuid ().ToString ())
+                .UseInMemoryDatabase (databaseName: "aspnet-InventorySystem")
                 .Options;
             return new ApplicationDbContext (options);
         }
