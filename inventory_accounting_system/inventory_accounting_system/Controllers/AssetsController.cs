@@ -268,7 +268,10 @@ namespace inventory_accounting_system.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create ([Bind ("Name,CategoryId,InventNumber,InventPrefix,Date,OfficeId,StorageId,SupplierId,EmployeeId,Id,Image, Document, StatusMovingAssets, Price")] Asset asset,
             string serialNum,
-            string eventId) {
+            string eventId,
+            int? count) {
+
+            count = count == null || count <= 0 ? 1 : count;
 
             var storage = _context.Offices.FirstOrDefault (s => s.IsMain);
             var categoryPrefix = _context.Categories
@@ -276,8 +279,6 @@ namespace inventory_accounting_system.Controllers {
                 .Select (c => c.Prefix)
                 .FirstOrDefaultAsync ();
             var admin = await _userManager.FindByNameAsync ("admin");
-
-            asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D7");
 
             if (ModelState.IsValid) {
 
@@ -290,7 +291,8 @@ namespace inventory_accounting_system.Controllers {
                     AssetIdCreate = asset.Id
 
                 };
-                _context.Add (inventoryNumberHistory);
+
+                AddAssetsCount(inventoryNumberHistory, count, categoryPrefix);
 
                 asset.IsActive = true;
                 asset.InStock = true;
@@ -304,6 +306,8 @@ namespace inventory_accounting_system.Controllers {
                 } else {
                     asset.ImagePath = "images/default-image.jpg";
                 }
+
+                AddAssetsCount(asset, count, categoryPrefix);
 
                 if (eventId != null) {
                     int period;
@@ -334,10 +338,8 @@ namespace inventory_accounting_system.Controllers {
                         AssetId = asset.Id,
                         EmployeeId = asset.EmployeeId
                     };
-                    _context.Add (assetEvent);
+                    AddAssetsCount(assetEvent, count);
                 }
-
-                _context.Add (asset);
                 await _context.SaveChangesAsync ();
                 return RedirectToAction (nameof (Index));
             }
@@ -835,6 +837,71 @@ namespace inventory_accounting_system.Controllers {
             var asset = _context.Assets.Include(a=>a.AssetEvents).FirstOrDefault(a=>a.Id==assetId);
             var _events = asset.AssetEvents;
             return View(_events);
+        }
+
+        #endregion
+
+        #region AddAssets
+
+        private void AddAssetsCount(InventoryNumberHistory inventoryNumberHistory, int? count, Task<string> categoryPrefix)
+        {
+            if (count == 1)
+            {
+                _context.Add(inventoryNumberHistory);
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    inventoryNumberHistory.Been = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
+                    inventoryNumberHistory.Become = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
+                    inventoryNumberHistory.Id = Guid.NewGuid().ToString();
+                    _context.InventoryNumberHistories.Add(inventoryNumberHistory);
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+        private void AddAssetsCount(EventAsset eventAsset, int? count)
+        {
+            if (count == 1)
+            {
+                _context.Add(eventAsset);
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    eventAsset.Id = Guid.NewGuid().ToString();
+                    _context.AssetEvents.Add(eventAsset);
+                    try
+                    {
+                        _context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+        }
+        private void AddAssetsCount(Asset asset, int? count, Task<string> categoryPrefix)
+        {
+            if (count == 1)
+            {
+                asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
+                _context.Add(asset);
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    asset.Id = Guid.NewGuid().ToString();
+                    asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
+                    _context.Assets.Add(asset);
+                    _context.SaveChanges();
+                }
+            }
         }
 
         #endregion
