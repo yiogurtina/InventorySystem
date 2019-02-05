@@ -1,0 +1,92 @@
+﻿@model IEnumerable<inventory_accounting_system.Models.Asset>
+
+@{
+    ViewData["Title"] = "ReportOnStockResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="printMe">
+<h2 style="color: #000000">Имущество закреплённое за @ViewBag.EmployeeName</h2>
+
+
+<table class="table tablemy">
+    <thead class="caption">
+        <tr class="trmy">
+            <th class="tdmy">
+                Название актива
+            </th>
+            <th class="tdmy">
+                Инвентарный номер
+            </th>
+            <th class="tdmy">
+               Категория
+            </th>
+            <th class="tdmy">
+                Дата поступления
+            </th>
+            <th class="tdmy">
+                Цена ($)
+            </th>
+            <th class="tdmy">
+                Офис
+            </th>
+            <th class="tdmy">
+                сотрудник
+            </th>
+            <th class="tdmy">
+                поставщик
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.InventNumber)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Office.Title)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Employee.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Supplier.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+<a class="btn" style="background-color: #2c4267; color: white" onclick="printDiv('printMe');">Печать</a>
+
+
+@section scripts{
+    <script>
+        function printDiv(eleId) {
+            var PW = window.open('', '_blank', 'Print content');
+
+            //IF YOU HAVE DIV STYLE IN CSS, REMOVE BELOW COMMENT AND ADD CSS ADDRESS
+            //PW.document.write('<link rel="stylesheet" type="text/css" href="CSS-FILE-ADDRESS"/>');
+
+            PW.document.write(document.getElementById(eleId).innerHTML);
+            PW.document.close();
+            PW.focus();
+            PW.print();
+            PW.close();
+        }
+    </script>
+}

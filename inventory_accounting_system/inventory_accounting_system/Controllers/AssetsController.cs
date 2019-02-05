@@ -181,7 +181,7 @@ namespace inventory_accounting_system.Controllers {
 
             DetailsAssetViewModel model = new DetailsAssetViewModel () {
                 Asset = asset,
-                Barcode = GetBarcode(asset.InventNumber),
+                Barcode = GetBarcode (asset.InventNumber),
                 AssetsMoveStories = _context.AssetsMoveStories
                 .Where (f => f.AssetId == id)
                 .Include (t => t.EmployeeFrom)
@@ -195,8 +195,6 @@ namespace inventory_accounting_system.Controllers {
 
             return View (model);
         }
-
-        
 
         public IActionResult GetFile (string documentId) {
             var doc = _context.Documents.FirstOrDefault (d => d.Id == documentId);
@@ -222,27 +220,23 @@ namespace inventory_accounting_system.Controllers {
 
         #region GetBarcode
 
-        public string GetBarcode(string invent)
-        {
-            BarcodeWriter writer = new BarcodeWriter
-            {
+        public string GetBarcode (string invent) {
+            BarcodeWriter writer = new BarcodeWriter {
                 Format = BarcodeFormat.CODE_128,
-                Options = new EncodingOptions
-                {
-                    Height = 70,
-                    Width = 170,
-                    PureBarcode = false, 
-                    Margin = 10
+                Options = new EncodingOptions {
+                Height = 70,
+                Width = 170,
+                PureBarcode = false,
+                Margin = 10
                 }
             };
 
-            var barCodeImage = writer.Write(invent);
+            var barCodeImage = writer.Write (invent);
             byte[] byteImage;
-            using (var stream = new MemoryStream())
-            {
-                barCodeImage.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                byteImage = stream.ToArray();
-                return Convert.ToBase64String(byteImage);
+            using (var stream = new MemoryStream ()) {
+                barCodeImage.Save (stream, System.Drawing.Imaging.ImageFormat.Png);
+                byteImage = stream.ToArray ();
+                return Convert.ToBase64String (byteImage);
             }
         }
 
@@ -292,7 +286,7 @@ namespace inventory_accounting_system.Controllers {
 
                 };
 
-                AddAssetsCount(inventoryNumberHistory, count, categoryPrefix);
+                AddAssetsCount (inventoryNumberHistory, count, categoryPrefix);
 
                 asset.IsActive = true;
                 asset.InStock = true;
@@ -307,7 +301,7 @@ namespace inventory_accounting_system.Controllers {
                     asset.ImagePath = "images/default-image.jpg";
                 }
 
-                AddAssetsCount(asset, count, categoryPrefix);
+                AddAssetsCount (asset, count, categoryPrefix);
 
                 if (eventId != null) {
                     int period;
@@ -338,7 +332,7 @@ namespace inventory_accounting_system.Controllers {
                         AssetId = asset.Id,
                         EmployeeId = asset.EmployeeId
                     };
-                    AddAssetsCount(assetEvent, count);
+                    AddAssetsCount (assetEvent, count);
                 }
                 await _context.SaveChangesAsync ();
                 return RedirectToAction (nameof (Index));
@@ -545,17 +539,13 @@ namespace inventory_accounting_system.Controllers {
         #endregion
 
         #region InventNumberSearch
-        public ActionResult InventNumberSearch(string inventNumber)
-        {
-            var asset= _context.Assets.FirstOrDefault(s => s.InventNumber== inventNumber);
+        public ActionResult InventNumberSearch (string inventNumber) {
+            var asset = _context.Assets.FirstOrDefault (s => s.InventNumber == inventNumber);
 
-            if (asset != null)
-            {
-                return RedirectToAction("Details", "Assets", new { id = asset.Id });
-            }
-            else
-            {
-                return RedirectToAction("Index", "Offices");
+            if (asset != null) {
+                return RedirectToAction ("Details", "Assets", new { id = asset.Id });
+            } else {
+                return RedirectToAction ("Index", "Offices");
             }
 
         }
@@ -831,77 +821,78 @@ namespace inventory_accounting_system.Controllers {
 
         #region AssetEvents
 
-        public IActionResult EditAssetEvents(string assetId)
-        {
+        public IActionResult EditAssetEvents (string assetId) {
             ViewData["AssetId"] = assetId;
-            var asset = _context.Assets.Include(a=>a.AssetEvents).FirstOrDefault(a=>a.Id==assetId);
+            var asset = _context.Assets.Include (a => a.AssetEvents).FirstOrDefault (a => a.Id == assetId);
             var _events = asset.AssetEvents;
-            return View(_events);
+            return View (_events);
         }
 
         #endregion
 
         #region AddAssets
 
-        private void AddAssetsCount(InventoryNumberHistory inventoryNumberHistory, int? count, Task<string> categoryPrefix)
-        {
-            if (count == 1)
-            {
-                _context.Add(inventoryNumberHistory);
-            }
-            else
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    inventoryNumberHistory.Been = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
-                    inventoryNumberHistory.Become = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
-                    inventoryNumberHistory.Id = Guid.NewGuid().ToString();
-                    _context.InventoryNumberHistories.Add(inventoryNumberHistory);
-                    _context.SaveChanges();
+        private void AddAssetsCount (InventoryNumberHistory inventoryNumberHistory, int? count, Task<string> categoryPrefix) {
+            if (count == 1) {
+                _context.Add (inventoryNumberHistory);
+            } else {
+                for (int i = 0; i < count; i++) {
+                    inventoryNumberHistory.Been = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D7");
+                    inventoryNumberHistory.Become = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D7");
+                    inventoryNumberHistory.Id = Guid.NewGuid ().ToString ();
+                    _context.InventoryNumberHistories.Add (inventoryNumberHistory);
+                    _context.SaveChanges ();
                 }
             }
         }
 
-        private void AddAssetsCount(EventAsset eventAsset, int? count)
-        {
-            if (count == 1)
-            {
-                _context.Add(eventAsset);
-            }
-            else
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    eventAsset.Id = Guid.NewGuid().ToString();
-                    _context.AssetEvents.Add(eventAsset);
-                    try
-                    {
-                        _context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
+        private void AddAssetsCount (EventAsset eventAsset, int? count) {
+            if (count == 1) {
+                _context.Add (eventAsset);
+            } else {
+                for (int i = 0; i < count; i++) {
+                    eventAsset.Id = Guid.NewGuid ().ToString ();
+                    _context.AssetEvents.Add (eventAsset);
+                    try {
+                        _context.SaveChanges ();
+                    } catch (Exception ex) {
+                        Console.WriteLine (ex.Message);
                     }
                 }
             }
         }
-        private void AddAssetsCount(Asset asset, int? count, Task<string> categoryPrefix)
-        {
-            if (count == 1)
-            {
-                asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
-                _context.Add(asset);
-            }
-            else
-            {
-                for (int i = 0; i < count; i++)
-                {
-                    asset.Id = Guid.NewGuid().ToString();
-                    asset.InventNumber = categoryPrefix.Result + generator.Next(0, 1000000).ToString("D7");
-                    _context.Assets.Add(asset);
-                    _context.SaveChanges();
+        private void AddAssetsCount (Asset asset, int? count, Task<string> categoryPrefix) {
+            if (count == 1) {
+                asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D7");
+                _context.Add (asset);
+            } else {
+                for (int i = 0; i < count; i++) {
+                    asset.Id = Guid.NewGuid ().ToString ();
+                    asset.InventNumber = categoryPrefix.Result + generator.Next (0, 1000000).ToString ("D7");
+                    _context.Assets.Add (asset);
+                    _context.SaveChanges ();
                 }
             }
+        }
+
+        #endregion
+
+        #region EmployeeOrderReport 
+
+        public IActionResult EmployeeOrderReport (string employeeId) {
+
+            var empId = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier)
+                .Where (a => a.EmployeeId == employeeId).ToList ();
+
+            var resultEmp = _context.Users.FirstOrDefault (u => u.Id == employeeId);
+
+            ViewData["EmployeeName"] = resultEmp.Name.ToString();
+
+            return View (empId);
         }
 
         #endregion
