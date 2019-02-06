@@ -88,7 +88,7 @@
 </div>
 
 
-@*Modal window*@
+@*Modal window Закрепить*@
 
 <div class="modal fade" id="newAssetModal">
     <div class="modal-dialog modal-lg" style=" width: 300px !important;">
@@ -108,7 +108,7 @@
                                 <label class="control-label">Сотрудник</label>
                                 <select class="form-control" id="employeeIdSelect" onchange="OnChangeEmployeeId(this)" style=" width: 270px !important;" asp-items="ViewBag.EmployeeId"></select>
                             </div>
-                            <div class="form-group" id="dateAction">
+                            <div class="form-group" id="dateActionMove">
                                 <label class="control-label">Дата</label>
                                 <input id="dateAction" type="date" value="@dateAction" class="form-control" style=" width: 270px !important;" />
 
@@ -122,7 +122,7 @@
 
                 <div class="modal-footer">
                     <div>
-                        <button id="CreateMethod" type="submit" onclick="getCheckedCheckBoxes()" class="btn btn-primary">Ok</button>
+                        <button id="CreateMethod" type="submit" onclick="getCheckedCheckBoxesMove()" class="btn btn-primary">Ok</button>
                     </div>
                 </div>
 
@@ -168,12 +168,13 @@
 
 
 
-        function getCheckedCheckBoxes() {
+        function getCheckedCheckBoxesMove() {
+            officeId = document.querySelector('#officeIdSelect').value;
             employeeId = document.querySelector('#employeeIdSelect').value;
             dateAction = document.querySelector('#dateAction').value;
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("Check", "Assets")',
+                url: '@Url.Action("AssetsMove", "Assets")',
                 data: {
                     officeId: officeId,
                     assetId: checkedCheckBox,
