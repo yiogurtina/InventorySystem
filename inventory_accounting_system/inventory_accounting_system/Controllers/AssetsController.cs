@@ -617,9 +617,9 @@ namespace inventory_accounting_system.Controllers {
 
         #endregion
 
-        #region Check
+        #region AssetsMove
 
-        public ActionResult Check (
+        public ActionResult AssetsMove(
             string[] assetId,
             string officeId,
             string employeeId,
@@ -646,8 +646,8 @@ namespace inventory_accounting_system.Controllers {
                     _context.Update (assetIdFind);
                     _context.SaveChanges ();
 
-                    //DateTime dateStart = DateTime.Parse(dateAction);
-                    DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
+                    DateTime dateStart = DateTime.Parse(dateAction);
+                    //DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
                     DateTime dateEnd = DateTime.Parse ("2100-01-01 0:00");
 
                     AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
