@@ -310,6 +310,9 @@
             }
         }
 
+        
+        
+
         function OnChangeOfficeId(e) {
             officeId = e.value;
         }
@@ -335,6 +338,8 @@
         function getCheckedCheckBoxes() {
             employeeId = document.getElementById('employeeIdSelect').children[0].value;
             dateAction = document.getElementById('dateAction').children[0].value;
+            
+            debugger;
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Check", "Assets")',

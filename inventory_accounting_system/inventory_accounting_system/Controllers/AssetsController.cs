@@ -890,11 +890,23 @@ namespace inventory_accounting_system.Controllers {
 
             var resultEmp = _context.Users.FirstOrDefault (u => u.Id == employeeId);
 
-            ViewData["EmployeeName"] = resultEmp.Name.ToString();
+            ViewData["EmployeeName"] = resultEmp.Name.ToString ();
 
             return View (empId);
         }
 
         #endregion
+
+        public IActionResult CategoryList (string categoryId) {
+
+            var categoryPrint = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier)
+                .Where (c => c.CategoryId == categoryId).ToList();
+
+            return View (categoryPrint);
+        }
     }
 }
