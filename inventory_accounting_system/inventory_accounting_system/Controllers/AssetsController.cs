@@ -746,6 +746,8 @@ namespace inventory_accounting_system.Controllers {
 
         public IActionResult ReportOnStockChoice () {
 
+            ViewData["CategoryList"] = new SelectList (_context.Categories, "Id", "Name");
+
             return View ();
         }
 
@@ -897,6 +899,9 @@ namespace inventory_accounting_system.Controllers {
 
         #endregion
 
+        #region CategoryList 
+
+        [HttpPost]
         public IActionResult CategoryList (string categoryId) {
 
             var categoryPrint = _context.Assets
@@ -904,9 +909,15 @@ namespace inventory_accounting_system.Controllers {
                 .Include (a => a.Office)
                 .Include (a => a.Employee)
                 .Include (a => a.Supplier)
-                .Where (c => c.CategoryId == categoryId).ToList();
+                .Where (c => c.CategoryId == categoryId).ToList ();
+
+            var resultEmp = _context.Categories.FirstOrDefault (u => u.Id == categoryId);
+
+            ViewData["CategoryName"] = resultEmp.Name.ToString ();
 
             return View (categoryPrint);
         }
+
+        #endregion
     }
 }
