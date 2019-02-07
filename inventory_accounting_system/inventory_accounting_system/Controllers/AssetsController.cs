@@ -619,7 +619,7 @@ namespace inventory_accounting_system.Controllers {
 
         #region AssetsMove
 
-        public ActionResult AssetsMove(
+        public ActionResult AssetsMove (
             string[] assetId,
             string officeId,
             string employeeId,
@@ -646,7 +646,7 @@ namespace inventory_accounting_system.Controllers {
                     _context.Update (assetIdFind);
                     _context.SaveChanges ();
 
-                    DateTime dateStart = DateTime.Parse(dateAction);
+                    DateTime dateStart = DateTime.Parse (dateAction);
                     //DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
                     DateTime dateEnd = DateTime.Parse ("2100-01-01 0:00");
 
@@ -747,6 +747,7 @@ namespace inventory_accounting_system.Controllers {
         public IActionResult ReportOnStockChoice () {
 
             ViewData["CategoryList"] = new SelectList (_context.Categories, "Id", "Name");
+            ViewData["OfficeList"] = new SelectList (_context.Offices, "Id", "Title");
 
             return View ();
         }
@@ -916,6 +917,30 @@ namespace inventory_accounting_system.Controllers {
             ViewData["CategoryName"] = resultEmp.Name.ToString ();
 
             return View (categoryPrint);
+        }
+
+        #endregion
+
+        #region ListOfAssetsByOffice 
+
+        [HttpPost]
+        public IActionResult ListOfAssetsByOffice (string officeId, string date) {
+
+            DateTime dt = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            var officePrint = _context.AssetsMoveStories
+                .Include (a => a.OfficeFrom)
+                .Include (a => a.OfficeTo)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Include (a => a.Asset)
+                .Where (c => c.OfficeToId == officeId && c.DateStart == dt).ToList ();
+
+            var resultEmp = _context.Offices.FirstOrDefault (u => u.Id == officeId);
+
+            ViewData["OfficeTitle"] = resultEmp.Title.ToString ();
+
+            return View (officePrint);
         }
 
         #endregion
