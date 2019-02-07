@@ -1,0 +1,97 @@
+﻿@model IEnumerable<inventory_accounting_system.Models.AssetsMoveStory>
+
+@{
+    ViewData["Title"] = "ReportOnStockResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="printMe">
+<h2 style="color: #000000">Имущество закреплённое за @ViewBag.OfficeTitle</h2>
+
+
+<table class="table tablemy">
+    <thead class="caption">
+        <tr class="trmy">
+            <th class="thmy">
+                Название актива
+            </th>
+            <th class="thmy">
+               Категория
+            </th>
+            <th class="thmy">
+                Дата перемещения
+            </th>
+            <th class="thmy">
+                Офис from
+            </th>
+            <th class="thmy">
+                Офис to
+            </th>
+            <th class="thmy">
+                сотрудник from
+            </th>
+            <th class="thmy">
+                сотрудник to
+            </th>
+            <th class="thmy">
+                статус
+            </th>
+            <th class="thmy">
+                Категория
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Asset.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Asset.Category.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.DateStart)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.OfficeFrom.Title)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.OfficeTo.Title)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.EmployeeFrom.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.StatusMovinHistory)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Asset.Category.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+<a class="btn" style="background-color: #2c4267; color: white" onclick="printDiv('printMe');">Печать</a>
+
+@section scripts{
+    <script>
+        function printDiv(eleId) {
+            var PW = window.open('', '_blank', 'Print content');
+
+            //IF YOU HAVE DIV STYLE IN CSS, REMOVE BELOW COMMENT AND ADD CSS ADDRESS
+            //PW.document.write('<link rel="stylesheet" type="text/css" href="CSS-FILE-ADDRESS"/>');
+
+            PW.document.write(document.getElementById(eleId).innerHTML);
+            PW.document.close();
+            PW.focus();
+            PW.print();
+            PW.close();
+        }
+    </script>
+}
