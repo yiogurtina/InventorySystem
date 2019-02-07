@@ -10,59 +10,39 @@
 }
 
 
-<div class="row">
-    <div class="col-md-4">
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+            <h1 class="logo-name">IAS</h1>
+        </div>
+        <h3>Inventory Accounting System</h3>
 
-    </div>
-    <div class="col-md-4">
-        <section>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <h2>@ViewData["Title"]</h2>
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Login"></label>
-                    <input asp-for="Login" class="form-control" />
-                    <span asp-validation-for="Login" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" id="myInput" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox" onclick="myFunction()">
-                        <label asp-for="ShowPassword">
-                            <input asp-for="ShowPassword" />
-                            @Html.DisplayNameFor(p => p.ShowPassword)
-                        </label>
-                    </div>
+        <p></p>
+        <form class="m-t" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div class="form-group">
+                <input asp-for="Login" class="form-control" placeholder="Логин" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Password" class="form-control" id="myInput" placeholder="Пароль" />
 
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            @Html.DisplayNameFor(m => m.RememberMe)
-                        </label>
-                    </div>
+            </div>
+           
+            <div class="form-group m-t">
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+            </div>
 
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Вход</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a asp-action="ForgotPassword">Забыли пароль?</a>
-                    </p>
-                </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">Вход</button>
+            <a asp-action="ForgotPassword"><small>Забыли пароль?</small></a>
 
-            </form>
-        </section>
-    </div>
-    <div class="col-md-4">
-
+        </form>
+            
     </div>
 </div>
+
+
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
