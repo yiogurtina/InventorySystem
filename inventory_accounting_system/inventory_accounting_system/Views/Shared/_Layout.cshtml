@@ -11,7 +11,7 @@
     <title>@ViewData["Title"] - Inventory Accounting System</title>
 
 
-    <environment include="Development">
+    <environment include="Production">
         <link rel="stylesheet" href="~/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/style.css" />
         <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -21,7 +21,7 @@
         <!-- Gritter -->
         <link href="~/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
     </environment>
-    <environment exclude="Development">
+    <environment exclude="Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
@@ -195,7 +195,7 @@
             </div>
         }
     </div>
-    <environment include="Development">
+    <environment include="Production">
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
         <!-- Mainly scripts -->
@@ -215,7 +215,7 @@
 
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
-    <environment exclude="Development">
+    <environment exclude="Production">
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
         <!-- Mainly scripts -->
