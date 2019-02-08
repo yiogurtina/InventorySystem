@@ -15,7 +15,24 @@
 {
     if (User.IsInRole("Admin"))
     {
-        <h2>Офисы</h2>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Inventory Accounting System</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">Главная</a>
+            </li>
+            <li>
+                <a>Офис</a>
+            </li>
+            <li class="active">
+                <strong>Список</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
 
         @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post))
         {
@@ -56,6 +73,8 @@
                 </tr>
             </thead>
         </table>
+
+
 
         <div class="row">
             <div class="col-md-8">

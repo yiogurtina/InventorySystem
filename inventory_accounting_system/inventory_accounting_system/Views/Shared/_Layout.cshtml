@@ -12,10 +12,14 @@
 
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <!-- <link rel="stylesheet" href="~/css/site.css"/>         -->
-        <link rel="stylesheet" href="~/css/mystyle.css"/>        
+        <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/style.css" />
+        <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+        <link href="~/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+        <!-- Gritter -->
+        <link href="~/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -26,99 +30,211 @@
 </head>
 
 <body>
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <!-- Sidebar -->
-    <div class="w3-sidebar w3-bar-block w3-animate-left" style="display: none; background-color: #21324f; z-index: 5" id="mySidebar">
-    <!-- <div class="w3-sidebar w3-bar-block w3-animate-left" style="display: none; z-index: 5" id="mySidebar"> -->
-        <button class="w3-bar-item w3-button w3-large" style="color: white" onclick="w3_close()">Close &times;</button>
-        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+    <div id="wrapper">
+        @if (SignInManager.IsSignedIn(User))
         {
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Home" asp-action="Index"> <p class="glyphicon glyphicon-home"></p> Домой</a>
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Categories" asp-action="Index"><p class="glyphicon glyphicon-th-large"></p> Категории</a>
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Suppliers" asp-action="Index"><p class="glyphicon glyphicon-globe"></p> Поставщик</a>
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Events" asp-action="Index"><p class="glyphicon glyphicon-th-list"></p> События</a>
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Assets" asp-action="Index"><p class=" glyphicon glyphicon-eye-open"></p> Имущество</a>
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Offices" asp-action="Index"><p class="glyphicon glyphicon-credit-card"></p> Офис</a>
-            <!-- <a class="w3-bar-item w3-button glyphicon glyphicon-user" asp-area="" asp-controller="Account" asp-action="Register">Добавить сотрудника</a> -->
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Employes" asp-action="Users"><p class="glyphicon glyphicon-user"></p> Сотрудники</a>
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header">
+
+
+                            @await Html.PartialAsync("_LoginPartial")
+                        </li>
+
+                        <li>
+                            <a asp-area="" asp-controller="Home" asp-action="Index"> <i class="fa fa-diamond"></i> <span class="nav-label">Домой</span> </a>
+                        </li>
+                        <li>
+
+                            <a asp-area="" asp-controller="Categories" asp-action="Index"> <i class="fa fa-bar-chart-o"></i> <span class="nav-label">Поставщик</span> </a>
+
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Events" asp-action="Index"> <i class="fa fa-envelope"></i> <span class="nav-label">События</span> </a>
+
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="Assets" asp-action="Index"> <i class="fa fa-pie-chart"></i> <span class="nav-label">Имущество</span> </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="" asp-controller="Offices" asp-action="Index"> <i class="fa fa-pie-chart"></i> <span class="nav-label">Офис</span> </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="" asp-controller="Account" asp-action="Register"> <i class="fa fa-pie-chart"></i> <span class="nav-label">Добавить сотрудника</span> </a>
+                        </li>
+
+
+                        <li>
+                            <a asp-area="" asp-controller="Employes" asp-action="Users"> <i class="fa fa-pie-chart"></i> <span class="nav-label">Сотрудники</span> </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </nav>
+            <div id="page-wrapper" class="gray-bg dashbard-1">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <form role="search" class="navbar-form-custom" action="search_results.html">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                                </div>
+                            </form>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message"></span>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a7.jpg">
+                                            </a>
+                                            <div class="media-body">
+                                                <small class="pull-right">46h ago</small>
+                                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a4.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right text-navy">5h ago</small>
+                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="mailbox.html">
+                                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <li>
+                                        <a href="mailbox.html">
+                                            <div>
+                                                <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="notifications.html">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+
+                                <li>
+                                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                                        <button type="submit"> <i class="fa fa-sign-out"></i>Выход</button>
+                                    </form>
+                                </li>
+
+                            }
+                            else
+                            {
+                                <li>
+                                    <a asp-area="" asp-controller="Account" asp-action="Login"> <i class="fa fa-sign-out"></i>Вход</a>
+
+                                </li>
+                            }
+
+                        </ul>
+                    </nav>
+                </div>
+
+
+
+                <div class="row">
+
+                    @RenderBody()
+
+                </div>
+
+
+            </div>
         }
         else
         {
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Home" asp-action="Index"><p class="glyphicon glyphicon-home"></p> Домой</a>
-            <a class="w3-bar-item w3-button" style="color: white" asp-area="" asp-controller="Offices" asp-action="Index"><p class="glyphicon glyphicon-credit-card"></p> Офис</a>
-        }
-        @await Html.PartialAsync("_LoginPartial")
-    </div>
-
-        <!-- Page Content -->
-        <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor: pointer" id="myOverlay"></div>
-
-        <div>
-            <button class="w3-button w3-white w3-xxlarge" onclick="w3_open()">&#9776;</button>
-
-            <div class="container">
+            <div class="row">
                 @RenderBody()
-                <hr />
             </div>
-
-            <div class="container">
-                <hr />
-                <footer>
-                    <p>&copy; 2019 - Inventory Accounting System</p>
-                </footer>
-            </div>
-        </div>
-
-
-    }
-    else
-    {
-        <div class="container">
-            @RenderBody()
-            <hr />
-        </div>
-    }
-
+        }
+    </div>
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/jquery-3.1.1.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <!-- Mainly scripts -->
+        <script src="~/js/jquery-3.1.1.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <!-- Peity -->
+        <script src="~/js/plugins/peity/jquery.peity.min.js"></script>
+        <!-- Custom and plugin javascript -->
+        <script src="~/js/inspinia.js"></script>
+        <script src="~/js/plugins/pace/pace.min.js"></script>
+        <!-- iCheck -->
+        <script src="~/js/plugins/iCheck/icheck.min.js"></script>
+        <!-- Peity -->
+        <script src="~/js/demo/peity-demo.js"></script>
+
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
+        <script src="~/js/jquery-3.1.1.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <!-- Mainly scripts -->
+        <script src="~/js/jquery-3.1.1.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <!-- Peity -->
+        <script src="~/js/plugins/peity/jquery.peity.min.js"></script>
+        <!-- Custom and plugin javascript -->
+        <script src="~/js/inspinia.js"></script>
+        <script src="~/js/plugins/pace/pace.min.js"></script>
+        <!-- iCheck -->
+        <script src="~/js/plugins/iCheck/icheck.min.js"></script>
+        <!-- Peity -->
+        <script src="~/js/demo/peity-demo.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false)
+            @RenderSection("Scripts", required: false)
 </body>
 </html>
-
-
-<script>
-    $.ajax({
-        type: 'PUT',
-        url: '@Url.Action("UpdateExpiredEvents", "Events")'
-    });
-
-    function w3_open() {
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("myOverlay").style.display = "block";
-    }
-
-    function w3_close() {
-        document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("myOverlay").style.display = "none";
-    }
-</script>
