@@ -26,9 +26,9 @@ namespace inventory_accounting_system.Controllers
         #region Index
 
         // GET: Suppliers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Suppliers.ToListAsync());
+            return View( _context.Suppliers.ToList());
         }
 
         #endregion
