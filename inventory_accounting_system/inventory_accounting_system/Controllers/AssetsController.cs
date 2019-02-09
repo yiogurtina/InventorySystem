@@ -46,8 +46,8 @@ namespace inventory_accounting_system.Controllers {
         [Authorize (Roles = "Admin")]
         public async Task<IActionResult> Index (string searchString, Sorting sorting = Sorting.NameAsc, int page = 1) {
 
-            int pageSize = 10;
-            
+            int pageSize = 7;
+
             //TODO: Переделать пагинацию с помощью таг-хелперов, так же исправить баг, сохраннение выбранного чекбокса при переходе на следующею страницу пагинации
 
             ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
