@@ -44,7 +44,12 @@ namespace inventory_accounting_system.Controllers {
 
         #region Index
         [Authorize (Roles = "Admin")]
-        public async Task<IActionResult> Index (string searchString, Sorting sorting = Sorting.NameAsc) {
+        public async Task<IActionResult> Index (string searchString, Sorting sorting = Sorting.NameAsc, int page = 1) {
+
+            int pageSize = 10;
+            
+            //TODO: Переделать пагинацию с помощью таг-хелперов, так же исправить баг, сохраннение выбранного чекбокса при переходе на следующею страницу пагинации
+
             ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
             ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
             ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
@@ -73,13 +78,22 @@ namespace inventory_accounting_system.Controllers {
             }
 
             var mainStorage = _context.Offices.FirstOrDefault (s => s.IsMain);
-            var assets = _context.Assets
+            IQueryable<Asset> assets = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Supplier)
                 .Include (a => a.Office)
                 .Where (a => a.IsActive)
                 .Where (a => a.InStock)
                 .Where (a => a.OfficeId == mainStorage.Id);
+
+            var count = await assets.CountAsync ();
+            var items = await assets.Skip ((page - 1) * pageSize).Take (pageSize).ToListAsync ();
+
+            PageVM pageVM = new PageVM (count, page, pageSize);
+            IndexVM viewModel = new IndexVM {
+                PageVM = pageVM,
+                Assets = items
+            };
 
             #region Sorting
 
@@ -129,16 +143,22 @@ namespace inventory_accounting_system.Controllers {
             #endregion
 
             if (searchString != null) {
-                var assets1 = from m in _context.Assets
+                IQueryable<Asset> assets1 = from m in _context.Assets
                 select m;
 
                 if (!string.IsNullOrEmpty (searchString)) {
                     assets1 = assets1.Where (s => s.Name.Contains (searchString));
+
                 }
-                return View (await assets1.ToListAsync ());
+                PageVM pageVM1 = new PageVM (count, page, pageSize);
+                IndexVM viewModel1 = new IndexVM {
+                    PageVM = pageVM1,
+                    Assets = assets1
+                };
+                return View (viewModel1);
             }
 
-            return View (await assets.ToListAsync ());
+            return View (viewModel);
 
         }
 

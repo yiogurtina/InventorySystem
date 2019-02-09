@@ -1,7 +1,11 @@
-﻿@model IEnumerable<inventory_accounting_system.Models.Asset>
+﻿
+@model IndexVM
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
+@using inventory_accounting_system.ViewModel
+
+
 
 
 @{
@@ -39,70 +43,70 @@
                             </th>
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
-                                    @Html.DisplayNameFor(model => model.Name)
+                                    Имя
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
-                                    @Html.DisplayNameFor(model => model.InventNumber)
+                                    Инвентарный номер
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.DateSort">
-                                    @Html.DisplayNameFor(model => model.Date)
+                                    Дата
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.ImageSort">
-                                    @Html.DisplayNameFor(model => model.ImagePath)
+                                    Фото
                                 </a>
                             </th>
 
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.CategorySort">
-                                    @Html.DisplayNameFor(model => model.Category)
+                                   Категория
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.PriceSort">
-                                    @Html.DisplayNameFor(model => model.Price)
+                                    Цена
                                 </a>
                             </th>
                             <th class="text-center">
                                 <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.SupplierSort">
-                                    @Html.DisplayNameFor(model => model.Supplier)
+                                    Поставщик
                                 </a>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (Asset item in Model.Assets)
                         {
                             <tr>
                                 <td class="tdmy">
                                     <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
                                 </td>
                                 <td class="text-center col-sm-4 tdmy" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
-                                    @Html.DisplayFor(modelItem => item.Name)
+                                   @item.Name
                                 </td>
                                 <td class="text-center col-sm-4 tdmy" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
-                                    @Html.DisplayFor(modelItem => item.InventNumber)
+                                    @item.InventNumber
                                 </td>
                                 <td class="text-center col-sm-4 tdmy" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
-                                    @Html.DisplayFor(modelItem => item.Date)
+                                     @item.Date
                                 </td>
                                 <td class="text-center tdmy" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                                     <img src="@item.ImagePath" width="50" height="50" />
                                 </td>
 
                                 <td class="text-center col-sm-4 tdmy" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
-                                    @Html.DisplayFor(modelItem => item.Category.Name)
+                                    @item.Category.Name
                                 </td>
                                 <td class="text-center col-sm-4 tdmy" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
-                                    @Html.DisplayFor(modelItem => item.Price)
+                                    @item.Price
                                 </td>
                                 <td class="text-center col-sm-4 tdmy" style="background-color: #eef2f7" onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
-                                    @Html.DisplayFor(modelItem => item.Supplier.Name)
+                                    @item.Supplier.Name
                                 </td>
                                 @*<td class="col-sm-3">
                                         <div>
@@ -117,6 +121,25 @@
                         }
                     </tbody>
                 </table>
+
+@if (Model.PageVM.HasPreviousPage)
+{
+    <a asp-action="Index"
+        asp-route-page="@(Model.PageVM.PageNumber - 1)"
+        class="btn btn-default btn">
+         <i class="fa fa-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageVM.HasNextPage)
+{
+    <a asp-action="Index"
+        asp-route-page="@(Model.PageVM.PageNumber + 1)"
+        class="btn btn-default btn">
+        Вперед
+        <i class="fa fa-chevron-right"></i>
+    </a>
+}
 
                 <div class="col">
                     <a class="btn" style="background-color: #2c4267; color: white" onclick="modalShowHendler()">Закрепить</a>
