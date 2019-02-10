@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190208170108_addPageVM")]
-    partial class addPageVM
+    [Migration("20190210080954_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,8 +25,6 @@ namespace inventory_accounting_system.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AssetId");
 
                     b.Property<string>("CategoryId");
 
@@ -61,8 +59,6 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("SupplierId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
 
                     b.HasIndex("CategoryId");
 
@@ -556,10 +552,6 @@ namespace inventory_accounting_system.Migrations
 
             modelBuilder.Entity("inventory_accounting_system.Models.Asset", b =>
                 {
-                    b.HasOne("inventory_accounting_system.Models.Asset")
-                        .WithMany("PageVM")
-                        .HasForeignKey("AssetId");
-
                     b.HasOne("inventory_accounting_system.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");

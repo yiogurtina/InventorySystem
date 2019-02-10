@@ -13,25 +13,6 @@ namespace UnitTestProjectIAS {
     public class AssetEventEdit {
 
         [TestMethod]
-        public void FindAssetEventsTest () {
-            //  Mock<IAssetRepository> assetMock = new Mock<IAssetRepository>();
-            var context = UseInMemoryDataBase ();
-
-            context.Assets.Add (new Asset () {
-                    Id = "dc7d4bef-e835-4537-807c-2e481dd4913d",
-                    Name = "car",
-                    InventPrefix = 123
-            });
-            //     assetMock.Setup(x => x.GetAssets()).Returns(assets);
-
-            var controller = new AssetsController (context, null, null, null);
-
-            var result = controller.EditAssetEvents ("dc7d4bef-e835-4537-807c-2e481dd4913d");
-
-            Assert.IsNotNull (result);
-        }
-
-        [TestMethod]
         public void DeleteAssetEventTest () {
             var context = UseInMemoryDataBase ();
 
@@ -65,14 +46,29 @@ namespace UnitTestProjectIAS {
         public void AddNewAssetEventTest () {
             var context = UseInMemoryDataBase ();
 
-            var controller = new AssetEventController (context);
+            context.Assets.Add(new Asset()
+            {
+                Id = "1",
+                Name = "asset"
+            });
 
-            EventAsset eventAsset = new EventAsset () {
+            context.AssetEvents.Add(new EventAsset()
+            {
                 Id = "1",
                 Title = "Pee"
+            });
+
+            var controller = new AssetEventController (context);
+
+            EventAsset eventAsset = new EventAsset()
+            {
+                Id = "2",
+                Content = "asd"
             };
 
             var result = controller.AddNewEvent (eventAsset, "Ежедневно", "1");
+
+            Assert.IsNotNull(result);
         }
 
         private ApplicationDbContext UseInMemoryDataBase () {

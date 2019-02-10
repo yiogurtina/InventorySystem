@@ -25,8 +25,6 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AssetId");
-
                     b.Property<string>("CategoryId");
 
                     b.Property<DateTime>("Date");
@@ -60,8 +58,6 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("SupplierId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
 
                     b.HasIndex("CategoryId");
 
@@ -555,10 +551,6 @@ namespace inventory_accounting_system.Migrations
 
             modelBuilder.Entity("inventory_accounting_system.Models.Asset", b =>
                 {
-                    b.HasOne("inventory_accounting_system.Models.Asset")
-                        .WithMany("PageVM")
-                        .HasForeignKey("AssetId");
-
                     b.HasOne("inventory_accounting_system.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
