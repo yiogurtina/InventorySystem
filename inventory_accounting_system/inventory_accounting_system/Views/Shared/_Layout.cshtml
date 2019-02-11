@@ -82,14 +82,81 @@
                                 </div>
                             </form>
                         </div>
-                        <ul class="nav navbar-top-links navbar-right">
+                        <ul class="nav navbar-top-links navbar-right">                                   
+                            
+                            <li class="dropdown" id="messageLi" onclick="openDropDown()">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales" href="#" id="areaTrueFalse">
+                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a7.jpg">
+                                            </a>
+                                            <div class="media-body">
+                                                <small class="pull-right">46h ago</small>
+                                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="profile.html" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/a4.jpg">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right text-navy">5h ago</small>
+                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="mailbox.html">
+                                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown" id="notificationLi" onclick="openDropDownNotif()">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales" href="#" id="areaTrueFalseNotif">
+                                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <li>
+                                        <a href="mailbox.html">
+                                            <div>
+                                                <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                                <span class="pull-right text-muted small">4 minutes ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="text-center link-block">
+                                            <a href="notifications.html">
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
 
                             @if (SignInManager.IsSignedIn(User))
                             {
 
                                 <li>
                                     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-                                        <button type="submit"> <i class="fa fa-sign-out"></i>Выход</button>
+                                        <button type="submit" style="margin-top: 15px;"> <i class="fa fa-sign-out"></i>Выход</button>
                                     </form>
                                 </li>
 
@@ -101,6 +168,7 @@
 
                                 </li>
                             }
+
 
                         </ul>
                     </nav>
@@ -138,10 +206,11 @@
         <script src="~/js/plugins/iCheck/icheck.min.js"></script>
         <!-- Peity -->
         <script src="~/js/demo/peity-demo.js"></script>
+        <script src="~/js/inspinia.js"></script>
 
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
-    
+
     <environment exclude="Development">
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
@@ -165,3 +234,60 @@
             @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+
+    <script>
+
+        function openDropDown(){
+            var doc = document;
+           
+            var messageLiS = doc.getElementById('messageLi');  
+                if(messageLiS.className == "dropdown"){
+                   messageLiS.className = "dropdown open"
+                }else{
+                    messageLiS.className = "dropdown"
+                }
+
+           
+
+            var x = document.getElementById("areaTrueFalse").getAttribute("aria-expanded"); 
+            if (x == "true") 
+            {
+                x = "false"
+            } 
+            else 
+            {
+                x = "true"
+            }
+            document.getElementById("areaTrueFalse").setAttribute("aria-expanded", x);
+        }
+
+        function openDropDownNotif(){
+            var doc = document;
+           
+            var messageLiS = doc.getElementById('notificationLi');  
+                if(messageLiS.className == "dropdown"){
+                   messageLiS.className = "dropdown open"
+                }else{
+                    messageLiS.className = "dropdown"
+                }
+
+           
+
+            var x = document.getElementById("areaTrueFalseNotif").getAttribute("aria-expanded"); 
+            if (x == "true") 
+            {
+                x = "false"
+            } 
+            else 
+            {
+                x = "true"
+            }
+            document.getElementById("areaTrueFalseNotif").setAttribute("aria-expanded", x);
+        }
+           
+
+
+
+    </script>
+
