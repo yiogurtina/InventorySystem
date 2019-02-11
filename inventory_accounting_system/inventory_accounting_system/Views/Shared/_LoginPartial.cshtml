@@ -20,6 +20,9 @@
                 </span>
             </span>
         </a>
+
+
+
         <ul class="dropdown-menu animated fadeInRight m-t-xs">
             @if (User.IsInRole("Manager"))
             {
@@ -33,6 +36,8 @@
 
 
                 </li>
+
+                
             }
             @if (User.IsInRole("Admin"))
             {
