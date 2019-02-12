@@ -24,6 +24,7 @@ using ZXing.CoreCompat.System.Drawing;
 namespace inventory_accounting_system.Controllers {
     [Authorize]
     public class AssetsController : Controller {
+        
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;

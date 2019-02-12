@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using inventory_accounting_system.Models
+@using inventory_accounting_system.ViewModel
 
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,7 +89,7 @@
                             
                             <li class="dropdown" id="messageLi" onclick="openDropDown()">
                                 <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales" href="#" id="areaTrueFalse">
-                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">@await Component.InvokeAsync("OrderEmployeeAdminVM")</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-messages">
                                     <li>
@@ -128,7 +131,9 @@
 
                             <li class="dropdown" id="notificationLi" onclick="openDropDownNotif()">
                                 <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales" href="#" id="areaTrueFalseNotif">
-                                    <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                                    <i class="fa fa-bell"></i>  <span class="label label-primary">
+                                        @await Component.InvokeAsync("OrderEmployeeAdminVM")
+                                    </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-alerts">
                                     <li>
@@ -156,7 +161,7 @@
 
                                 <li>
                                     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-                                        <button type="submit" class="btn btn-w-m btn-primary" style="margin-top: 22px; margin-right: 32px;"> <i class="fa fa-sign-out"></i>Выход</button>
+                                        <button type="submit" class="btn btn-w-m btn-primary" style="margin-top: 15px; margin-right: 10px;"> <i class="fa fa-sign-out"></i>Выход</button>
                                     </form>
                                 </li>
 
@@ -173,7 +178,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="container-fluid">
+                <div class="container-fluid" style="background-color: white">
 
                     @RenderBody()
 

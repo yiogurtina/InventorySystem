@@ -15,7 +15,7 @@ using Assert = Xunit.Assert;
 
 namespace UnitTestProjectIAS {
     public class SuppliersTest {
-        [TestMethod]
+        
         [Fact]
         public void SuppliersCreate () {
 
