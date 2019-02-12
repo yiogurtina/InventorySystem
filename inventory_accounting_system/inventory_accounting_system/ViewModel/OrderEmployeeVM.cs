@@ -15,6 +15,8 @@ namespace inventory_accounting_system.ViewModel
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Employee> _userManager;
 
+        public OrderEmployeeAdmin OrderAdmin { get; set; }
+
         public OrderEmployeeVM(ApplicationDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
