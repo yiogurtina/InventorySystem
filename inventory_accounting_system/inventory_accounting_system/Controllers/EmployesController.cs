@@ -51,60 +51,6 @@ namespace inventory_accounting_system.Controllers
 
         #endregion
 
-        #region Create
-
-        // GET: Employes/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Employes/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        #endregion
-
-        #region Edit
-
-        // GET: Employes/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Employes/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        #endregion
-
         #region Delete
 
         // GET: Employes/Delete/5

@@ -71,7 +71,7 @@ namespace UnitTestProjectIAS {
             Assert.IsNotNull(result);
         }
 
-        private ApplicationDbContext UseInMemoryDataBase () {
+        public static ApplicationDbContext UseInMemoryDataBase () {
             var options = new DbContextOptionsBuilder<ApplicationDbContext> ()
                 .UseInMemoryDatabase (databaseName: "aspnet-InventorySystem")
                 .Options;
