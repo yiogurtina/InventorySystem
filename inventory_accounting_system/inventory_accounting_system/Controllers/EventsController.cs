@@ -97,7 +97,7 @@ namespace inventory_accounting_system.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Title,CreationDate,CategoryId,DaysCountBeforeAlert,AssetId,Id")] Event _event)
+        public IActionResult Edit(string id, [Bind("Title,CreationDate,CategoryId,DaysCountBeforeAlert,AssetId,Id")] Event _event)
         {
             if (id != _event.Id)
             {
@@ -109,7 +109,7 @@ namespace inventory_accounting_system.Controllers
                 try
                 {
                     _context.Update(_event);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -152,7 +152,11 @@ namespace inventory_accounting_system.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var _event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
+            var _event = await _context.Events.FindAsync(id);
+            if (_event == null)
+            {
+                return NotFound();
+            }
             _context.Events.Remove(_event);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -171,7 +175,6 @@ namespace inventory_accounting_system.Controllers
 
             if (events.Count() != 0)
             {
-
                 foreach (var ev in events)
                 {
                     if (ev.DeadLine > ev.CreationDate)
