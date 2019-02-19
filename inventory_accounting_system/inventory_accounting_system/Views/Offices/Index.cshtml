@@ -20,13 +20,14 @@
         <h2>Inventory Accounting System</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#">Главная</a>
+                <a href="~/Offices/Index?officeId=c70efb32-ad59-4da4-9097-1731442650d9">Главная</a>
             </li>
-            <li>
-                <a>Офис</a>
-            </li>
-            <li class="active">
-                <strong>Список</strong>
+            <li class="active">                
+                 @{if (Model != null)
+                        {
+                           <strong>@Model.Office.Title </strong>
+                         }
+                  }
             </li>
         </ol>
     </div>
