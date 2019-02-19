@@ -24,7 +24,7 @@ using ZXing.CoreCompat.System.Drawing;
 namespace inventory_accounting_system.Controllers {
     [Authorize]
     public class AssetsController : Controller {
-        
+
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;
@@ -776,17 +776,21 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         public IActionResult ReportOnStockResult (string datefrom, string dateto) {
 
-            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            var assetsMs = _context.AssetsMoveStories
+            IQueryable<AssetsMoveStory> assetsMs = _context.AssetsMoveStories
                 .Include (a => a.OfficeFrom)
                 .Include (a => a.OfficeTo)
                 .Include (a => a.EmployeeFrom)
                 .Include (a => a.EmployeeTo)
-                .Include (a => a.Asset)
-                .Where (a => a.DateStart >= dtFrom && a.DateStart <= dtTo);
+                .Include (a => a.Asset);
+
+            if (datefrom == null || dateto == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            assetsMs = assetsMs.Where (a => a.DateStart >= dtFrom && a.DateStart <= dtTo);
 
             return View (assetsMs.ToList ());
         }
@@ -794,31 +798,39 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         public IActionResult ReportOnStockNew (string datefrom) {
 
-            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            var assetsNew = _context.Assets
+            IQueryable<Asset> assetsNew = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Office)
                 .Include (a => a.Employee)
-                .Include (a => a.Supplier)
-                .Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month);
+                .Include (a => a.Supplier);
 
-            return View (assetsNew.ToList ());
+            if (datefrom == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+            DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            assetsNew = assetsNew.Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month);
+
+            return View (assetsNew);
         }
 
         [HttpPost]
         public IActionResult ReportOnStockAdd (string datefrom, string dateto) {
 
+            IQueryable<Asset> assetsNew = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier);
+
+            if (datefrom == null || dateto == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+
             DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            var assetsNew = _context.Assets
-                .Include (a => a.Category)
-                .Include (a => a.Office)
-                .Include (a => a.Employee)
-                .Include (a => a.Supplier)
-                .Where (a => a.Date >= dtFrom && a.Date <= dtTo);
+            assetsNew = assetsNew.Where (a => a.Date >= dtFrom && a.Date <= dtTo);
 
             return View (assetsNew.ToList ());
         }
@@ -826,17 +838,21 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         public IActionResult ReportOnStockShortFile (string datefrom, string dateto) {
 
+            IQueryable<Asset> assetsNew = _context.Assets
+                .Include (a => a.Category)
+                .Include (a => a.Office)
+                .Include (a => a.Employee)
+                .Include (a => a.Supplier);
+
+            if (datefrom == null || dateto == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+
             DateTime dtFrom = DateTime.ParseExact (datefrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            var assetsNew = _context.Assets
-                .Include (a => a.Category)
-                .Include (a => a.Office)
-                .Include (a => a.Employee)
-                .Include (a => a.Supplier)
-                .Where (a => a.Date >= dtFrom && a.Date <= dtTo)
-                .Where (a => a.StatusMovingAssets == "short_file");
+            assetsNew = assetsNew.Where (a => a.StatusMovingAssets == "short_file");
 
             return View (assetsNew.ToList ());
         }
@@ -904,13 +920,17 @@ namespace inventory_accounting_system.Controllers {
         #region EmployeeOrderReport 
 
         public IActionResult EmployeeOrderReport (string employeeId) {
-
-            var empId = _context.Assets
+            IQueryable<Asset> empId = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Office)
                 .Include (a => a.Employee)
-                .Include (a => a.Supplier)
-                .Where (a => a.EmployeeId == employeeId).ToList ();
+                .Include (a => a.Supplier);
+
+            if (employeeId == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+
+            empId = empId.Where (a => a.EmployeeId == employeeId);
 
             var resultEmp = _context.Users.FirstOrDefault (u => u.Id == employeeId);
 
@@ -926,12 +946,17 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         public IActionResult CategoryList (string categoryId) {
 
-            var categoryPrint = _context.Assets
+            IQueryable<Asset> categoryPrint = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Office)
                 .Include (a => a.Employee)
-                .Include (a => a.Supplier)
-                .Where (c => c.CategoryId == categoryId).ToList ();
+                .Include (a => a.Supplier);
+
+            if (categoryId == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+
+            categoryPrint = categoryPrint.Where (c => c.CategoryId == categoryId);
 
             var resultEmp = _context.Categories.FirstOrDefault (u => u.Id == categoryId);
 
@@ -947,15 +972,20 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         public IActionResult ListOfAssetsByOffice (string officeId, string date) {
 
-            DateTime dt = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            var officePrint = _context.AssetsMoveStories
+            IQueryable<AssetsMoveStory> officePrint = _context.AssetsMoveStories
                 .Include (a => a.OfficeFrom)
                 .Include (a => a.OfficeTo)
                 .Include (a => a.EmployeeFrom)
                 .Include (a => a.EmployeeTo)
-                .Include (a => a.Asset)
-                .Where (c => c.OfficeToId == officeId && c.DateStart == dt).ToList ();
+                .Include (a => a.Asset);
+
+            if (officeId == null || date == null) {
+                return RedirectToAction (nameof (ReportOnStockChoice));
+            }
+
+            DateTime dt = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            officePrint = officePrint.Where (c => c.OfficeToId == officeId && c.DateStart == dt);
 
             var resultEmp = _context.Offices.FirstOrDefault (u => u.Id == officeId);
 
