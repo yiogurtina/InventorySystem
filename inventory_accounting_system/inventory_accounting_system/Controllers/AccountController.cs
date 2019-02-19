@@ -69,7 +69,7 @@ namespace inventory_accounting_system.Controllers {
                 var result = await _signInManager.PasswordSignInAsync (model.Login, model.Password, model.RememberMe, lockoutOnFailure : false);
                 if (result.Succeeded) {
                     _logger.LogInformation ("User logged in.");
-                    return RedirectToLocal (returnUrl);
+                    return RedirectToAction ("Index", "Offices");
                 }
                 if (result.RequiresTwoFactor) {
                     return RedirectToAction (nameof (LoginWith2fa), new { returnUrl, model.RememberMe });
