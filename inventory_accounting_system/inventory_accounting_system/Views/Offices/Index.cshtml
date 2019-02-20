@@ -9,6 +9,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var officesMain = @ViewBag.OfficesIdMain;
 }
 
 @if (SignInManager.IsSignedIn(User))
@@ -18,9 +19,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>Inventory Accounting System</h2>
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" style="margin-bottom: 10px;">
             <li>
-                <a href="~/Offices/Index?officeId=c70efb32-ad59-4da4-9097-1731442650d9">Главная</a>
+                <a href="~/Offices/Index?officeId=@officesMain">Главная</a>
             </li>
             <li class="active">                
                  @{if (Model != null)
@@ -30,25 +31,26 @@
                   }
             </li>
         </ol>
-    </div>
-    <div class="col-lg-2">
-    </div>
+    </div>   
+    <div class="col-lg-2"> </div>    
+     <!-- @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post))
+        {
+            <di>
+                <p>
+                    @Html.TextBox("InventNumber",null, new { @class="form-control", @placeholder="Поиск по инвентарному номеру..."})
+                    @Html.TextBox("InventNumberSearch","Поиск", new { @class="hidden",  @type="submit"})
+                </p>
+            </di>
+        } -->
 </div>
 
-        @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post))
-        {
-            <div>
-                <p>
-                    Поиск по инвентарному номеру: @Html.TextBox("InventNumber")
-                    <input id="InventNumberSearch" type="submit" value="Поиск">
-
-                </p>
-            </div>
-        }
+        
 
         <p>
-            <a class="btn" style="background-color: #2c4267; color: white" href="/Account/Register">Добавить сотрудника</a>
+            <a class="btn btn-w-m btn-primary"  href="/Account/Register">Добавить сотрудника</a>
         </p>
+
+
 
         <form>
             <div class="form-group" id="catSelect">
@@ -57,7 +59,7 @@
             @* <button id="officeButton" class="hidden" style="margin-bottom: 20px">Get</button> *@
         </form>
         <p>
-            <a class="btn" style="background-color: #2c4267; color: white" asp-action="Create">Создать офис</a>
+            <a class="btn btn-w-m btn-primary"  asp-action="Create">Создать офис</a>
         </p>
         <table class="table">
             <thead class="thead-dark">
@@ -124,7 +126,7 @@
         <h2>Офисы</h2>
 
         <p>
-            <a class="btn" style="background-color: #2c4267; color: white" href="/Account/Register">Добавить сотрудника</a>
+            <a class="btn btn-w-m btn-primary"  href="/Account/Register">Добавить сотрудника</a>
         </p>
 
         <table class="table">
@@ -141,7 +143,7 @@
                     {
                         @foreach (var item in Model.Employees)
                         {
-                            <th scope="col"><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id">@ViewBag.OfficeNameManager</a></th>
+                            <th scope="col"><a asp-controller="Employes" asp-action="Details" asp-route-id="@item.Id" style="font-size: 13pt;">@ViewBag.OfficeNameManager</a></th>
                         }
                     }
                 </tr>
@@ -306,7 +308,7 @@
 
                     <div class="modal-footer">
                         <div>
-                            <button id="CreateMethod" type="submit" onclick="GetOrderEmployee()" class="btn" style="background-color: #2c4267; color: white">Ok</button>
+                            <button id="CreateMethod" type="submit" onclick="GetOrderEmployee()" class="btn btn-w-m btn-primary" >Ok</button>
                         </div>
                     </div>
                 </form>
@@ -344,7 +346,7 @@
             </div>
         </div>
 
-        <a class="btn" style="background-color: #2c4267; color: white" onclick="showModalSendOrderComponents()" style="margin-top: 150px;">Отправить заявку</a>
+        <a class="btn btn-w-m btn-primary" onclick="showModalSendOrderComponents()" style="margin-top: 150px;">Отправить заявку</a>
     }
 
 }
