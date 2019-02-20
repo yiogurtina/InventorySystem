@@ -67,7 +67,8 @@ namespace inventory_accounting_system {
 
                 routes.MapRoute (
                     name: "default2",
-                    template: "{controller=Offices}/{action=Index}/{id?}");
+                    template: "{controller=Offices}/{action=Index}");
+
             });
 
             //new AppDBInitializer().SeedAsync(app).GetAwaiter();

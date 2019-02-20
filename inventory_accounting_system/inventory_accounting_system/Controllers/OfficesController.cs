@@ -7,6 +7,7 @@ using Castle.Core.Internal;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,6 +29,7 @@ namespace inventory_accounting_system.Controllers {
 
         #region Index
 
+        [Authorize]
         public async Task<IActionResult> Index (string officeId) {
 
             var mainStorage = _context.Offices.FirstOrDefault (o => o.Title == "Главный склад");

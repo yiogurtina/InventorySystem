@@ -197,6 +197,10 @@ namespace inventory_accounting_system.Controllers {
 
         public async Task<IActionResult> Details (string id) {
 
+            var officeMainGet = _context.Offices.Where (o => o.Title == "Главный склад").FirstOrDefault ();
+
+            ViewData["OfficeIdGetMethodDetails"] = officeMainGet.Id;
+
             if (id == null) {
                 return NotFound ();
             }
@@ -573,7 +577,10 @@ namespace inventory_accounting_system.Controllers {
             var asset = _context.Assets.FirstOrDefault (s => s.InventNumber == inventNumber);
 
             if (asset != null) {
-                return RedirectToAction ("Details", "Assets", new { id = asset.Id });
+                // return RedirectToAction ("Details", "Assets", new { id = asset.Id });
+                return RedirectToAction ("Details", new { id = asset.Id });
+                // return RedirectToRoute ("details", new { controller = "Assets", action = "Details", id = asset.Id });
+                // return RedirectToAction (actionName: "Details", routeValues : new { id = asset.Id });
             } else {
                 return RedirectToAction ("Index", "Offices");
             }
