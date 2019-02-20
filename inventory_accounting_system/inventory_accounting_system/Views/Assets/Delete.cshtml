@@ -5,60 +5,66 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Удалить</h2>
+        <h3 style="color: #EF5352">Вы уверены что хотите удалить это имущество</h3>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Assets/Details?id=@Model.Id">Информация о имуществе</a>
+            </li>           
+            <li class="active">
+                <strong>Удалить</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<hr/>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Asset</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.InventNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.InventNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </dt>
-        <dd>
-            <img src="../@Model.ImagePath" width="100" height="100" />
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Supplier)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Supplier.Name)
-        </dd>
-    </dl>
+<div class="col-md-6" style="margin-left: 0%;">
+
+                    <div class="profile-image" style="width: 300px;">
+                        <img style="margin:5px; width: 250px; height: 250px" class="img-circle circle-border m-b-md" src="../@Model.ImagePath"/>
+                    </div>
+                    
+
+                    <div class="profile-info">
+                        <div class="">
+                            <div style="margin-top: 7px;">
+                                <h1 class="no-margins" style="font-size: 35pt; color: #1ab394">
+                                     @Html.DisplayFor(model => model.Name)
+                                </h1>
+                                <h2> I/N: @Html.DisplayFor(model => model.InventNumber)</h2>
+                                <small>
+                                    <h4> @Html.DisplayFor(model => model.Date) </h4>
+                                    <h4> Категория: @Html.DisplayFor(model => model.Category.Name) </h4>
+                                    <h4> Поставщик: @Html.DisplayFor(model => model.Supplier.Name) </h4>
+                                    <h2>Цена: @Html.DisplayFor(model => model.Price) </h2>
+                                </small>
+                                <small>                                    
+                                    @if (Model.SerialNum != null)
+                                        {
+                                            <h3> S/N: @Html.DisplayFor(model => model.SerialNum)</h3>
+                                        }
+                                </small>
+                               
+                            </div>
+                            
+                        </div>
+                    </div>
+                     <hr/>
+                         <form asp-action="Delete">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Delete"  style="margin-top: 15px; margin-left: 10px;" class="btn btn-w-m btn-danger" /> 
+                        </form>
+                </div>
+
+
+                
+
+<div>  
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+   
 </div>

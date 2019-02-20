@@ -5,7 +5,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Информация о имуществе</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Assets/Index">Имущество</a>
+            </li>           
+            <li class="active">
+                <strong>Информация о имуществе</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<hr/>
 
                 <div class="col-md-6" style="margin-right: 50px;">
 
@@ -41,7 +57,7 @@
                 <div id="printMe" style="margin-top: 35px; padding-bottom: 20px;">
                     <img src="@String.Format("data:image/png;base64,{0}", @Model.Barcode)" />
                 </div>
-                    <button class="btn btn-w-m btn-primary"  onclick="printDiv('printMe');">Печать</button>
+                    <button class="btn btn-w-m btn-primary"  onclick="printDiv('printMe');" style="margin-left: 25.5px;">Печать</button>
 
 
                 <div class="m-t-lg" style="margin-top: 170px; margin-right: 959px;">
@@ -129,9 +145,9 @@
 
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Asset.Id">Изменить</a> |
-    <a asp-controller="Assets" asp-action="EditAssetEvents" asp-route-assetId="@Model.Asset.Id">События</a> |
-    <a asp-action="Index">Назад</a>
+    <a asp-action="Edit" asp-route-id="@Model.Asset.Id" style="font-size: 13pt; color: #1ab394">Изменить</a> |
+    <a asp-controller="Assets" asp-action="EditAssetEvents" asp-route-assetId="@Model.Asset.Id" style="font-size: 13pt; color: #1ab394">События</a> |
+    <a asp-controller="Assets" asp-action="Delete" asp-route-id="@Model.Asset.Id" style="font-size: 13pt; color: #1ab394">Удалить</a> 
 </div>
 @section scripts{
     <script>

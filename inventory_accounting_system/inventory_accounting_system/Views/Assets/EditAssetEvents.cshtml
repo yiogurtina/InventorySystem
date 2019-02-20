@@ -4,8 +4,24 @@
     string assetId = (string)ViewData["AssetId"];
 }
 
-<table class="table">
-    <thead>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Редактирование события</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Assets/Details?id=@assetId">Информация о имуществе</a>
+            </li>           
+            <li class="active">
+                <strong>Редактирование события</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-hover dataTables-example">
+    <thead class="gradeX">
     <tr>
         <th scope="col">#</th>
         <th scope="col">Event Title</th>
@@ -23,13 +39,11 @@
                 <th>@item.Title</th>
                 <td>@item.Content</td>
                 <td>@item.Period</td>
-                <td><a asp-controller="AssetEvent" asp-action="DeleteEvent" asp-route-id="@item.Id">Delete</a></td>
+                <td><a asp-controller="AssetEvent" asp-action="DeleteEvent" asp-route-id="@item.Id" class="btn btn-w-m btn-danger">Удалить событие</a></td>
             </tr>
         }
     }
     </tbody>
 </table>
-<a asp-controller="AssetEvent" asp-action="AddEvent" asp-route-assetId="@assetId">Add event</a>
-
-<h2>EditAssetEvents</h2>
+<a asp-controller="AssetEvent" asp-action="AddEvent" asp-route-assetId="@assetId" class="btn btn-w-m btn-primary">Добавить событие</a>
 
