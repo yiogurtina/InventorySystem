@@ -80,7 +80,7 @@
                                 @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post, new{
                                 @role="search", @class="navbar-form-custom"}))
                                 {
-                                <di>
+                                <div>
                                     <p>
                                         @Html.TextBox("InventNumber",null, new { @class="form-control",
                                         @placeholder="Поиск по инвентарному номеру...",
@@ -88,7 +88,7 @@
                                         @Html.TextBox("InventNumberSearch","Поиск", new { @class="hidden",
                                         @type="submit"})
                                     </p>
-                                </di>
+                                </div>
                                 }
                                 <!-- <form role="search" class="navbar-form-custom" action="search_results.html">
                                 <div class="form-group">
