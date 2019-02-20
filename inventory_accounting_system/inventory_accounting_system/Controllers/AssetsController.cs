@@ -169,16 +169,25 @@ namespace inventory_accounting_system.Controllers {
 
         public async Task<IActionResult> CategoryAssets (string officeId, string categoryId) {
             ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
+            ViewData["OfficeIdGetMethod"] = officeId;
             ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
             ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
+            var officeMainGet = _context.Offices.Where (o => o.Title == "Главный склад").FirstOrDefault ();
 
             var assets = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Supplier)
                 .Where (a => a.IsActive == true)
-                .Where (a => a.InStock == false)
                 .Where (a => a.OfficeId == officeId)
                 .Where (a => a.CategoryId == categoryId);
+
+            if (officeId == officeMainGet.Id) {
+                assets = assets.Where (a => a.InStock == true);
+                return View (await assets.ToListAsync ());
+            }
+
+            assets = assets.Where (a => a.InStock == false);
+
             return View (await assets.ToListAsync ());
         }
 
@@ -937,7 +946,7 @@ namespace inventory_accounting_system.Controllers {
 
             ViewData["EmployeeName"] = resultEmp.Name.ToString ();
 
-            var officeIdEmploye = _context.Offices.Where (a => a.Id == resultEmp.OfficeId).FirstOrDefault();
+            var officeIdEmploye = _context.Offices.Where (a => a.Id == resultEmp.OfficeId).FirstOrDefault ();
             ViewData["EmployeIdOfficeReport"] = officeIdEmploye.Id;
 
             return View (empId);

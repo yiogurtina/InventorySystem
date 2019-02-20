@@ -1,28 +1,42 @@
 ﻿@model RegisterViewModel
 @{
-    ViewData["Title"] = "Register";
+ViewData["Title"] = "Добавить сотрудника";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="row wrapper border-bottom white-bg page-heading" style="margin-bottom: 25px;">
+    <div class="col-lg-10">
+        <h2>@ViewData["Title"]</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Offices/Index">Главная</a>
+            </li>
+            <li class="active">
+                <strong>@ViewData["Title"]</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" style="margin-left: 33%; background-color: #F3F3F3">
         <form method="post">
-            <h4>Create a new account.</h4>
+            <h4>Создать нового сотрудника.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Login"></label>
+                <label asp-for="Login">Логин</label>
                 <input asp-for="Login" class="form-control" />
                 <span asp-validation-for="Login" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Name"></label>
+                <label asp-for="Name">Имя</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Surname"></label>
+                <label asp-for="Surname">Фамилия</label>
                 <input asp-for="Surname" class="form-control" />
                 <span asp-validation-for="Surname" class="text-danger"></span>
             </div>@*
@@ -34,36 +48,36 @@
 
 
             @{
-                if (User.IsInRole("Admin"))
-                {
-                     <div class="form-group">
-                         <label asp-for="OfficeId" class="control-label"></label>
-                         <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeId"></select>
-                     </div>
+            if (User.IsInRole("Admin"))
+            {
+            <div class="form-group">
+                <label asp-for="OfficeId" class="control-label"></label>
+                <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeId"></select>
+            </div>
 
-                    <div class="form-group">
-                        <label class="control-label">Должность</label>
-                        <select class="form-control" asp-items="ViewBag.Roles" name="role"></select>
-                    </div>
-                }
-                
-                if (User.IsInRole("Manager"))
-                {
-                      <div class="form-group">
-                         <label asp-for="OfficeId" class="control-label"></label>
-                         <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeIdNumber"></select>
-                     </div>
+            <div class="form-group">
+                <label class="control-label">Должность</label>
+                <select class="form-control" asp-items="ViewBag.Roles" name="role"></select>
+            </div>
+            }
 
-                    <div class="form-group">
-                        <label class="control-label">Должность</label>
-                        <select class="form-control" asp-items="ViewBag.RolesUser" name="role"></select>
-                    </div>
-                }
+            if (User.IsInRole("Manager"))
+            {
+            <div class="form-group">
+                <label asp-for="OfficeId" class="control-label"></label>
+                <select asp-for="OfficeId" class="form-control" asp-items="ViewBag.OfficeIdNumber"></select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Должность</label>
+                <select class="form-control" asp-items="ViewBag.RolesUser" name="role"></select>
+            </div>
+            }
 
             }
 
             <div class="form-group">
-                <label asp-for="Email"></label>
+                <label asp-for="Email">Почта</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
@@ -78,11 +92,11 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>*@
-            <button type="submit" class="btn btn-default">Add</button>
+            <button type="submit" class="btn btn-w-m btn-primary">Добавить</button>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+@await Html.PartialAsync("_ValidationScriptsPartial")
 }
