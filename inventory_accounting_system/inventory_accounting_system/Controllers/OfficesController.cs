@@ -30,6 +30,9 @@ namespace inventory_accounting_system.Controllers {
 
         public async Task<IActionResult> Index (string officeId) {
 
+            var mainStorage = _context.Offices.FirstOrDefault (o => o.Title == "Главный склад");
+            ViewData["OfficesIdMain"] = mainStorage.Id;
+
             var userId = _userManager.GetUserId (User);
             var officeIdEmployee = _context.Offices;
 
@@ -52,7 +55,7 @@ namespace inventory_accounting_system.Controllers {
                                     .FirstOrDefault (o => o.Id == userOfficeId);
                                 officeId = defaultOffice.Id;
                             }
-                            
+
                             List<Employee> employeesUser = new List<Employee> ();
                             var userFromOffUserId = _context.Users.Where (u => u.IsDelete == false);
                             foreach (var item in userFromOffUserId) {
@@ -339,10 +342,9 @@ namespace inventory_accounting_system.Controllers {
 
         #region AddOfficeManager
 
-        public async Task<IActionResult> SetManagerOffice(string officeId)
-        {
-            var currOffice = await _context.Offices.FindAsync(officeId);
-            return View();
+        public async Task<IActionResult> SetManagerOffice (string officeId) {
+            var currOffice = await _context.Offices.FindAsync (officeId);
+            return View ();
         }
 
         #endregion

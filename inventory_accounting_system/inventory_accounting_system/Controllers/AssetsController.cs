@@ -920,6 +920,7 @@ namespace inventory_accounting_system.Controllers {
         #region EmployeeOrderReport 
 
         public IActionResult EmployeeOrderReport (string employeeId) {
+
             IQueryable<Asset> empId = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Office)
@@ -935,6 +936,9 @@ namespace inventory_accounting_system.Controllers {
             var resultEmp = _context.Users.FirstOrDefault (u => u.Id == employeeId);
 
             ViewData["EmployeeName"] = resultEmp.Name.ToString ();
+
+            var officeIdEmploye = _context.Offices.Where (a => a.Id == resultEmp.OfficeId).FirstOrDefault();
+            ViewData["EmployeIdOfficeReport"] = officeIdEmploye.Id;
 
             return View (empId);
         }

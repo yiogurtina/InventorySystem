@@ -74,12 +74,23 @@
                 <div class="row border-bottom">
                     <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                         <div class="navbar-header">
-                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                            <form role="search" class="navbar-form-custom" action="search_results.html">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary"  href="#"><i class="fa fa-bars"></i> </a>
+                            @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post, new{ @role="search", @class="navbar-form-custom"}))
+                                        {
+                                            <di>
+                                                <p>
+                                                    @Html.TextBox("InventNumber",null, new { @class="form-control", @placeholder="Поиск по инвентарному номеру...", 
+                                                    @style="width: 250px;"})
+                                                    @Html.TextBox("InventNumberSearch","Поиск", new { @class="hidden",  @type="submit"})
+                                                </p>
+                                            </di>
+                                        }
+                            <!-- <form role="search" class="navbar-form-custom" action="search_results.html">
                                 <div class="form-group">
                                     <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                                     
                                 </div>
-                            </form>
+                            </form> -->
                         </div>
                         <ul class="nav navbar-top-links navbar-right">                                   
                             
@@ -196,17 +207,17 @@
         <!-- Mainly scripts -->
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
-        <!-- <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script> -->
-        <!-- <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
+        <!-- <script src="~/js/plugins/metisMenu/metisMenu.js"></script> -->
+        <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
         <!-- Peity -->
         <script src="~/js/plugins/peity/jquery.peity.min.js"></script>
         <!-- Custom and plugin javascript -->
         <script src="~/js/inspinia.js"></script>
-        <!-- <script src="~/js/plugins/pace/pace.min.js"></script> -->
+        <script src="~/js/plugins/pace/pace.min.js"></script>
         <!-- iCheck -->
-        <!-- <script src="~/js/plugins/iCheck/icheck.min.js"></script> -->
+        <script src="~/js/plugins/iCheck/icheck.min.js"></script>
         <!-- Peity -->
-        <!-- <script src="~/js/demo/peity-demo.js"></script> -->
+        <script src="~/js/demo/peity-demo.js"></script>
         <script src="~/js/inspinia.js"></script>
 
         <script src="~/js/site.js" asp-append-version="true"></script>
@@ -218,17 +229,17 @@
         <!-- Mainly scripts -->
         <script src="~/js/jquery-3.1.1.min.js"></script>
         <script src="~/js/bootstrap.min.js"></script>
-        <!-- <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script> -->
-        <!-- <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
+        <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
         <!-- Peity -->
         <script src="~/js/plugins/peity/jquery.peity.min.js"></script>
         <!-- Custom and plugin javascript -->
         <script src="~/js/inspinia.js"></script>
-        <!-- <script src="~/js/plugins/pace/pace.min.js"></script> -->
+        <script src="~/js/plugins/pace/pace.min.js"></script>
         <!-- iCheck -->
-        <!-- <script src="~/js/plugins/iCheck/icheck.min.js"></script> -->
+        <script src="~/js/plugins/iCheck/icheck.min.js"></script>
         <!-- Peity -->
-        <!-- <script src="~/js/demo/peity-demo.js"></script> -->
+        <script src="~/js/demo/peity-demo.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
@@ -287,7 +298,7 @@
             document.getElementById("areaTrueFalseNotif").setAttribute("aria-expanded", x);
         }
            
-
+//pace-done mini-navbar
 
 
     </script>
