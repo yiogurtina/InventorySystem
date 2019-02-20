@@ -10,6 +10,7 @@
         ViewData["Title"] = "Index";
         Layout = "~/Views/Shared/_Layout.cshtml";
         var officesMain = @ViewBag.OfficesIdMain;
+        var officeSelect = @ViewBag.OfficeSelect;
         }
 
         @if (SignInManager.IsSignedIn(User))
@@ -27,6 +28,10 @@
                         @{if (Model != null)
                         {
                         <strong>@Model.Office.Title </strong>
+                        <a class="close-link" href="~/Offices/Delete?id=@officeSelect"><i class="fa fa-times"
+                                style="color: #cc5965; font-size: 13pt; margin-left: 5px;"></i></a>
+                        <a class="close-link" href="~/Offices/Edit?id=@officeSelect"><i class="fa fa-edit"
+                                style="color: #1ab394; font-size: 13pt; margin-left: 5px;"></i></a>
                         }
                         }
                     </li>
@@ -56,6 +61,8 @@
             <div class="form-group" id="catSelect">
                 <select onchange="onChangeFunc()" name="officeId" class="target form-control" id="onChangeText"
                     asp-items="ViewBag.Offices"></select>
+
+
             </div>
         </form>
         <p>
@@ -68,8 +75,11 @@
                         @{
                         if (Model != null)
                         {
-                        @Model.Office.Title }
+                        @Model.Office.Title
+
                         }
+                        }
+
                     </th>
                     <th scope="col">Пользователь:<a>Администратор сайта</a></th>
 
