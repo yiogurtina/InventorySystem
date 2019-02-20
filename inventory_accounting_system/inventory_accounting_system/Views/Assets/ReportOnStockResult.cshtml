@@ -6,33 +6,48 @@
 }
 
 <div id="printMe">
-<h2 style="color: #000000">Отчёт о перемещения актива</h2>
 
-<table class="table tablemy">
-    <thead class="caption">
-        <tr class="trmy">
-            <th class="thmy">
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Отчёт о перемещения актива</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Assets/ReportOnStockChoice">Отчёты</a>
+            </li>           
+            <li class="active">
+                <strong>Отчёт о перемещения актива</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-hover dataTables-example">
+    <thead class="gradeX">
+        <tr >
+            <th >
                 Название актива
             </th>
-            <th class="thmy">
+            <th >
                Категория
             </th>
-            <th class="thmy">
+            <th >
                 Дата перемещения
             </th>
-            <th class="thmy">
+            <th >
                 Офис from
             </th>
-            <th class="thmy">
+            <th >
                 Офис to
             </th>
-            <th class="thmy">
+            <th >
                 сотрудник from
             </th>
-            <th class="thmy">
+            <th >
                 сотрудник to
             </th>
-            <th class="thmy">
+            <th >
                 статус
             </th>
         </tr>
@@ -40,28 +55,28 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.Asset.Name)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.Asset.Category.Name)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.DateStart)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.OfficeFrom.Title)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.OfficeTo.Title)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.EmployeeFrom.Name)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.StatusMovinHistory)
             </td>
         </tr>
@@ -70,7 +85,7 @@
 </table>
 </div>
 
-<a class="btn" style="background-color: #2c4267; color: white" onclick="printDiv('printMe');">Печать</a>
+<a  class="btn btn-w-m btn-primary"  onclick="printDiv('printMe');">Печать</a>
 
 @section scripts{
     <script>
