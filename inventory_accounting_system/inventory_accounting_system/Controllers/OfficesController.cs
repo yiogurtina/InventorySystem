@@ -34,7 +34,7 @@ namespace inventory_accounting_system.Controllers {
 
             var mainStorage = _context.Offices.FirstOrDefault (o => o.Title == "Главный склад");
             ViewData["OfficesIdMain"] = mainStorage.Id;
-
+            ViewData["OfficeSelect"] = officeId;
             var userId = _userManager.GetUserId (User);
             var officeIdEmployee = _context.Offices;
 
@@ -269,7 +269,7 @@ namespace inventory_accounting_system.Controllers {
             if (id == null) {
                 return NotFound ();
             }
-
+            ViewData["OfficeSelect"] = id;
             var office = await _context.Offices.SingleOrDefaultAsync (m => m.Id == id);
             if (office == null) {
                 return NotFound ();
@@ -309,10 +309,11 @@ namespace inventory_accounting_system.Controllers {
 
         // GET: Offices/Delete/5
         public async Task<IActionResult> Delete (string id) {
+
             if (id == null) {
                 return NotFound ();
             }
-
+            ViewData["OfficeSelect"] = id;
             var office = await _context.Offices
                 .SingleOrDefaultAsync (m => m.Id == id);
             if (office == null) {
@@ -327,9 +328,18 @@ namespace inventory_accounting_system.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed (string id) {
             var office = await _context.Offices.SingleOrDefaultAsync (m => m.Id == id);
-            _context.Offices.Remove (office);
-            await _context.SaveChangesAsync ();
-            return RedirectToAction (nameof (Index));
+            var storage = await _context.Storages.SingleOrDefaultAsync (s => s.OfficeId == id);
+
+            if (storage != null) {
+                _context.RemoveRange (storage, office);
+                await _context.SaveChangesAsync ();
+                return RedirectToAction (nameof (Index));
+            } else {
+                _context.Offices.Remove (office);
+                await _context.SaveChangesAsync ();
+                return RedirectToAction (nameof (Index));
+            }
+
         }
 
         #endregion       
