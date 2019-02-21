@@ -1,0 +1,45 @@
+@model IEnumerable<inventory_accounting_system.Models.Asset>
+
+@{
+    ViewData["Title"] = "ReportOnStockResult";
+    var employeeId = ViewBag.EmployeeIdOfficeReport;
+}
+ <h3>Список имущества сотрудника</h3>
+
+
+ <table class="table">
+            <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Инвентарный номер</th>
+                <th>Категория</th>
+                <th>Дата</th>
+                <th>Цена</th>
+                <th>Офис</th>
+                <th>Имя сотрудника</th>
+                <th>Имя поставщика</th>
+            </tr>
+            </thead>
+            <tbody>
+
+@foreach (var item in Model) {
+        
+      
+
+      
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.InventNumber</td>
+                <td>@item.Category.Name</td>
+                <td>@item.Date</td>
+                <td>@item.Price</td>
+                <td>@item.Office.Title</td>
+                <td>@item.Employee.Name</td>
+                <td>@item.Supplier.Name</td>
+            </tr>
+          
+                       
+      
+}
+  </tbody>
+ </table>

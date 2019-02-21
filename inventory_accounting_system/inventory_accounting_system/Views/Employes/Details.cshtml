@@ -19,12 +19,12 @@
     <div class="col-lg-2">
     </div>
 </div>
-<hr />
+
         <div class="wrapper wrapper-content">
             <div class="row animated fadeInRight">
                 <div class="col-md-4">
                     <div class="ibox float-e-margins">
-                        <div class="ibox-title">
+                        <div>
                             <h5>Информация о сотруднике</h5>
                         </div>
                         <div>
@@ -58,8 +58,16 @@
                 </div>
                 
                     </div>
-                    <h3>Список имущества сотрудника</h3>
-<hr />
+                    <hr/>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            @await Component.InvokeAsync("EmployeeOR", new { employeeId = @Model.Id })
+                        </div>
+                    </div>
+                    
+
+                    
                       
 
                   
