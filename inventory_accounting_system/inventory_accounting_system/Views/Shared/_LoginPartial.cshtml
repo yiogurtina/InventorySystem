@@ -9,14 +9,17 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="dropdown profile-element">
+    <div class="dropdown profile-element" style="margin-left: 47px;">
         <span>
             <i></i>
         </span>
         <a href="#">
             <span class="clear">
                 <span class="block m-t-xs">
-                    <strong class="font-bold"> <a asp-area="" asp-controller="Manage" style="color: white" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a></strong>
+                     <img alt="image" class="img-circle" src="~/img/User.jpg" style="width: 70px; height: 70px">
+                    <strong class="font-bold"  style="font-size: 17pt;"> 
+                        <a asp-area="" asp-controller="Manage" style="color: white" asp-action="Index" title="Manage">@UserManager.GetUserName(User)</a>
+                        </strong>
                 </span>
             </span>
         </a>
