@@ -142,6 +142,7 @@ namespace inventory_accounting_system.Controllers {
                         if (userOfficeId == office.Id) {
 
                             ViewData["OfficeNameUser"] = usr.Name.ToString ();
+                            ViewData["OfficeNameUserId"] = usr.Id;
 
                             var officesManager = _context.Offices.ToList ();
 
