@@ -4,10 +4,33 @@
 
 @foreach (Employee user in Model)
 {
-    <div>User: 
-        <a asp-action="Details" asp-route-id="@user.Id">@user.Name @user.Surname</a>
-        <a class="badge badge-pill badge-dark" asp-action="Lock" asp-route-id="@user.Id">Press to lockout user</a>   
-        <a class="badge badge-pill badge-dark" asp-controller="Employes" asp-action="ChangeRole" asp-route-id="@user.Id">Change Role</a>
-        <a class="badge badge-pill badge-dark" asp-controller="Employes" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
-    </div>
+    <div class="col-lg-3">
+                <div class="contact-box center-version">
+
+                    <a asp-action="Details" asp-route-id="@user.Id">
+
+                        <img alt="image" class="img-circle" src="~/img/User.jpg">
+
+
+                        <h3 class="m-b-xs"><strong>@user.Name @user.Surname</strong></h3>
+
+                        <div class="font-bold">@user.Office.Title</div>
+                        <address class="m-t-md">
+                            <strong>IAS</strong><br>
+                            @user.Email<br>
+                            Бишкек<br>
+                            <abbr title="Phone">Phone:</abbr> @user.PhoneNumber
+                        </address>
+
+                    </a>
+                    <div class="contact-box-footer">
+                        <div class="m-t-xs btn-group" style="margin-left: 50px;">
+                            <a class="btn btn-xs btn-white" asp-action="Lock" asp-route-id="@user.Id" style="margin: 5px; background-color: #f8ac59; color: white;"><i class="fa fa-times-circle"></i> Заблокировать пользователя </a>
+                            <a class="btn btn-xs btn-white"asp-action="ChangeRole" asp-route-id="@user.Id" style="margin: 5px; background-color: #1c84c6; color: white;"><i class="fa fa-edit"></i> Изменить роль </a>
+                            <a class="btn btn-xs btn-white" asp-action="Delete" asp-route-id="@user.Id" style="margin: 5px; background-color: #ed5565; color: white;"><i class="fa fa-trash-o"></i> Удалить </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 }

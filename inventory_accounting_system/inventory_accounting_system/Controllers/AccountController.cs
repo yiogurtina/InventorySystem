@@ -283,7 +283,7 @@ namespace inventory_accounting_system.Controllers {
 
                         await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
 
-                        return RedirectToAction ("Index", "Home");
+                        return RedirectToAction ("Index", "Offices");
                     }
                     AddErrors (result);
                 }
@@ -335,7 +335,7 @@ namespace inventory_accounting_system.Controllers {
 
                                 await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
 
-                                return RedirectToAction ("Index", "Home");
+                                return RedirectToAction ("Index", "Offices");
                             }
                             AddErrors (result);
                         }
@@ -386,7 +386,7 @@ namespace inventory_accounting_system.Controllers {
 
                         await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
 
-                        return RedirectToAction ("Index", "Home");
+                        return RedirectToAction ("Index", "Offices");
                     }
                     AddErrors (result);
                 }
@@ -405,7 +405,7 @@ namespace inventory_accounting_system.Controllers {
         public async Task<IActionResult> Logout () {
             await _signInManager.SignOutAsync ();
             _logger.LogInformation ("User logged out.");
-            return RedirectToAction (nameof (HomeController.Index), "Home");
+            return RedirectToAction (nameof (AccountController.Login), "Account");
         }
 
         [HttpPost]
