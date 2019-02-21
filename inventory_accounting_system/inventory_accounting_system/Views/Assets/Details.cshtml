@@ -148,14 +148,17 @@ var offMId = @ViewBag.OfficeIdGetMethodDetails;
     </tr>
     }
 </table>
-
+<hr />
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Asset.Id" style="font-size: 13pt; color: #1ab394">Изменить</a> |
-    <a asp-controller="Assets" asp-action="EditAssetEvents" asp-route-assetId="@Model.Asset.Id"
-        style="font-size: 13pt; color: #1ab394">События</a> |
-    <a asp-controller="Assets" asp-action="Delete" asp-route-id="@Model.Asset.Id"
-        style="font-size: 13pt; color: #1ab394">Удалить</a>
+    <a asp-action="Edit" asp-route-id="@Model.Asset.Id" style="font-size: 13pt; color: #566275">Редактировать
+        <i class="fa fa-edit" style="color: #1ab394; font-size: 15pt; margin: 0 20px 20px 5px;"></i></a>
+        
+    <a asp-controller="Assets" asp-action="EditAssetEvents" asp-route-assetId="@Model.Asset.Id" style="font-size: 13pt; color: #566275">Добавить событие
+        <i class="fa fa-calendar" style="color: #11a7c2; font-size: 15pt;  margin: 0 20px 20px 5px;"></i></a>
+        
+    <a asp-controller="Assets" asp-action="Delete" asp-route-id="@Model.Asset.Id" style="font-size: 13pt; color: #566275">Удалить
+        <i class="fa fa-times" style="color: #cc5965; font-size: 15pt; margin: 0 0px 20px 5px;"></i></a>
 </div>
 @section scripts{
 <script>

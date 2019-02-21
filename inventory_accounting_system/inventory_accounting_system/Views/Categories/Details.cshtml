@@ -5,27 +5,43 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Информация о категории</h2>
+        <ol class="breadcrumb">
+            <li>
+                 <a href="~/Categories">Категории</a>
+            </li>
+            <li class="active">
+                <strong>Информация о категории</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<hr />
 
 <div>
-    <h4>Category</h4>
-    <hr />
+    
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
+        <dt style="width: 250px;">
+           <h2 style="text-align: left">Категория: </h2>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+           <h2 class="font-bold"  style=" margin-left: 50px;"> @Html.DisplayFor(model => model.Name)</h2>
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Prefix)
+        <dt style="width: 250px;">
+           <h2 style="text-align: left;">Префикс категории: </h2>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Prefix)
+           <h2 class="font-bold" style=" margin-left: 50px;">@Html.DisplayFor(model => model.Prefix)</h2>
         </dd>
     </dl>
 </div>
+<hr />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-w-m btn-info" asp-action="Edit" asp-route-id="@Model.Id" style="font-size: 13pt; margin: 0 0 20px 0;">Редактировать</a>    
+                  
 </div>
