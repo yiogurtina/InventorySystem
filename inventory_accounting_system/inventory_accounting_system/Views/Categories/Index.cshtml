@@ -37,15 +37,15 @@
       <tbody >
         @foreach (var item in Model) {
         <tr >
-            <th onclick="window.location.href='/Categories/Details?id=@item.Id'; return false;">
+            <td onclick="window.location.href='/Categories/Details?id=@item.Id'; return false;">
               @Html.DisplayFor(modelItem => item.Name)
-            </th>
+            </td>
 
-            <th onclick="window.location.href='/Categories/Details?id=@item.Id'; return false;">
+            <td onclick="window.location.href='/Categories/Details?id=@item.Id'; return false;">
               @Html.DisplayFor(modelItem => item.Prefix)
-            </th>
+            </td>
 
-            <th class="row">
+            <td class="row">
               <div style="margin-left: 35px;">
                 <a class="btn btn-w-m btn-danger" asp-action="Delete" asp-route-id="@item.Id" style="margin: 0 35px 0 5px;">Удалить</a>
                 
@@ -55,7 +55,7 @@
                   <i class="fa fa-bars" style="color: #11a7c2; font-size: 17pt; "></i></a> -->
 
               </div>
-            </th>           
+            </td>           
         </tr>
         }
       </tbody>
