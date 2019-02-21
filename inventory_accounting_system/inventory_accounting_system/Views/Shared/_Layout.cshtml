@@ -80,8 +80,10 @@
                     <div class="row border-bottom">
                         <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                             <div class="navbar-header">
-                                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i
-                                        class="fa fa-bars"></i> </a>
+                                <!-- <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i
+                                        class="fa fa-bars"></i> </a> -->
+                                <a class="navbar-minimalize minimalize-styl-2" style="margin: 19.1px -5px  0 0; font-size: 15pt;" href="#"><i
+                                        class="fa fa-angle-right"></i> </a>
                                 @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post, new{
                                 @role="search", @class="navbar-form-custom"}))
                                 {
@@ -89,7 +91,7 @@
                                     <p>
                                         @Html.TextBox("InventNumber",null, new { @class="form-control",
                                         @placeholder="Поиск по инвентарному номеру...",
-                                        @style="width: 250px;"})
+                                        @style="width: 350px; margin: 7px 0px 0px 0; font-size: 13pt;"})
                                         @Html.TextBox("InventNumberSearch","Поиск", new { @class="hidden",
                                         @type="submit"})
                                     </p>
