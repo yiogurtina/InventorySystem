@@ -50,6 +50,8 @@ namespace inventory_accounting_system {
             } else {
                 app.UseExceptionHandler ("/Home/Error");
             }
+            //TODO: Запуск автоматической миграций. 
+            // InitializeDatabase (app);
 
             app.UseStaticFiles ();
 
@@ -74,5 +76,13 @@ namespace inventory_accounting_system {
             //new AppDBInitializer().SeedAsync(app).GetAwaiter();
 
         }
+        //TODO: метод для автоматического запуска миграций. Удобно когда постоянно сносишь базу при разработке. 
+        //TODO: минусы, не контролируешь процес. 
+        // private void InitializeDatabase (IApplicationBuilder app) {
+        //     using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory> ().CreateScope ()) {
+        //         scope.ServiceProvider.GetRequiredService<ApplicationDbContext> ().Database.Migrate ();
+        //     }
+        // }
     }
+
 }
