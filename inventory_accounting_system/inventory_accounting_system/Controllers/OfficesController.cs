@@ -33,7 +33,10 @@ namespace inventory_accounting_system.Controllers {
         public async Task<IActionResult> Index (string officeId) {
 
             var mainStorage = _context.Offices.FirstOrDefault (o => o.Title == "Главный склад");
-            ViewData["OfficesIdMain"] = mainStorage.Id;
+            if (mainStorage != null) {
+                ViewData["OfficesIdMain"] = mainStorage.Id;
+            }
+
             ViewData["OfficeSelect"] = officeId;
             var userId = _userManager.GetUserId (User);
             var officeIdEmployee = _context.Offices;

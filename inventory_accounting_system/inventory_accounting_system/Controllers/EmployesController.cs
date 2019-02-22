@@ -93,7 +93,7 @@ namespace inventory_accounting_system.Controllers {
         public async Task<IActionResult> Users () {
             var user = await _userManager.GetUserAsync (User);
             if (User.IsInRole ("Admin")) {
-                return View (_context.Users.Include (u => u.Office).Where (u => u.Id != user.Id).Where (u => !u.IsDelete));
+                return View (_context.Users.Include (u => u.Office).Where (u => u.Id != user.Id).Where (u => !u.IsDelete).Where(u => u.OfficeId != null));
             } else {
                 return View (_context.Users.Include (u => u.Office).Where (u => u.OfficeId == user.OfficeId).Where (u => u.Id != user.Id).Where (u => !u.IsDelete));
             }
