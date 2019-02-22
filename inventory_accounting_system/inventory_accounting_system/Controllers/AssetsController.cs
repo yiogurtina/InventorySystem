@@ -44,8 +44,130 @@ namespace inventory_accounting_system.Controllers {
         #endregion
 
         #region Index
-        [Authorize (Roles = "Admin")]
+        [Authorize (Roles = "Admin, Manager")]
         public async Task<IActionResult> Index (string searchString, Sorting sorting = Sorting.NameAsc, int page = 1) {
+
+            var userId = _userManager.GetUserId (User);
+            var userFromOffNow = _context.Users.Where (u => u.IsDelete == false);
+            foreach (var item in userFromOffNow) {
+                if (await _userManager.IsInRoleAsync (item, "Admin") && item.Id == userId) {
+
+                    int pageSizeA = 7;
+
+                    //TODO: Переделать пагинацию с помощью таг-хелперов, так же исправить баг, сохраннение выбранного чекбокса при переходе на следующею страницу пагинации
+
+                    ViewData["OfficeId"] = new SelectList (_context.Offices, "Id", "Title");
+                    ViewData["EmployeeId"] = new SelectList (_context.Users, "Id", "Name");
+                    ViewData["dateAction"] = DateTime.Now.ToString ("yyyy-MM-dd");
+
+                    ViewData["OfficeIdSale"] = new SelectList (_context.Offices, "Id", "Title");
+                    var mainStorageOneA = _context.Offices;
+                    foreach (var itemA in mainStorageOneA) {
+                        if (itemA.Title == "Main storage") {
+
+                            ViewData["OfficeIdSaleOne"] = itemA.Title;
+                        }
+                    }
+
+                    ViewData["EmployeeIdSale"] = new SelectList (_context.Users, "Id", "Name");
+                    ViewData["dateActionSale"] = DateTime.Now.ToString ("yyyy-MM-dd");
+
+                    IEnumerable<StatusMovingAssetsEnum> statusAssetsEnumsA = Enum.GetValues (typeof (StatusMovingAssetsEnum)).Cast<StatusMovingAssetsEnum> ().ToList ();
+                    ViewData["StatusMovingAssets"] = new SelectList (statusAssetsEnumsA.ToList ());
+
+                    foreach (var itemA in statusAssetsEnumsA) {
+                        if (item.ToString () == "sale") {
+
+                            ViewData["StatusMovingAssetsOne"] = item.ToString ();
+                        }
+
+                    }
+
+                    var mainStorage = _context.Offices.FirstOrDefault (s => s.IsMain);
+                    IQueryable<Asset> assetsA = _context.Assets
+                        .Include (a => a.Category)
+                        .Include (a => a.Supplier)
+                        .Include (a => a.Office)
+                        .Where (a => a.IsActive)
+                        .Where (a => a.InStock)
+                        .Where (a => a.OfficeId == mainStorage.Id);
+
+                    var countA = await assetsA.CountAsync ();
+                    var itemsA = await assetsA.Skip ((page - 1) * pageSizeA).Take (pageSizeA).ToListAsync ();
+
+                    PageVM pageVMA = new PageVM (countA, page, pageSizeA);
+                    IndexVM viewModelA = new IndexVM {
+                        PageVM = pageVMA,
+                        Assets = itemsA
+                    };
+
+                    #region Sorting
+
+                    ViewData["IsActiveSort"] = sorting == Sorting.IsActiveAsc ? Sorting.IsActiveDesc : Sorting.IsActiveAsc;
+                    ViewData["NameSort"] = sorting == Sorting.NameAsc ? Sorting.NameDesc : Sorting.NameAsc;
+                    ViewData["InventNumberSort"] = sorting == Sorting.InventNumberAsc ? Sorting.InventNumberDesc : Sorting.InventNumberAsc;
+                    ViewData["DateSort"] = sorting == Sorting.DateAsc ? Sorting.DateDesc : Sorting.DateAsc;
+                    ViewData["ImageSort"] = sorting == Sorting.ImageAsc ? Sorting.ImageDesc : Sorting.ImageAsc;
+                    ViewData["DocumentSort"] = sorting == Sorting.DocumentAsc ? Sorting.DocumentDesc : Sorting.DocumentAsc;
+                    ViewData["CategorySort"] = sorting == Sorting.CategoryAsc ? Sorting.CategoryDesc : Sorting.CategoryAsc;
+                    ViewData["SupplierSort"] = sorting == Sorting.SupplierAsc ? Sorting.SupplierDesc : Sorting.SupplierAsc;
+                    ViewData["PriceSort"] = sorting == Sorting.PriceAsc ? Sorting.PriceDesc : Sorting.PriceAsc;
+
+                    switch (sorting) {
+                        case Sorting.IsActiveDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.IsActive.Equals (true));
+                            break;
+                        case Sorting.NameDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Name);
+                            break;
+                        case Sorting.InventNumberDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.InventNumber.Length);
+                            break;
+                        case Sorting.DateDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Date.Minute);
+                            break;
+                        case Sorting.ImageDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Image.FileName);
+                            break;
+                        case Sorting.DocumentDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Document);
+                            break;
+                        case Sorting.CategoryDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Category.Name);
+                            break;
+                        case Sorting.SupplierDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Supplier.Name);
+                            break;
+                        case Sorting.PriceDesc:
+                            assetsA = assetsA.OrderByDescending (s => s.Price);
+                            break;
+                        default:
+                            assetsA = assetsA.OrderBy (s => s.Name);
+                            break;
+                    }
+
+                    #endregion
+
+                    if (searchString != null) {
+                        IQueryable<Asset> assets1 = from m in _context.Assets
+                        select m;
+
+                        if (!string.IsNullOrEmpty (searchString)) {
+                            assets1 = assets1.Where (s => s.Name.Contains (searchString));
+
+                        }
+                        PageVM pageVM1 = new PageVM (countA, page, pageSizeA);
+                        IndexVM viewModel1 = new IndexVM {
+                            PageVM = pageVM1,
+                            Assets = assets1
+                        };
+                        return View (viewModel1);
+                    }
+
+                    return View (viewModelA);
+
+                }
+            }
 
             int pageSize = 7;
 
@@ -57,10 +179,10 @@ namespace inventory_accounting_system.Controllers {
 
             ViewData["OfficeIdSale"] = new SelectList (_context.Offices, "Id", "Title");
             var mainStorageOne = _context.Offices;
-            foreach (var item in mainStorageOne) {
-                if (item.Title == "Main storage") {
+            foreach (var itemM in mainStorageOne) {
+                if (itemM.Title == "Main storage") {
 
-                    ViewData["OfficeIdSaleOne"] = item.Title;
+                    ViewData["OfficeIdSaleOne"] = itemM.Title;
                 }
             }
 
@@ -70,22 +192,30 @@ namespace inventory_accounting_system.Controllers {
             IEnumerable<StatusMovingAssetsEnum> statusAssetsEnums = Enum.GetValues (typeof (StatusMovingAssetsEnum)).Cast<StatusMovingAssetsEnum> ().ToList ();
             ViewData["StatusMovingAssets"] = new SelectList (statusAssetsEnums.ToList ());
 
-            foreach (var item in statusAssetsEnums) {
-                if (item.ToString () == "sale") {
+            foreach (var itemM in statusAssetsEnums) {
+                if (itemM.ToString () == "sale") {
 
-                    ViewData["StatusMovingAssetsOne"] = item.ToString ();
+                    ViewData["StatusMovingAssetsOne"] = itemM.ToString ();
                 }
 
             }
+            var officeIdUserNow = string.Empty;
+            var off = _context.Users;
+            foreach (var offId in off) {
+                if (userId == offId.Id) {
+                    officeIdUserNow = offId.OfficeId;
+                }
+            }
 
-            var mainStorage = _context.Offices.FirstOrDefault (s => s.IsMain);
+            var officesUser = _context.Offices.Where (o => o.Id == officeIdUserNow).Where(o => !o.IsMain).FirstOrDefault ();
+            // var mainStorage = _context.Offices.FirstOrDefault (s => !s.IsMain);
             IQueryable<Asset> assets = _context.Assets
                 .Include (a => a.Category)
                 .Include (a => a.Supplier)
                 .Include (a => a.Office)
                 .Where (a => a.IsActive)
-                .Where (a => a.InStock)
-                .Where (a => a.OfficeId == mainStorage.Id);
+                .Where (a => !a.InStock)
+                .Where (a => a.OfficeId == officesUser.Id);
 
             var count = await assets.CountAsync ();
             var items = await assets.Skip ((page - 1) * pageSize).Take (pageSize).ToListAsync ();

@@ -5,24 +5,46 @@
     string surname = (string)ViewData["Surname"];
 }
 
-<h2>Delete User</h2>
 
-<dl class="dl-horizontal">
-    <dt>
-       Имя
-    </dt>
-    <dd>
-        @name
-    </dd>
-    <dt>
-       Фамилия
-    </dt>
-    <dd>
-        @surname
-    </dd>
-</dl>
-<form asp-action="DeleteConfirmed" method="post">
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Удалить сотрудника</h2>
+        <h3 style="color: #EF5352">Вы уверены что хотите удалить это имущество</h3>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Employes/Users">Сотрудники</a>
+            </li>
+            <li class="active">
+                <strong>Удалить сотрудника</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<hr />
+
+<div>
     
-    <input type="hidden" name="id" value="@userId" />
-    <input class="btn btn-success" value="Удалить" type="submit" />
-</form>
+    <dl class="dl-horizontal">
+        <dt style="width: 250px;">
+           <h2 style="text-align: left">Имя</h2>
+        </dt>
+        <dd>
+           <h2 class="font-bold"  style=" margin-left: 50px;"> @name</h2>
+        </dd>
+        <dt style="width: 250px;">
+           <h2 style="text-align: left;">Фамилия</h2>
+        </dt>
+        <dd>
+           <h2 class="font-bold" style=" margin-left: 50px;">@surname</h2>
+        </dd>
+    </dl>
+    <hr />
+    <form asp-action="DeleteConfirmed" method="post">
+         <input type="hidden" name="id" value="@userId" />
+        <input type="submit" value="Удалить" style="margin-top: 10px; margin-bottom: 15px; "
+            class="btn btn-w-m btn-danger" />
+    </form>
+</div>
