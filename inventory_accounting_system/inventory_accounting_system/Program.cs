@@ -31,6 +31,7 @@ namespace inventory_accounting_system
                     IdentityDataInit.SeedData(userManager, roleManager);
 
                     DataSeeder.Seed(context);
+                    // DataSeeder.SeedUsersOffices(userManager);
                 }
                 catch
                 {
