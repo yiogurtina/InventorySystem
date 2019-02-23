@@ -1,0 +1,12 @@
+@model IEnumerable<inventory_accounting_system.Models.OrderEmployee>
+
+@foreach (var item in Model) {
+        
+       <a asp-controller="OrderEmployees" asp-action="Details" asp-route-id="@item.Id">
+        <div class="col" style="text-align: center">
+            <span>Oт: </span><strong>@item.EmployeeTo.Name </strong> <span> - @item.Office.Title</span><br>
+            <span>@item.Content</span> <br>
+            <small class="text-muted">@item.DateFrom</small>  <hr>
+        </div>
+       </a>
+}

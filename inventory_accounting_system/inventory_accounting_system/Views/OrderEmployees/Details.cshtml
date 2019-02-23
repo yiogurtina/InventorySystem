@@ -38,13 +38,25 @@
             @Html.DisplayNameFor(model => model.EmployeeFrom)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EmployeeFrom.Id)
+            @Html.DisplayFor(model => model.EmployeeFrom.Name)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Office)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Office.Id)
+            @Html.DisplayFor(model => model.Office.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Asset.InventNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Asset.InventNumber)
         </dd>
     </dl>
 </div>

@@ -232,6 +232,7 @@ namespace inventory_accounting_system.Controllers {
             var orderEmployee = await _context.OrderEmployees
                 .Include (o => o.EmployeeFrom)
                 .Include (o => o.Office)
+                .Include (o => o.Asset)
                 .SingleOrDefaultAsync (m => m.Id == id);
             if (orderEmployee == null) {
                 return NotFound ();
