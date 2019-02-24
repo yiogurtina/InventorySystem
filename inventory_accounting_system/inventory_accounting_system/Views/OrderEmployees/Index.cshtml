@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<inventory_accounting_system.Models.OrderEmployee>
+@using inventory_accounting_system.ViewModel
+@model EmployeeOrderViewModel
 
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
@@ -74,7 +75,7 @@
                         <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
 
                     </div>
-                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Обновить</button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" href="~/OrderEmployees/ListOrderMsg?id=@ViewBag.UserNameOrderF" title="Refresh inbox"><i class="fa fa-refresh"></i> Обновить</button>
                     <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
                     <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i> </button>
                     <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
@@ -83,9 +84,9 @@
             </div>
                 <div class="mail-box">
 
-@foreach (var item in Model)
+@foreach (var item in Model.SotringEmployeeOrderViewModel)
 {
-    if (item.Status == "New")
+    if (item.StatusVM == "New")
     {
                 <table class="table table-hover table-mail">
                 <tbody>
@@ -95,7 +96,7 @@
                     </td>
                     <td class="mail-ontact">
 
-                    @if (@item.EmployeeFromId == null)
+                    @if (@item.Id == null)
                         {
                             <a asp-controller="OrderEmployees" 
                         asp-action="Details" 
@@ -104,25 +105,25 @@
                         }else{
                         
                             <a asp-controller="OrderEmployees" 
-                        asp-action="Details" 
-                        asp-route-id="@item.Id"
-                        data-id="@item.Id" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.EmployeeFrom.Name)</a>
+                        asp-action="ListOrderMsg" 
+                        asp-route-id="@item.Id">@item.SendFromName (@item.OrderCount)</a>
                         }
+
 
                         
                         <span class="label label-primary pull-right" id="statusMsg">New</span></td>
                     <td class="mail-subject"><a asp-controller="OrderEmployees" 
                     asp-action="Details" 
                     asp-route-id="@item.Id"
-                    data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.Asset.Name)</a></td>
-                    <td class=""><i class="fa fa-paperclip"></i></td>
-                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFrom)</td>
+                    data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.AssetVM.Name)</a></td>
+                    <td class=""></td>
+                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
                 </tr>
                 </tbody>
                 </table>
     }
 
-    if (item.Status == "Open")
+    if (item.StatusVM == "Open")
     {
                 <table class="table table-hover table-mail">
                 <tbody>
@@ -134,14 +135,14 @@
                         <a asp-controller="OrderEmployees" 
                         asp-action="Details" 
                         asp-route-id="@item.Id"
-                        data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.EmployeeFrom.Name)</a>
+                        data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.SendFromName)</a>
                         <span class="label label-success pull-right" id="statusMsg">Open</span></td>
                     <td class="mail-subject"><a asp-controller="OrderEmployees" 
                     asp-action="Details" 
                     asp-route-id="@item.Id"
-                    data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.Asset.Name)</a></td>
+                    data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.AssetVM.Name)</a></td>
                     <td class=""><i class="fa fa-paperclip"></i></td>
-                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFrom)</td>
+                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
                 </tr>
                 </tbody>
                 </table>
@@ -152,115 +153,31 @@
             </div>
 </div>
 </div>
-        
 
-<!-- @* <strong>Прочитанные</strong><br /><hr /> *@ -->
-
-
-
-
-<!-- @foreach (var item in Model)
-{
-    if (item.Status == "Open")
-    {
-        <!-- <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdOpen(this)">
-            <div class="panel-heading">
-                <a class="btn" style="background-color: #2c4267; color: white; width: 100%" data-toggle="collapse" id="clickIdOpen" href="#imageGalleryOpen-@item.Id">
-                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
-                    </h4>
-                </a>
-            </div>
-            <div class="panel-body collapse in" data-name="clasS"  id="imageGalleryOpen-@item.Id">
-                <strong style="color: dimgrey">Название запрошенного актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.Name)</h5><br />
-                <strong style="color: dimgrey">Номер инвентарного номера актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.InventNumber)</h5><br />
-                <div style="width: 100%">
-                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
-                </div> <br /><hr />
-                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
-                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
-
-                <a class="btn" style="background-color: #2c4267; color: white" onclick="showModalSendOrderAdmin()">Переслать</a>
-
-            </div>
-        </div> -->
-
-
-        <!-- <div class="col-lg-9 animated fadeInRight">
-            <div class="mail-box-header">
-                <div class="pull-right tooltip-demo">
-                    <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
-                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
-                    <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </a>
-                </div>
-                <h2>
-                    View Message
-                </h2>
-                <div class="mail-tools tooltip-demo m-t-md">
-
-
-                    <h3>
-                        <span class="font-normal">Subject: </span>@Html.DisplayFor(modelItem => item.EmployeeTo.Name)
-                    </h3>
-                    <h5>
-                        <span class="pull-right font-normal">@Html.DisplayFor(modelItem => item.DateFrom) </span>
-                        <span class="font-normal">From: </span>@Html.DisplayFor(modelItem => item.DateTo)
-                    </h5>
-                </div>
-            </div>
-                <div class="mail-box">
-
-
-                <div class="mail-body">
-                    <p>
-                        Здравствуёте, @Html.DisplayFor(modelItem => item.EmployeeTo.Name)!
-                        <br/>
-                        <br/>
-
-                        <a href="#" class="pull-left">
-                            <img style="margin:5px; width: 70px; height: 70px" class="img-container m-b-md" src="../@item.Asset.ImagePath" />
-                        </a>
-
-                        Запрашеваемый товар: @Html.DisplayFor(modelItem => item.Asset.Name) 
-                        Инвентарный номер актива: <strong>@Html.DisplayFor(modelItem => item.Asset.InventNumber)</strong>
-                        </p>
-                    <p>
-                        <a asp-controller="Assets" asp-action="Details" asp-route-id="@item.AssetId" class="text-navy">Перейти на страницу актива.</a>  
-                    </p>
-                    <p>
-                        Прощу подтвердить или откланить заявку.
-                        С уважением, @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
-                    </p>
-                </div>
-            </div>
-        </div> -->
-
-    }
-} -->
 
 <!-- <strong>В процессе</strong><br /><hr /> -->
 
-@foreach (var item in Model)
+@foreach (var item in Model.SotringEmployeeOrderViewModel)
 {
-    if (item.Status == "Inprogress")
+    if (item.StatusVM == "Inprogress")
     {
         <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdInprogress(this)">
             <div class="panel-heading">
                 <a class="btn" style="background-color: #c55058; color: white; width: 100%" data-toggle="collapse" id="clickIdInInprogress" href="#imageGallery-@item.Id">
 
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
-                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
+                        От: @Html.DisplayFor(modelItem => item.SendFromName) -
+                        <strong> @Html.DisplayFor(modelItem => item.TitleSort)</strong>
                     </h4>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.TitleSort)</h5><br />
                 <div style="width: 100%">
-                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.ContentVM)</h4>
                 </div> <br /><hr />
-                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
-                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFromVM) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateToVM) </p>
 
                 <a class="btn" style="background-color: #2c4267; color: white" onclick="showModalSendOrderAdmin()">Переслать</a>
 
@@ -340,8 +257,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <script>

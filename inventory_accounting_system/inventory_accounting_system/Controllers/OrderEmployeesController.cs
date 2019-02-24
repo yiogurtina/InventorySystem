@@ -77,14 +77,33 @@ namespace inventory_accounting_system.Controllers {
 
                         #endregion
 
-                        var applicationDbContext = _context.OrderEmployees
-                            .Where (u => u.EmployeeToId == usr.Id)
-                            .Include (o => o.EmployeeFrom)
-                            .Include (o => o.EmployeeTo)
-                            .Include (o => o.Asset)
-                            .Include (o => o.Office);
+                        // var applicationDbContext = _context.OrderEmployees
+                        //     .Where (u => u.EmployeeToId == usr.Id)
+                        //     .Include (o => o.EmployeeFrom)
+                        //     .Include (o => o.EmployeeTo)
+                        //     .Include (o => o.Asset)
+                        //     .Include (o => o.Office);
 
-                        return View (await applicationDbContext.ToListAsync ());
+                        var empOrdersU = _context.OrderEmployees
+                            .Include (a => a.Asset)
+                            .Include (a => a.Office)
+                            .Include (a => a.EmployeeFrom)
+                            .Include (a => a.EmployeeTo)
+                            .Where (e => e.Status == "New")
+                            .GroupBy (e => new { e.EmployeeFromId, e.EmployeeFrom.Name, e.Status })
+                            .Select (g => new SotringEmployeeOrderViewModel {
+                                Id = g.Key.EmployeeFromId,
+                                    SendFromName = g.Key.Name,
+                                    StatusVM = g.Key.Status,
+                                    OrderCount = g.Count ()
+                            }).ToList ();
+
+                        EmployeeOrderViewModel empOrderVMU = new EmployeeOrderViewModel () {
+                            SotringEmployeeOrderViewModel = empOrdersU
+                        };
+
+                        return View (empOrderVMU);
+                        // return View (await applicationDbContext.ToListAsync ());
                     }
 
                 }
@@ -92,12 +111,47 @@ namespace inventory_accounting_system.Controllers {
             }
             #endregion
 
-            var applicationDbContextAll = _context.OrderEmployees
-                .Include (o => o.EmployeeFrom)
-                .Include (o => o.EmployeeToId)
-                .Include (o => o.Asset)
-                .Include (o => o.Office);
-            return View (await applicationDbContextAll.ToListAsync ());
+            // var applicationDbContextAll = _context.OrderEmployees
+            //     .Include (o => o.EmployeeFrom)
+            //     .Include (o => o.EmployeeToId)
+            //     .Include (o => o.Asset)
+            //     .Include (o => o.Office);
+            // return View (await applicationDbContextAll.ToListAsync ());
+
+            var empOrders = _context.OrderEmployees
+                .Include (a => a.Asset)
+                .Include (a => a.Office)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Where (e => e.Status == "New")
+                .GroupBy (e => new { e.EmployeeFromId, e.EmployeeFrom.Name, e.Status })
+                .Select (g => new SotringEmployeeOrderViewModel {
+                    Id = g.Key.EmployeeFromId,
+                        SendFromName = g.Key.Name,
+                        StatusVM = g.Key.Status,
+                        OrderCount = g.Count ()
+                }).ToList ();
+
+            EmployeeOrderViewModel empOrderVM = new EmployeeOrderViewModel () {
+                SotringEmployeeOrderViewModel = empOrders
+            };
+
+            return View (empOrderVM);
+        }
+
+        public IActionResult ListOrderMsg (string id) {
+
+            var userNameOrderFrom = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+            ViewBag.UserNameOrderF = userNameOrderFrom.Name;
+
+            var listMsgUsers = _context.OrderEmployees
+                .Include (a => a.Asset)
+                .Include (a => a.Office)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Where (l => l.EmployeeFromId == id);
+
+            return View (listMsgUsers);
         }
 
         #endregion
