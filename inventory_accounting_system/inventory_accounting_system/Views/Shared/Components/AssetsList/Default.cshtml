@@ -118,16 +118,19 @@
         <textarea class="form-control" id="contentOrderIComponent"
         style=" width: 270px !important;"></textarea>
 </div>
-
+<input class="hidden" id="toIdUser" value="@ViewBag.ToUserID"/>
 <div>
     <a class="btn btn-primary" onclick="getCheckedCheckBoxes(this)">Отправить</a>
 </div>
 
 
 <script>
+    var toEmployeeToId;
     window.onload = function(){
         officeId = document.getElementById('officeIdSelect').children[0].value;
-        employeeId = document.getElementById('employeeIdSelectComponent').children[0].value;
+        employeeId = document.getElementById('employeeIdSelectComponent').children[0].value;        
+        toEmployeeToId = document.getElementById('toIdUser').value;
+       
     }
     checkedCheckBox = [];
     function OnChangeCheckBoxFunc(e) {
@@ -154,6 +157,7 @@
                 officeId: officeId,
                 assetId: checkedCheckBox,
                 employeeId: employeeId,
+                employeeFromId: toEmployeeToId,
                 content: $("#contentOrderIComponent").val()
             },
             success: function (data) {

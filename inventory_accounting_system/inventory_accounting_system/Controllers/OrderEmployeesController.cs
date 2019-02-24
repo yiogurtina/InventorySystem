@@ -95,7 +95,7 @@ namespace inventory_accounting_system.Controllers {
             var applicationDbContextAll = _context.OrderEmployees
                 .Include (o => o.EmployeeFrom)
                 .Include (o => o.EmployeeToId)
-                .Include(o => o.Asset)
+                .Include (o => o.Asset)
                 .Include (o => o.Office);
             return View (await applicationDbContextAll.ToListAsync ());
         }
@@ -130,6 +130,7 @@ namespace inventory_accounting_system.Controllers {
             var messageId = _context.OrderEmployees.SingleOrDefault (m => m.Id == idMessage);
             if (messageId != null && messageId.Status == "New") {
                 messageId.Status = "Open";
+                messageId.Title = "Заявка на преобретение имущества";
                 _context.Update (messageId);
                 _context.SaveChanges ();
 
@@ -226,11 +227,15 @@ namespace inventory_accounting_system.Controllers {
         // GET: OrderEmployees/Details/5
         public async Task<IActionResult> Details (string id) {
             if (id == null) {
+
                 return NotFound ();
             }
+            var userName = _userManager.GetUserName (Request.HttpContext.User);
+            ViewData["UserId"] = userName;
 
             var orderEmployee = await _context.OrderEmployees
                 .Include (o => o.EmployeeFrom)
+                .Include (o => o.EmployeeTo)
                 .Include (o => o.Office)
                 .Include (o => o.Asset)
                 .SingleOrDefaultAsync (m => m.Id == id);
@@ -280,7 +285,7 @@ namespace inventory_accounting_system.Controllers {
 
         #region Check
 
-        public ActionResult CheckViewComponent (string[] assetId, string officeId, string employeeId, string content) {
+        public ActionResult CheckViewComponent (string[] assetId, string officeId, string employeeId, string employeeFromId, string content) {
 
             foreach (var item in assetId) {
                 var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
@@ -293,7 +298,9 @@ namespace inventory_accounting_system.Controllers {
                     OfficeId = officeId,
                     Content = content,
                     EmployeeToId = employeeId,
+                    EmployeeFromId = employeeFromId,
                     DateFrom = DateTime.Now,
+                    Title = "Заявка на преобретение имущества",
                     DateTo = null
                     };
                     _context.Add (orderSend);

@@ -32,7 +32,7 @@ namespace inventory_accounting_system.ViewComponents {
             var officeIdEmployee = _context.Offices;
             var userName = _userManager.GetUserName (Request.HttpContext.User);
 
-            ViewData["UserId"] = userName;
+            ViewData["ToUserID"] = userIdUser;
 
             List<string> managers = new List<string> ();
             var userFromOff = _context.Users.Where (u => u.IsDelete == false);

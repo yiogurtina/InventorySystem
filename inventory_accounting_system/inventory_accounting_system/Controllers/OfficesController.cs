@@ -102,8 +102,10 @@ namespace inventory_accounting_system.Controllers {
             #region Search office Manager
 
             var userName = _userManager.GetUserName (User);
+            var toUserID = _userManager.GetUserId (User);
 
             ViewData["UserId"] = userName;
+            ViewData["ToUserID"] = toUserID;
 
             List<string> managers = new List<string> ();
             var userFromOff = _context.Users.Where (u => u.IsDelete == false);

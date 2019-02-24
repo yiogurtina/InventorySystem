@@ -3,7 +3,10 @@
 @foreach (var item in Model) {
         
        <a asp-controller="OrderEmployees" asp-action="Details" asp-route-id="@item.Id">
+
+
         <div class="col" style="text-align: center">
+           
             <span>Oт: </span><strong>@item.EmployeeToAdmin.Name </strong> <span> - @item.OfficeAdmin.Title</span><br>
             <span>@item.ContentUser</span> <br>
             <span>@item.ContentAdmin</span> <br>
