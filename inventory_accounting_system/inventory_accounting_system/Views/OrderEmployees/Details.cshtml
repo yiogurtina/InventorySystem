@@ -65,9 +65,9 @@
                     </p>
                     <p>
                         Прощу подтвердить или откланить заявку.
-                        С уважением, <strong>@Html.DisplayFor(modelItem => Model.EmployeeTo.Name)</strong>
+                        С уважением, <strong>@Html.DisplayFor(modelItem => Model.EmployeeFrom.Name)</strong>
                     </p>
-                    <a class="btn  btn-primary" style="margin: 25px 15px 0 0;" asp-action="Index"> <i class="fa fa-long-arrow-left" style="font-size: 13pt;"></i></a>
+                    <a class="btn  btn-primary" style="margin: 25px 15px 0 0;" href="~/OrderEmployees/ListOrderMsg?id=@Html.DisplayFor(modelItem => Model.EmployeeFromId)" > <i class="fa fa-long-arrow-left" style="font-size: 13pt;"></i></a>
                 </div>
             </div>
         </div>
