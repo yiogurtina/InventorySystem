@@ -10,29 +10,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace inventory_accounting_system.ViewComponents {
-    public class OrderListViewComponent : ViewComponent {
+    public class OrderListAdminViewComponent : ViewComponent {
         #region Dependency Injection
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Employee> _userManager;
 
-        public OrderListViewComponent (ApplicationDbContext context, UserManager<Employee> userManager) {
+        public OrderListAdminViewComponent (ApplicationDbContext context, UserManager<Employee> userManager) {
             _context = context;
             _userManager = userManager;
         }
         #endregion
 
-        public IViewComponentResult Invoke()
-        {
+        public IViewComponentResult Invoke () {
 
-            IQueryable<OrderEmployee> empOrders = _context.OrderEmployees
-                .Include(a => a.Asset)
-                .Include(a => a.Office)
-                .Include(a => a.EmployeeFrom)
-                .Include(a => a.EmployeeTo)
-                .Where(e => e.Status == "New");
+            IQueryable<OrderEmployeeAdmin> empOrdersAdmin = _context.OrderEmployeeAdmins
+                .Include (a => a.OfficeAdmin)
+                .Include (a => a.EmployeeFromAdmin)
+                .Include (a => a.EmployeeToAdmin)
+                .Where (e => e.StatusAdmin == "New");
 
-            return View(empOrders);
+            return View (empOrdersAdmin);
 
         }
 
