@@ -152,59 +152,123 @@
                             </div>
                             <ul class="nav navbar-top-links navbar-right">
 
-                                <li class="dropdown" id="messageLi" onclick="openDropDown()">
-                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
-                                        href="#" id="areaTrueFalse">
-                                        <i class="fa fa-envelope"></i> <span class="label label-warning">
-                                            @await Component.InvokeAsync("OrderEmployeeVM")
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-messages">
-                                        <li>
-                                            <div class="dropdown-messages-box">
-                                                <div class="media-body">
-                                                    @await Component.InvokeAsync("OrderList")
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="divider"></li>
-                                        
-                                        <li>
-                                            <div class="text-center link-block">
-                                                <a asp-controller="OrderEmployees" asp-action="Index">
-                                                    <i class="fa fa-envelope"></i> <strong>Посмотреть все сообщения</strong>
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
+                            @if (User.IsInRole("Manager")){                               
 
-                                <li class="dropdown" id="notificationLi" onclick="openDropDownNotif()">
-                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
-                                        href="#" id="areaTrueFalseNotif">
-                                        <i class="fa fa-bell"></i> <span class="label label-primary">
-                                            @await Component.InvokeAsync("OrderEmployeeVM")
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-alerts">
-                                        <li>
-                                            <a href="mailbox.html">
-                                                <div>
-                                                    <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                    <li class="dropdown" id="messageLi" onclick="openDropDown()">
+                                        <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
+                                            href="#" id="areaTrueFalse">
+                                            <i class="fa fa-envelope"></i> <span class="label label-warning">
+                                                @await Component.InvokeAsync("OrderEmployeeVM")
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-messages">
+                                            <li>
+                                                <div class="dropdown-messages-box">
+                                                    <div class="media-body">
+                                                        @await Component.InvokeAsync("OrderList")
+                                                    </div>
                                                 </div>
-                                            </a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li>
-                                            <div class="text-center link-block">
-                                                <a href="notifications.html">
-                                                    <strong>See All Alerts</strong>
-                                                    <i class="fa fa-angle-right"></i>
+                                            </li>
+                                            <li class="divider"></li>
+
+                                            <li>
+                                                <div class="text-center link-block">
+                                                    <a asp-controller="OrderEmployees" asp-action="Index">
+                                                        <i class="fa fa-envelope"></i> <strong>Посмотреть все сообщения</strong>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown" id="notificationLi" onclick="openDropDownNotif()">
+                                        <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
+                                            href="#" id="areaTrueFalseNotif">
+                                            <i class="fa fa-bell"></i> <span class="label label-primary">
+                                                @await Component.InvokeAsync("OrderEmployeeVM")
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-alerts">
+                                            <li>
+                                                <a href="mailbox.html">
+                                                    <div>
+                                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                                    </div>
                                                 </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </li>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <div class="text-center link-block">
+                                                    <a href="notifications.html">
+                                                        <strong>See All Alerts</strong>
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                }
+                                
+
+                            @if (User.IsInRole("Admin")){                               
+
+                                    <li class="dropdown" id="messageLi" onclick="openDropDown()">
+                                        <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
+                                            href="#" id="areaTrueFalse">
+                                            <i class="fa fa-envelope"></i> <span class="label label-warning">
+                                                @await Component.InvokeAsync("OrderEmployeeAdminVM")
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-messages">
+                                            <li>
+                                                <div class="dropdown-messages-box">
+                                                    <div class="media-body">
+                                                        @await Component.InvokeAsync("OrderListAdmin")
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="divider"></li>
+
+                                            <li>
+                                                <div class="text-center link-block">
+                                                    <a asp-controller="OrderEmployeeAdmins" asp-action="Index">
+                                                        <i class="fa fa-envelope"></i> <strong>Посмотреть все сообщения</strong>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown" id="notificationLi" onclick="openDropDownNotif()">
+                                        <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
+                                            href="#" id="areaTrueFalseNotif">
+                                            <i class="fa fa-bell"></i> <span class="label label-primary">
+                                                @await Component.InvokeAsync("OrderEmployeeAdminVM")
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-alerts">
+                                            <li>
+                                                <a href="mailbox.html">
+                                                    <div>
+                                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <div class="text-center link-block">
+                                                    <a href="notifications.html">
+                                                        <strong>See All Alerts</strong>
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                }
+                                
 
                                 @if (SignInManager.IsSignedIn(User))
                                 {
