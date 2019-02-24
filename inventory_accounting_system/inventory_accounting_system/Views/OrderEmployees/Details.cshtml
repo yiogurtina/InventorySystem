@@ -4,63 +4,70 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>OrderEmployee</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Заголовок
-        </dt>
-        <dd>
-            Заголовок
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateFrom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateFrom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EmployeeFrom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EmployeeFrom.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Office)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Office.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Asset.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Asset.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Asset.InventNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Asset.InventNumber)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<div class="row wrapper border-bottom white-bg page-heading" style="margin-bottom: 15px;">
+            <div class="col-lg-10">
+                <h2>Кому: @Html.DisplayFor(modelItem => Model.EmployeeTo.Name)</h2>
+                <ol class="breadcrumb" style="margin-bottom: 10px;">
+                    <li>
+                        <a href="~/OrderEmployees">Почта</a>
+                    </li>
+                    <li class="active">
+                        <strong>От: @Html.DisplayFor(modelItem => Model.EmployeeFrom.Name)</strong>                        
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2"> </div>
+        </div>
+        <hr/>
+
+  <div class="col-lg-12 animated fadeInRight">
+            <div class="mail-box-header">
+                <div class="pull-right tooltip-demo">
+                    <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
+                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
+                    <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </a>
+                </div>
+                <h2>
+                   Просмотр cообщения
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                    <h3>
+                        <span class="font-normal">Тема: </span>@Html.DisplayFor(modelItem => Model.Title)
+                    </h3>
+                    <h5>
+                        <span class="pull-right font-normal">@Html.DisplayFor(modelItem => Model.Title) </span>
+                        <span class="font-normal">Получен от: </span>@Html.DisplayFor(modelItem => Model.EmployeeFrom.Name)
+                    </h5>
+                </div>
+            </div>
+                <div class="mail-box">
+
+
+                <div class="mail-body">
+                    <p>
+                        Здравствуёте, @Html.DisplayFor(modelItem => Model.EmployeeTo.Name)!
+                        <br/>
+                        <br/>
+
+                        <a href="#" class="pull-left">
+                            <img style="margin:5px; width: 70px; height: 70px" class="img-container m-b-md" src="../@Model.Asset.ImagePath" />
+                        </a>
+
+                        Запрашеваемый товар: @Html.DisplayFor(modelItem => Model.Asset.Name) <br>
+                        I/N:<strong>@Html.DisplayFor(modelItem => Model.Asset.InventNumber)</strong>
+                        </p>
+                    <p>
+                        <a asp-controller="Assets" asp-action="Details" asp-route-id="@Model.AssetId" class="text-navy">Перейти на страницу актива.</a>  
+                    </p>
+                    <p>
+                        Прощу подтвердить или откланить заявку.
+                        С уважением, <strong>@Html.DisplayFor(modelItem => Model.EmployeeTo.Name)</strong>
+                    </p>
+                    <a class="btn  btn-primary" style="margin: 25px 15px 0 0;" asp-action="Index"> <i class="fa fa-long-arrow-left" style="font-size: 13pt;"></i></a>
+                </div>
+            </div>
+        </div>

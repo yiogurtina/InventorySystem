@@ -22,17 +22,23 @@ namespace inventory_accounting_system.ViewComponents {
         }
         #endregion
 
-        public IViewComponentResult Invoke()
-        {
+        public IViewComponentResult Invoke () {
 
+            var userName = _userManager.GetUserName (Request.HttpContext.User);
+
+            ViewData["UserId"] = userName;
+
+            var efNull = _context.OrderEmployees.Where (f => f.EmployeeFromId == null);
+            
+            
             IQueryable<OrderEmployee> empOrders = _context.OrderEmployees
-                .Include(a => a.Asset)
-                .Include(a => a.Office)
-                .Include(a => a.EmployeeFrom)
-                .Include(a => a.EmployeeTo)
-                .Where(e => e.Status == "New");
+                .Include (a => a.Asset)
+                .Include (a => a.Office)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Where (e => e.Status == "New");
 
-            return View(empOrders);
+            return View (empOrders);
 
         }
 

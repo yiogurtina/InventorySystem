@@ -282,7 +282,7 @@
                                         <p> @ViewBag.EmployeeFromIdName </p><br />
                                         <strong>От:</strong>
                                         <p>@ViewBag.UserId</p>
-
+                                        
                                         <select class="form-control hidden" id="EmployeeToIdSelect"
                                             onchange="OnChangeEmployeeToId(this)" style=" width: 270px !important;"
                                             asp-items="ViewBag.EmployeeToId"></select>
@@ -391,20 +391,24 @@
             var officeId;
             var employeeFromId;
             var employeeToId;
+            var toEmployeeToId;
             function showModalSendOrder() {
                 $("#newModalOffice").modal();
                 officeId = document.getElementById('officeIdSelect').children[0].value;
                 employeeFromId = document.getElementById('EmployeeIdSelect').children[0].value;
                 employeeToId = document.getElementById('EmployeeToIdSelect').children[0].value;
-                console.log(employeeToId);
+                toEmployeeToId = document.getElementById('toIdUser').value;
+               
             }
 
             function showModalSendOrderComponents() {
                 $("#newModalOfficeComponent").modal();
                 officeId = document.getElementById('officeIdSelect').children[0].value;
                 employeeFromId = document.getElementById('EmployeeIdSelect').children[0].value;
-                employeeToId = document.getElementById('EmployeeToIdSelect').children[0].value;
-                console.log(employeeToId);
+                employeeToId = document.getElementById('EmployeeToIdSelect').children[0].value;              
+                
+                toEmployeeToId = document.getElementById('toIdUser').value;
+               
             }
 
             function OnChangeOfficeId(e) {
@@ -423,7 +427,7 @@
                     url: '@Url.Action("OrderSend", "OrderEmployees")',
                     data: {
                         officeId: officeId,
-                        employeeFromId: employeeFromId,
+                        employeeFromId: toEmployeeToId,
                         employeeToId: employeeToId,
                         title: $("#titleContent").val(),
                         content: $("#contentOrderI").val()
