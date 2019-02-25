@@ -119,6 +119,45 @@
                 </table>
     }
 
+    if (item.Status == "Open")
+    {
+                <table class="table table-hover table-mail">
+                <tbody>
+                <tr class="unread">
+                    <td class="check-mail">
+                        <input type="checkbox" id="inprogresCheck"class="i-checks" value="@item.Id" onchange="OnChangeCheckBoxFuncOrderOpen(this)">
+                    </td>
+                    <td class="mail-ontact">
+
+                    @if (@item.EmployeeFromId == null)
+                        {
+                            <a asp-controller="OrderEmployees" 
+                        asp-action="Details" 
+                        asp-route-id="@item.Id"
+                        data-id="@item.Id" onclick="GetMessageId(this)">Отправитель неизвестен</a>
+                        }else{
+                        
+                            <a asp-controller="OrderEmployees" 
+                        asp-action="Details" 
+                        asp-route-id="@item.Id"
+                        data-id="@item.Id" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.EmployeeFrom.Name)</a>
+                        }
+
+                        
+                        <span class="label label-success pull-right" id="statusMsg">Open</span></td>
+                    <td class="mail-subject"><div style="float: right;"><img style="width: 50px; height: 40px;" class="img-container" src="../@item.Asset.ImagePath" /></div>
+                        <a asp-controller="OrderEmployees" 
+                    asp-action="Details" 
+                    asp-route-id="@item.Id"
+                    data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.Asset.Name)</a></td>
+                    <td class="">
+                        
+                    </td>
+                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFrom)</td>
+                </tr>
+                </tbody>
+                </table>
+    }
 }
 
  </div>

@@ -152,13 +152,6 @@ namespace inventory_accounting_system.Controllers {
 
                             #endregion
 
-                            // var applicationDbContext = _context.OrderEmployees
-                            //     .Where (u => u.EmployeeToId == usr.Id)
-                            //     .Include (o => o.EmployeeFrom)
-                            //     .Include (o => o.EmployeeTo)
-                            //     .Include (o => o.Asset)
-                            //     .Include (o => o.Office);
-
                             var empOrdersU = _context.OrderEmployees
                                 .Include (a => a.Asset)
                                 .Include (a => a.Office)
@@ -187,6 +180,78 @@ namespace inventory_accounting_system.Controllers {
                 }
                 #endregion
 
+            } else if (status == "All") {
+                #region Search office Manager
+
+                var userId = _userManager.GetUserId (User);
+
+                var userFromOff = _context.Users.Where (u => u.IsDelete == false);
+                foreach (var usr in userFromOff) {
+                    if (await _userManager.IsInRoleAsync (usr, "Manager")) {
+                        if (usr.Id == userId) {
+                            #region Search office Admin
+
+                            var userIdAdmin = _userManager.GetUserId (User);
+                            var userNameAdmin = _userManager.GetUserName (User);
+
+                            ViewData["UserIdAdmin"] = userNameAdmin;
+
+                            var officeIdEmployeeAdmin = _context.Offices;
+
+                            var userFromOffAdmin = _context.Users.Where (u => u.IsDelete == false);
+                            foreach (var usrAdmin in userFromOffAdmin) {
+                                if (await _userManager.IsInRoleAsync (usrAdmin, "Manager") && usrAdmin.Id == userIdAdmin) {
+                                    ViewData["EmployeeToIdAdmin"] = new SelectList (_context.Users.Where (u => u.Id == usrAdmin.Id), "Id", "Name");
+                                    var userOfficeIdAdmin = usrAdmin.OfficeId;
+
+                                    foreach (var office in officeIdEmployeeAdmin) {
+                                        if (userOfficeIdAdmin == office.Id) {
+                                            foreach (var usrAdminOffice in userFromOffAdmin) {
+                                                ViewData["OfficeIdAdmin"] = new SelectList (_context.Offices.Where (o => o.Id == usrAdmin.OfficeId), "Id", "Title");
+                                                ViewData["OfficeIdTitleAdmin"] = office.Title;
+
+                                                foreach (var admin in userFromOffAdmin) {
+                                                    if (await _userManager.IsInRoleAsync (admin, "Admin")) {
+                                                        ViewData["EmployeeFromIdAdmin"] = new SelectList (_context.Users.Where (u => u.Id == admin.Id), "Id", "Name");
+
+                                                        ViewData["EmployeeFromIdNameAdmin"] = admin.Name;
+                                                    }
+                                                }
+
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            #endregion
+
+                            var empOrdersU = _context.OrderEmployees
+                                .Include (a => a.Asset)
+                                .Include (a => a.Office)
+                                .Include (a => a.EmployeeFrom)
+                                .Include (a => a.EmployeeTo)
+                                .GroupBy (e => new { e.EmployeeFromId, e.EmployeeFrom.Name, e.Status })
+                                .Select (g => new SotringEmployeeOrderViewModel {
+                                    Id = g.Key.EmployeeFromId,
+                                        SendFromName = g.Key.Name,
+                                        StatusVM = g.Key.Status,
+                                        OrderCount = g.Count ()
+                                }).ToList ();
+
+                            EmployeeOrderViewModel empOrderVMU = new EmployeeOrderViewModel () {
+                                SotringEmployeeOrderViewModel = empOrdersU
+                            };
+
+                            return View (empOrderVMU);
+                            // return View (await applicationDbContext.ToListAsync ());
+                        }
+
+                    }
+
+                }
+                #endregion
             }
 
             var empOrders = _context.OrderEmployees
@@ -222,6 +287,32 @@ namespace inventory_accounting_system.Controllers {
                 .Include (a => a.EmployeeFrom)
                 .Include (a => a.EmployeeTo)
                 .Where (l => l.EmployeeFromId == id);
+
+            return View (listMsgUsers);
+        }
+
+        public IActionResult ListOrderMsgOpen (string id) {
+
+            var userNameOrderFrom = _context.Users.Where (u => u.Id == id).FirstOrDefault ();
+            ViewBag.UserNameOrderF = userNameOrderFrom.Name;
+
+            var listMsgUsers = _context.OrderEmployees
+                .Include (a => a.Asset)
+                .Include (a => a.Office)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Where (l => l.EmployeeFromId == id);
+
+            return View (listMsgUsers);
+        }
+
+        public IActionResult ListOrderMsgAll () {
+
+            var listMsgUsers = _context.OrderEmployees
+                .Include (a => a.Asset)
+                .Include (a => a.Office)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo);
 
             return View (listMsgUsers);
         }

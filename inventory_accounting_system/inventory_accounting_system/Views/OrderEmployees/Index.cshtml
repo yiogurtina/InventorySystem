@@ -37,15 +37,22 @@
                             <h5>Почта</h5>
                                 <ul class="folder-list m-b-md" style="padding: 0">
 
+                                <li><a asp-controller="OrderEmployees" 
+                                    asp-action="ListOrderMsgAll" 
+                                    asp-route-status="All"> <i class="fa fa-inbox ">                                    
+                                </i>Все заявки <span class="label label-primary pull-right"> 
+                                    @await Component.InvokeAsync("OrderEmployeeVM") /
+                                    @await Component.InvokeAsync("OrderEmployeeVMOpen")</span></a>
+                                </li>
                                    
-                                    <li><a asp-controller="OrderEmployees" asp-action="Index"  asp-route-status="New"> <i class="fa fa-inbox ">
-                                    
-                                    </i> Непрочитанные <span class="label label-warning pull-right"> Не прочитанны: @await Component.InvokeAsync("OrderEmployeeVM")</span> </a></li>
+                                <li><a asp-controller="OrderEmployees" asp-action="Index"  asp-route-status="New"> <i class="fa fa-envelope">                                    
+                                </i>Непрочитанные <span class="label label-warning pull-right">@await Component.InvokeAsync("OrderEmployeeVM")</span></a>
+                                </li>
 
-                                    
-                                    <li><a asp-controller="OrderEmployees" asp-action="Index" asp-route-status="Open"> <i class="fa fa-inbox ">
-
-                                    </i> Прочитанные <span class="label label-success pull-right"> Не прочитанны: @await Component.InvokeAsync("OrderEmployeeVMOpen")</span> </a></li>
+                                
+                                <li><a asp-controller="OrderEmployees" asp-action="Index" asp-route-status="Open"> <i class="fa fa-envelope-open">
+                                </i> Прочитанные <span class="label label-success pull-right">@await Component.InvokeAsync("OrderEmployeeVMOpen")</span> 
+                                </a></li>
 
 
                                    
@@ -113,8 +120,8 @@
                         data-id="@item.Id" onclick="GetMessageId(this)">Отправитель неизвестен</a>
                         }else{
                         
-                            <a asp-controller="OrderEmployees" 
-                        asp-action="ListOrderMsg" 
+                        <a asp-controller="OrderEmployees" 
+                        asp-action="ListOrderMsg" id="employeeIdOrder"
                         asp-route-id="@item.Id">@item.SendFromName (@item.OrderCount)</a>
                         }
 
@@ -134,34 +141,12 @@
 
     if (item.StatusVM == "Open")
     {
-                <!-- <table class="table table-hover table-mail">
-                <tbody>
-                <tr class="unread">
-                    <td class="check-mail">
-                        <input type="checkbox" class="i-checks">
-                    </td>
-                    <td class="mail-ontact">
-                        <a asp-controller="OrderEmployees" 
-                        asp-action="Details" 
-                        asp-route-id="@item.Id"
-                        data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.SendFromName)</a>
-                        <span class="label label-success pull-right" id="statusMsg">Open</span></td>
-                    <td class="mail-subject"><a asp-controller="OrderEmployees" 
-                    asp-action="Details" 
-                    asp-route-id="@item.Id"
-                    data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.AssetVM.Name)</a></td>
-                    <td class=""><i class="fa fa-paperclip"></i></td>
-                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
-                </tr>
-                </tbody>
-                </table> -->
-
-
+               
                 <table class="table table-hover table-mail">
                 <tbody>
                 <tr class="unread">
                     <td class="check-mail">
-                        <input type="checkbox" class="i-checks">
+                        <input type="checkbox" class="i-checks" id="newInprogresCheck" value="@item.Id" onchange="OnChangeCheckBoxFuncOrderOpen(this)">
                     </td>
                     <td class="mail-ontact">
 
@@ -173,8 +158,8 @@
                         data-id="@item.Id" onclick="GetMessageId(this)">Отправитель неизвестен</a>
                         }else{
                         
-                            <a asp-controller="OrderEmployees" 
-                        asp-action="ListOrderMsg" 
+                        <a asp-controller="OrderEmployees" 
+                        asp-action="ListOrderMsgOpen" 
                         asp-route-id="@item.Id">@item.SendFromName (@item.OrderCount)</a>
                         }
 
@@ -188,15 +173,21 @@
                     <td class=""></td>
                     <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
                 </tr>
+                
                 </tbody>
                 </table>
+
+                <div style="margin: 20px 10px 15px 17px">
+                    <button type="submit" onclick="GetOrderEmployeeAdminOpen()" class="btn btn-danger">Отправить</button>
+                </div>
     }
 }
 
- </div>
-            </div>
 </div>
 </div>
+</div>
+</div>
+
 
 
 <!-- <strong>В процессе</strong><br /><hr /> -->
@@ -304,24 +295,46 @@
 
 
 <script>
-    //document.addEventListener("DOMContentLoaded", function() {
-    //    var colorIdDiv2 = document.getElementById(`imageGalleryOpen-${idMessage}`);
-    //    if (colorIdDiv2) {
-    //        colorIdDiv2.className = 'panel-body collapse in';
-    //        console.log(colorIdDiv2);
-    //    }
-    //})
     
+    //window.onload = function() {
+//
+    //};
+
+     checkedCheckBoxOrderOpen = [];
+        //checkedCheckBoxOrderOpen = document.getElementById("employeeIdOrder");
+        
+        function OnChangeCheckBoxFuncOrderOpen(e) {
+            var orderId = e.value;
+            if (checkedCheckBoxOrderOpen.indexOf(orderId) > -1) {
+                var elementIndex = checkedCheckBoxOrderOpen.indexOf(orderId);
+                checkedCheckBoxOrderOpen.splice(elementIndex, 1);
+            } else {
+                checkedCheckBoxOrderOpen.push(orderId);
+            }
+        }
+
+        //console.log(checkedCheckBoxOrderOpen);
+        //debugger;
+        
+        function GetOrderEmployeeAdminOpen() {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("OrderSendAdminOrder", "OrderEmployeeAdmins")',
+                    data: {
+                        checkedCheckBoxOrderOpen: checkedCheckBoxOrderOpen
+                    },
+                    success: function (data) {
+                        console.log('success!');
+                    }
+                });
+            }
+
     
     var idMessage;
     var idMessageOpen;
     function GetMessageId(event) {
         idMessage = event.getAttribute('data-id');
-        
-        // var colorIdDiv = document.getElementById(`imageGalleryNew-${idMessage}`); 
-        // colorIdDiv.id = `imageGalleryOpen-${idMessage}`; 
-        // colorIdDiv.className = 'panel-body collapse in';
-
+       
         $.ajax({
             type: 'POST',
             url: '@Url.Action("OrderStatus", "OrderEmployees")',

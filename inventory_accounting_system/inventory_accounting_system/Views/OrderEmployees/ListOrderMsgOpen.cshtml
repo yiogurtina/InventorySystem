@@ -58,7 +58,7 @@
                     </div>
                 </form>
                 <h2>
-                    Непрочитанные ( @await Component.InvokeAsync("OrderEmployeeVM"))
+                    Непрочитанные ( @await Component.InvokeAsync("OrderEmployeeVMOpen"))
                 </h2>
                 <div class="mail-tools tooltip-demo m-t-md">
                     <div class="btn-group pull-right">
@@ -77,13 +77,13 @@
 
 @foreach (var item in Model)
 {
-    if (item.Status == "New")
+    if (item.Status == "Open")
     {
                 <table class="table table-hover table-mail">
                 <tbody>
                 <tr class="unread">
                     <td class="check-mail">
-                        <input type="checkbox" id="newInprogresCheck"class="i-checks" value="@item.Id" onchange="OnChangeCheckBoxFuncOrderNew(this)">
+                        <input type="checkbox" id="inprogresCheck"class="i-checks" value="@item.Id" onchange="OnChangeCheckBoxFuncOrderOpen(this)">
                     </td>
                     <td class="mail-ontact">
 
@@ -102,10 +102,8 @@
                         }
 
                         
-                        <span class="label label-primary pull-right" id="statusMsg">New</span></td>
-                        
+                        <span class="label label-success pull-right" id="statusMsg">Open</span></td>
                     <td class="mail-subject"><div style="float: right;"><img style="width: 50px; height: 40px;" class="img-container" src="../@item.Asset.ImagePath" /></div>
-                        
                         <a asp-controller="OrderEmployees" 
                     asp-action="Details" 
                     asp-route-id="@item.Id"
@@ -118,7 +116,6 @@
                 </tbody>
                 </table>
     }
-
 }
 
  </div>
@@ -170,6 +167,6 @@
                     }
                 });
             }
-
+        
 </script>
         
