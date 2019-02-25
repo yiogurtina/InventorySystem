@@ -22,6 +22,8 @@ namespace inventory_accounting_system.Data
         public DbSet<OrderEmployee> OrderEmployees { get; set; }
         public DbSet<OrderEmployeeAdmin> OrderEmployeeAdmins { get; set; }
         public DbSet<InventoryNumberHistory> InventoryNumberHistories { get; set; }
+        public DbSet<Document> Documents { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

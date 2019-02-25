@@ -45,7 +45,7 @@ namespace inventory_accounting_system.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20);
+                        .HasMaxLength(100);
 
                     b.Property<string>("OfficeId");
 
@@ -146,6 +146,24 @@ namespace inventory_accounting_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Document", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssetId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Path");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>
@@ -590,6 +608,13 @@ namespace inventory_accounting_system.Migrations
                         .WithMany("assetsMoveStoriesTo")
                         .HasForeignKey("OfficeToId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("inventory_accounting_system.Models.Document", b =>
+                {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany("Documents")
+                        .HasForeignKey("AssetId");
                 });
 
             modelBuilder.Entity("inventory_accounting_system.Models.Employee", b =>

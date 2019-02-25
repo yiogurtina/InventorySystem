@@ -69,7 +69,7 @@ namespace inventory_accounting_system.Controllers {
                 var result = await _signInManager.PasswordSignInAsync (model.Login, model.Password, model.RememberMe, lockoutOnFailure : false);
                 if (result.Succeeded) {
                     _logger.LogInformation ("User logged in.");
-                    return RedirectToLocal (returnUrl);
+                    return RedirectToAction ("Index", "Offices");
                 }
                 if (result.RequiresTwoFactor) {
                     return RedirectToAction (nameof (LoginWith2fa), new { returnUrl, model.RememberMe });
@@ -242,20 +242,64 @@ namespace inventory_accounting_system.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register (RegisterViewModel model, string role, string email) {
 
+            var office = _context.Offices.Include (o => o.Employees).FirstOrDefault (o => o.Id == model.OfficeId);
+            var curUserId = _userManager.GetUserId (User);
+            var officeEmployees = office.Employees;
+            List<Employee> managers = new List<Employee> ();
+
+            if (officeEmployees.Count () == 0 && role == "Manager") {
+                EmailService emailService = new EmailService ();
+
+                var userManager = _context.Users.FirstOrDefault (u => u.Email == email);
+                if (userManager != null) {
+                    ModelState.AddModelError ("Email", "Это email уже занят");
+                }
+
+                if (ModelState.IsValid) {
+                    var user = new Employee {
+                        UserName = model.Login,
+                        Login = model.Login,
+                        Email = model.Email,
+                        OfficeId = model.OfficeId,
+                        Name = model.Name,
+                        Surname = model.Surname
+
+                    };
+                    var result = await _userManager.CreateAsync (user, model.Password = GenerateRandomPassword ());
+                    string sendEmail = "Уважаемый(ая) " + model.Name + " " + model.Surname + "<br/>" +
+                        "<br/>Ваш логин: " + "<h4>" + user.Login + "</h4>" +
+                        "Ваш пароль: " + "<h4>" + model.Password + "</h4>" +
+                        "<br/>С Уважением Администрация.";
+
+                    if (result.Succeeded) {
+
+                        if (role == null) {
+                            role = "Manager";
+                        }
+
+                        _logger.LogInformation ("You created a new User");
+
+                        await _userManager.AddToRoleAsync (user, role.ToUpper ());
+
+                        await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
+
+                        return RedirectToAction ("Index", "Offices");
+                    }
+                    AddErrors (result);
+                }
+            }
+
             if (role == "Manager") {
-                var office = _context.Offices.Include (o => o.Employees).FirstOrDefault (o => o.Id == model.OfficeId);
-                var curUserId = _userManager.GetUserId (User);
-                var officeEmployees = office.Employees;
-                List<Employee> managers = new List<Employee> ();
+
                 foreach (var emp in officeEmployees) {
                     if (await _userManager.IsInRoleAsync (emp, "Manager") && emp.Id != curUserId) {
                         managers.Add (emp);
 
                     } else {
+
                         EmailService emailService = new EmailService ();
 
                         var userManager = _context.Users.FirstOrDefault (u => u.Email == email);
-
                         if (userManager != null) {
                             ModelState.AddModelError ("Email", "Это email уже занят");
                         }
@@ -291,7 +335,7 @@ namespace inventory_accounting_system.Controllers {
 
                                 await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
 
-                                return RedirectToAction ("Index", "Home");
+                                return RedirectToAction ("Index", "Offices");
                             }
                             AddErrors (result);
                         }
@@ -342,7 +386,7 @@ namespace inventory_accounting_system.Controllers {
 
                         await emailService.SendEmailAsync (model.Email, "Ваши данные для входа в систему", sendEmail);
 
-                        return RedirectToAction ("Index", "Home");
+                        return RedirectToAction ("Index", "Offices");
                     }
                     AddErrors (result);
                 }
@@ -361,7 +405,7 @@ namespace inventory_accounting_system.Controllers {
         public async Task<IActionResult> Logout () {
             await _signInManager.SignOutAsync ();
             _logger.LogInformation ("User logged out.");
-            return RedirectToAction (nameof (HomeController.Index), "Home");
+            return RedirectToAction (nameof (AccountController.Login), "Account");
         }
 
         [HttpPost]

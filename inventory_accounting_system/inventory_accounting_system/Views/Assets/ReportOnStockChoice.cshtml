@@ -1,0 +1,330 @@
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+
+        
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Отчёты</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="~/Assets">Имущество</a>
+            </li>           
+            <li class="active">
+                <strong>Отчёты</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        
+         @if (User.IsInRole("Admin"))
+{
+    @*Modal Window ReportTransfer*@
+
+   <form method="post" asp-action="ReportOnStockResult">
+        <div class="text-center">
+            <button type="button" class="btn btn-social btn-rounded btn-block p-sm fa fa-print" 
+            data-toggle="modal" data-target="#myModalStockResult" style="margin: 15px 0 0 0; font-size: 16pt;">
+                Отчёт о перемещению актива
+            </button>
+
+            <!-- <a class="btn btn-social btn-rounded btn-block p-sm fa fa-print" href="#"><i class="fa fa-info-circle"></i> Block rounded with icon button</a> -->
+        </div>
+        <div class="modal inmodal" id="myModalStockResult" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Отчёт о перемещению актива</h4>
+                        <small class="font-bold">Введите дату:</small>
+                    </div>
+                    <div class="modal-body">
+                        
+                             <div class="form-group" id="dateActionFrom">                
+                                    <label class="control-label">от :</label>
+                                    <input 
+                                    id="dateActionFromAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    name="datefrom"
+                                    />
+                                </div>
+
+                                <div class="form-group" id="dateActionTo">
+                                    <label class="control-label">до: </label>
+                                    <input 
+                                    id="dateActionToAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    name="dateto"
+                                    />
+                                </div>
+                           
+                       
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                             <input type="submit" class="btn btn-w-m btn-social" value="Отправить">
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+</form>
+
+
+    @*Modal Window ReportOnStock*@
+
+    <form method="post" asp-action="ReportOnStockNew">
+        <div class="text-center">
+            <button type="button" class="btn btn-social btn-rounded btn-block p-sm fa fa-print"  data-toggle="modal" data-target="#myModalStockNew" style="margin: 15px 0 0 0; font-size: 16pt;">
+                Отчёт о активах которые находяться на складе
+            </button>
+        </div>
+        <div class="modal inmodal" id="myModalStockNew" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Отчёт о активах которые находяться на складе</h4>
+                        <small class="font-bold">Введите дату:</small>
+                    </div>
+                    <div class="modal-body">
+                        
+                             <div class="form-group" id="dateActionFrom">                
+                                    <label class="control-label">от :</label>
+                                    <input 
+                                    id="dateActionFromAsset" 
+                                    type="date" 
+                                    class="form-control"
+                                    name="datefrom"
+                                    />
+                                </div>
+                           
+                       
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                             <input type="submit" class="btn btn-w-m btn-social" value="Отправить">
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+</form>
+
+
+    @*Modal Window ReportOnStockAdd*@
+
+    <form method="post" asp-action="ReportOnStockAdd">
+        <div class="text-center">
+            <button type="button" class="btn btn-social btn-rounded btn-block p-sm fa fa-print" data-toggle="modal" data-target="#myModalStockAdd" style="margin: 15px 0 0 0; font-size: 16pt;">
+                Отчёт о преобретённых активах
+            </button>
+        </div>
+        <div class="modal inmodal" id="myModalStockAdd" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Отчёт о преобретённых активах</h4>
+                        <small class="font-bold">Введите даты:</small>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="form-group" id="dateActionFrom">                
+                                    <label class="control-label">от :</label>
+                                    <input 
+                                    id="dateActionFromAsset" 
+                                    type="date" 
+                                    class="form-control"
+                                    name="datefrom"
+                                    />
+                                </div>
+
+                                <div class="form-group" id="dateActionTo">
+                                    <label class="control-label">до: </label>
+                                    <input 
+                                    id="dateActionToAsset" 
+                                    type="date" 
+                                    class="form-control" 
+                                    name="dateto"
+                                    />
+                                </div>
+                           
+                       
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                             <input type="submit" class="btn btn-w-m btn-social" value="Отправить">
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+</form>
+
+    
+
+    @*Modal Window ReportOnStockShortFile*@
+
+    
+    <form method="post" asp-action="ReportOnStockShortFile">
+        <div class="text-center">
+            <button type="button" class="btn btn-social btn-rounded btn-block p-sm fa fa-print" data-toggle="modal" data-target="#myModalShortFile" style="margin: 15px 0 0 0; font-size: 16pt;">
+                Отчёт о списанию актива
+            </button>
+        </div>
+        <div class="modal inmodal" id="myModalShortFile" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Отчёт о списанию актива</h4>
+                        <small class="font-bold">Введите даты:</small>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="form-group" id="dateActionFrom">
+                                <label class="control-label">от :</label>
+                                <input id="dateActionFromAsset" type="date" class="form-control"
+                                   name="datefrom" />
+                            </div>
+
+                            <div class="form-group" id="dateActionTo">
+                                <label class="control-label">до: </label>
+                                <input id="dateActionToAsset" type="date" class="form-control"
+                                   name="dateto" />
+                            </div>
+                           
+                       
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                             <input type="submit" class="btn btn-w-m btn-social" value="Отправить">
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+</form>
+
+
+    @*Modal Window ReportOnStockCategoryReport*@
+
+    <form method="post" asp-action="CategoryList">
+        <div class="text-center">
+            <button type="button" class="btn btn-social btn-rounded btn-block p-sm fa fa-print" data-toggle="modal" data-target="#myModalCategory" style="margin: 15px 0 0 0; font-size: 16pt;">
+                Отчёт по категориям
+            </button>
+        </div>
+        <div class="modal inmodal" id="myModalCategory" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Отчёт по категориям</h4>
+                        <small class="font-bold">Введите дату:</small>
+                    </div>
+                    <div class="modal-body">
+                        
+                              <div class="form-group">
+                                <label class="control-label">Категория</label>
+                                <select class="form-control" 
+                                id="categoryListViewBag" 
+                                onchange="OnChangeCategoryList(this)" 
+                                name="categoryId" 
+                                asp-items="ViewBag.CategoryList"></select>
+                            </div>
+                           
+                       
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                             <input type="submit" class="btn btn-w-m btn-social" value="Отправить">
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+</form>
+
+ @*Modal Window ReportOnStockListOfAssetsByOfficeOnDate*@
+
+    <form method="post" asp-action="ListOfAssetsByOffice">
+        <div class="text-center">
+            <button type="button" class="btn btn-social btn-rounded btn-block p-sm fa fa-print" data-toggle="modal" data-target="#myModalByOffice" style="margin: 15px 0 0 0; font-size: 16pt;">
+                Отчёт по офисам на определённую дату
+            </button>
+        </div>
+        <div class="modal inmodal" id="myModalByOffice" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span
+                                aria-hidden="true">&times;</span><span class="sr-only">Закрыть</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Отчёт по офисам на определённую дату</h4>
+                        <small class="font-bold">Введите дату:</small>
+                    </div>
+                    <div class="modal-body">
+                        
+                                   <div class="form-group">
+                                <label class="control-label">Офисы</label>
+                                <select class="form-control" 
+                                id="categoryListViewBag" 
+                                name="officeId" 
+                                asp-items="ViewBag.OfficeList"></select>
+                            </div>
+
+                             <div class="form-group" id="dateActionFrom">                
+                                <label class="control-label">от :</label>
+                                <input 
+                                id="dateActionFromAsset" 
+                                type="date" 
+                                class="form-control" 
+                                name="date"
+                                />
+                            </div>
+                           
+                       
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                             <input type="submit" class="btn btn-w-m btn-social" value="Отправить">
+                        </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+</form>
+
+}
+        
+    </div>
+</div>
+
+
+

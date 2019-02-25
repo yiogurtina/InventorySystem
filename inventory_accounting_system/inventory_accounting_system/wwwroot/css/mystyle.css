@@ -1,0 +1,29 @@
+.tablemy {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  border-collapse: collapse;
+  color: #222b3f;
+}
+.caption {
+  padding: 10px;
+  color: rgb(255, 255, 255);
+  background: #2c4267;
+  font-size: 15px;
+  text-align: left;
+  font-weight: lighter;
+}
+.thmy {
+  border-bottom: 3px solid #B9B29F;
+  padding: 10px;
+  text-align: left;
+}
+.tdmy {
+  padding: 10px;
+  border-bottom: 1px solid rgb(170, 185, 197);
+  font-size: 16pt;
+}
+.trmy:nth-child(odd) {
+  background: #2c4267;
+}
+.trmy:nth-child(even) {
+  background: rgb(226, 214, 212);
+}

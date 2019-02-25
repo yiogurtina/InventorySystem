@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<inventory_accounting_system.Models.OrderEmployee>
+@using inventory_accounting_system.ViewModel
+@model EmployeeOrderViewModel
 
 @inject SignInManager<Employee> SignInManager
 @inject UserManager<Employee> UserManager
@@ -8,91 +9,221 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
 
-@foreach (var item in Model)
-{
-    if (item.Status == "New")
-    {
-        <div class="panel panel-default" data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">
-            <div class="panel-heading">
-                <a class="btn btn-success" data-toggle="collapse" id="clickNew" href="#imageGalleryNew-@item.Id" style="width: 100%">
-                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
-                    </h4>
-                </a>
+<div class="row wrapper border-bottom white-bg page-heading" style="margin-bottom: 15px;">
+            <div class="col-lg-10">
+                <h2>Заявки</h2>
+                <ol class="breadcrumb" style="margin-bottom: 10px;">
+                    <li>
+                        <a href="~/Offices">Главная</a>
+                    </li>
+                    <li class="active">
+                        <strong>Заявки</strong>                        
+                    </li>
+                </ol>
             </div>
-            <div class="panel-body collapse" data-id="openId" id="imageGalleryNew-@item.Id">
-                <strong style="color: dimgrey">Название запрошенного актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.Name)</h5><br />
-                <strong style="color: dimgrey">Номер инвентарного номера актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.InventNumber)</h5><br />
-                <div style="width: 100%">
-                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
-                </div> <br /><hr />
-                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
+            <div class="col-lg-2"> </div>
+        </div>
+        <hr/>
+
+<div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content mailbox-content">
+                        <div class="file-manager">
+                            
+                            <div class="space-25"></div>
+                            <h5>Почта</h5>
+                                <ul class="folder-list m-b-md" style="padding: 0">
+
+                                   
+                                    <li><a asp-controller="OrderEmployees" asp-action="Index"  asp-route-status="New"> <i class="fa fa-inbox ">
+                                    
+                                    </i> Непрочитанные <span class="label label-warning pull-right"> Не прочитанны: @await Component.InvokeAsync("OrderEmployeeVM")</span> </a></li>
+
+                                    
+                                    <li><a asp-controller="OrderEmployees" asp-action="Index" asp-route-status="Open"> <i class="fa fa-inbox ">
+
+                                    </i> Прочитанные <span class="label label-success pull-right"> Не прочитанны: @await Component.InvokeAsync("OrderEmployeeVMOpen")</span> </a></li>
+
+
+                                   
+                                   
+                                </ul>
+                         
+                          
+                        <div class="clearfix"></div>
+                         
+                    </div>
+                </div>
             </div>
         </div>
+
+        
+
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+
+                <form method="get" action="index.html" class="pull-right mail-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-sm" name="search" placeholder="Search email">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <h2>
+                    Непрочитанные ( <span style="color: #f8ac59">@await Component.InvokeAsync("OrderEmployeeVM")</span> / <span style="color: #1c84c6">@await Component.InvokeAsync("OrderEmployeeVMOpen")</span>)
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+
+                    </div>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" href="~/OrderEmployees/ListOrderMsg?id=@ViewBag.UserNameOrderF" title="Refresh inbox"><i class="fa fa-refresh"></i> Обновить</button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as important"><i class="fa fa-exclamation"></i> </button>
+                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
+
+                </div>
+            </div>
+                <div class="mail-box">
+
+@foreach (var item in Model.SotringEmployeeOrderViewModel)
+{
+    if (item.StatusVM == "New")
+    {
+                <table class="table table-hover table-mail">
+                <tbody>
+                <tr class="unread">
+                    <td class="check-mail">
+                        <input type="checkbox" class="i-checks">
+                    </td>
+                    <td class="mail-ontact">
+
+                    @if (@item.Id == null)
+                        {
+                            <a asp-controller="OrderEmployees" 
+                        asp-action="Details" 
+                        asp-route-id="@item.Id"
+                        data-id="@item.Id" onclick="GetMessageId(this)">Отправитель неизвестен</a>
+                        }else{
+                        
+                            <a asp-controller="OrderEmployees" 
+                        asp-action="ListOrderMsg" 
+                        asp-route-id="@item.Id">@item.SendFromName (@item.OrderCount)</a>
+                        }
+
+
+                        
+                        <span class="label label-primary pull-right" id="statusMsg">New</span></td>
+                    <td class="mail-subject"><a asp-controller="OrderEmployees" 
+                    asp-action="Details" 
+                    asp-route-id="@item.Id"
+                    data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.AssetVM.Name)</a></td>
+                    <td class=""></td>
+                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
+                </tr>
+                </tbody>
+                </table>
+    }
+
+    if (item.StatusVM == "Open")
+    {
+                <!-- <table class="table table-hover table-mail">
+                <tbody>
+                <tr class="unread">
+                    <td class="check-mail">
+                        <input type="checkbox" class="i-checks">
+                    </td>
+                    <td class="mail-ontact">
+                        <a asp-controller="OrderEmployees" 
+                        asp-action="Details" 
+                        asp-route-id="@item.Id"
+                        data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.SendFromName)</a>
+                        <span class="label label-success pull-right" id="statusMsg">Open</span></td>
+                    <td class="mail-subject"><a asp-controller="OrderEmployees" 
+                    asp-action="Details" 
+                    asp-route-id="@item.Id"
+                    data-id="@item.Id" id="getUpdate">@Html.DisplayFor(modelItem => item.AssetVM.Name)</a></td>
+                    <td class=""><i class="fa fa-paperclip"></i></td>
+                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
+                </tr>
+                </tbody>
+                </table> -->
+
+
+                <table class="table table-hover table-mail">
+                <tbody>
+                <tr class="unread">
+                    <td class="check-mail">
+                        <input type="checkbox" class="i-checks">
+                    </td>
+                    <td class="mail-ontact">
+
+                    @if (@item.Id == null)
+                        {
+                            <a asp-controller="OrderEmployees" 
+                        asp-action="Details" 
+                        asp-route-id="@item.Id"
+                        data-id="@item.Id" onclick="GetMessageId(this)">Отправитель неизвестен</a>
+                        }else{
+                        
+                            <a asp-controller="OrderEmployees" 
+                        asp-action="ListOrderMsg" 
+                        asp-route-id="@item.Id">@item.SendFromName (@item.OrderCount)</a>
+                        }
+
+
+                        
+                        <span class="label label-success pull-right" id="statusMsg">New</span></td>
+                    <td class="mail-subject"><a asp-controller="OrderEmployees" 
+                    asp-action="Details" 
+                    asp-route-id="@item.Id"
+                    data-id="@item.Id" id="getUpdate" onclick="GetMessageId(this)">@Html.DisplayFor(modelItem => item.AssetVM.Name)</a></td>
+                    <td class=""></td>
+                    <td class="text-right mail-date">@Html.DisplayFor(modelItem => item.DateFromVM)</td>
+                </tr>
+                </tbody>
+                </table>
     }
 }
 
-@* <strong>Прочитанные</strong><br /><hr /> *@
-
-
-
-
-@foreach (var item in Model)
-{
-    if (item.Status == "Open")
-    {
-        <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdOpen(this)">
-            <div class="panel-heading">
-                <a class="btn btn-info" data-toggle="collapse" id="clickIdOpen" href="#imageGalleryOpen-@item.Id" style="width: 100%">
-                    <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name)
-                    </h4>
-                </a>
+ </div>
             </div>
-            <div class="panel-body collapse in" data-name="clasS"  id="imageGalleryOpen-@item.Id">
-                <strong style="color: dimgrey">Название запрошенного актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.Name)</h5><br />
-                <strong style="color: dimgrey">Номер инвентарного номера актива:</strong><h5> @Html.DisplayFor(modelItem => item.Asset.InventNumber)</h5><br />
-                <div style="width: 100%">
-                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
-                </div> <br /><hr />
-                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
-                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
+</div>
+</div>
 
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
 
-            </div>
-        </div>
-    }
-}
+<!-- <strong>В процессе</strong><br /><hr /> -->
 
-<strong>В процессе</strong><br /><hr />
-
-@foreach (var item in Model)
+@foreach (var item in Model.SotringEmployeeOrderViewModel)
 {
-    if (item.Status == "Inprogress")
+    if (item.StatusVM == "Inprogress")
     {
         <div class="panel panel-default" data-id="@item.Id" onclick="GetMessageIdInprogress(this)">
             <div class="panel-heading">
-                <a class="btn btn-danger" data-toggle="collapse" id="clickIdInInprogress" href="#imageGallery-@item.Id" style="width: 100%">
+                <a class="btn" style="background-color: #c55058; color: white; width: 100%" data-toggle="collapse" id="clickIdInInprogress" href="#imageGallery-@item.Id">
 
                     <h4 style="color: white; text-align: left; width: auto; z-index: 3">
-                        От: @Html.DisplayFor(modelItem => item.EmployeeTo.Name) -
-                        <strong> @Html.DisplayFor(modelItem => item.Title)</strong>
+                        От: @Html.DisplayFor(modelItem => item.SendFromName) -
+                        <strong> @Html.DisplayFor(modelItem => item.TitleSort)</strong>
                     </h4>
                 </a>
             </div>
             <div class="panel-body collapse" id="imageGallery-@item.Id">
-                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.Title)</h5><br />
+                <strong style="color: dimgrey">Заголовок:</strong><h5> @Html.DisplayFor(modelItem => item.TitleSort)</h5><br />
                 <div style="width: 100%">
-                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.Content)</h4>
+                    <strong style="color: dimgrey">Содержимое</strong> <h4>@Html.DisplayFor(modelItem => item.ContentVM)</h4>
                 </div> <br /><hr />
-                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFrom) </p>
-                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateTo) </p>
+                <p style="color: dimgrey">Дата отправки: @Html.DisplayFor(modelItem => item.DateFromVM) </p>
+                <p style="color: dimgrey">Отправленно администратору: @Html.DisplayFor(modelItem => item.DateToVM) </p>
 
-                <a class="btn btn-primary" onclick="showModalSendOrderAdmin()">Переслать</a>
+                <a class="btn" style="background-color: #2c4267; color: white" onclick="showModalSendOrderAdmin()">Переслать</a>
 
             </div>
         </div>
@@ -163,7 +294,7 @@
 
                 <div class="modal-footer">
                     <div>
-                        <button id="CreateMethod" type="submit" onclick="GetOrderEmployeeAdmin()" class="btn btn-primary">Ok</button>
+                        <button id="CreateMethod" type="submit" onclick="GetOrderEmployeeAdmin()" class="btn" style="background-color: #2c4267; color: white">Ok</button>
                     </div>
                 </div>
             </form>
@@ -172,17 +303,14 @@
 </div>
 
 
-
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        console.log("asdasdasdasdasdasdsadasdsads")
-        var colorIdDiv2 = document.getElementById(`imageGalleryOpen-${idMessage}`);
-        if (colorIdDiv2) {
-            colorIdDiv2.className = 'panel-body collapse in';
-            console.log(colorIdDiv2);
-        }
-    })
+    //document.addEventListener("DOMContentLoaded", function() {
+    //    var colorIdDiv2 = document.getElementById(`imageGalleryOpen-${idMessage}`);
+    //    if (colorIdDiv2) {
+    //        colorIdDiv2.className = 'panel-body collapse in';
+    //        console.log(colorIdDiv2);
+    //    }
+    //})
     
     
     var idMessage;
@@ -190,9 +318,9 @@
     function GetMessageId(event) {
         idMessage = event.getAttribute('data-id');
         
-        var colorIdDiv = document.getElementById(`imageGalleryNew-${idMessage}`);
-        colorIdDiv.id = `imageGalleryOpen-${idMessage}`;
-        colorIdDiv.className = 'panel-body collapse in';
+        // var colorIdDiv = document.getElementById(`imageGalleryNew-${idMessage}`); 
+        // colorIdDiv.id = `imageGalleryOpen-${idMessage}`; 
+        // colorIdDiv.className = 'panel-body collapse in';
 
         $.ajax({
             type: 'POST',
@@ -201,16 +329,6 @@
                 idMessage: idMessage
             },
             success: function (data) {
-                console.log(document.getElementById(`imageGalleryOpen-${idMessage}`));
-                window.location.reload();
-//                var colorIdDiv2 = document.getElementById(`imageGalleryOpen-${idMessage}`);
-//                colorIdDiv2.className = 'panel-body collapse in';
-//                console.log(colorIdDiv2);
-//                console.log(idMessage);
-                console.log("sdfkajdfksadfjbsfdkbsad");
-                debugger;
-
-//                GetMessageStatus(idMessage);
             }
         });
     }

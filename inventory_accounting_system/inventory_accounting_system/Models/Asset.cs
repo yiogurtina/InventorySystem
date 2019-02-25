@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Http;
 namespace inventory_accounting_system.Models {
     public class Asset : Entity {
         [Required (ErrorMessage = "Название актива не должно быть пустым")]
-        [StringLength (20, MinimumLength = 3, ErrorMessage = "Название актива не должно быть короче 3 символов и длиннее 20")]
-        [RegularExpression ("^[а-яА-Яa-zA-Z0-9 -]*$", ErrorMessage = "Можно использовать только буквы и цифры")]
+        [StringLength (100, MinimumLength = 3, ErrorMessage = "Название актива не должно быть короче 3 символов и длиннее 40")]
+        [RegularExpression ("^[а-яА-Яa-zA-Z0-9 -.,/]*$", ErrorMessage = "Можно использовать только буквы и цифры")]
         [Display (Name = "Название")]
         public string Name { get; set; }
 
@@ -58,6 +58,7 @@ namespace inventory_accounting_system.Models {
         public double Price { get; set; }
 
         public IEnumerable<AssetsMoveStory> AssetsMoveStories { get; set; }
+        public IEnumerable<Document> Documents { get; set; }
 
         public bool InStock { get; set; }
 

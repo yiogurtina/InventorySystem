@@ -1,20 +1,37 @@
-﻿@model inventory_accounting_system.Models.Asset
+﻿@using Microsoft.AspNetCore.Identity
+@using inventory_accounting_system.ViewModel
+
+@model EditAssetViewModel
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string serialNum = Model.SerialNum;
 }
 
-<h2>Edit</h2>
 
-<h4>Asset</h4>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Редактирование</h2>
+        <ol class="breadcrumb">           
+            <li>
+                <a href="~/Assets/Details?id=@Model.Id">Информация о имуществе</a>
+            </li>
+            <li class="active">
+                <strong>Редактирование</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" style="margin-left: 33%; background-color: #F3F3F3">
         <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Имя</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
@@ -48,24 +65,20 @@
                 <input type="file" asp-for="Image" class="form-control" />
             </div>
             <input type="hidden" asp-for="Id" />
-            <input type="hidden" name="currentPath" value="@Model.ImagePath" />
+            <input type="hidden" asp-for="OfficeId" value="@Model.OfficeId" />
+            <input type="hidden" asp-for="EmployeeId" value="@Model.EmployeeId" />
+            <input type="hidden" name="ImagePath" value="@Model.ImagePath" />
+
             <div class="form-group">
-                <label asp-for="Document" class="control-label"></label>
-                <input type="file" asp-for="Document" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Сохранить" class="btn btn-w-m btn-primary" />
             </div>
 
-            <input type="hidden" id="passingToJs" value=@serialNum>
+            <input type="hidden" asp-for="SerialNum" id="passingToJs" value="@Model.SerialNum">
+            <input type="hidden" asp-for="OldInventNumber" value="@Model.InventNumber">
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+<hr/>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>

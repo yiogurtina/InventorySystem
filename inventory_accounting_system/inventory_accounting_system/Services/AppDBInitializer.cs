@@ -38,12 +38,10 @@ namespace inventory_accounting_system.Services
                 }
 
                 Employee admin = await userManager.FindByNameAsync("admin");
-                var AdminId = Guid.NewGuid().ToString();
                 if (admin == null)
                 {
                     var user = new Employee
                     {
-                        Id= AdminId,
                         Name = "admin",
                         Surname = "admin",
                         UserName = "admin", 

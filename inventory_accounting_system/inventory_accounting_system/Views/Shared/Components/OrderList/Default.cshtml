@@ -1,0 +1,36 @@
+@model IEnumerable<inventory_accounting_system.Models.OrderEmployee>
+
+@foreach (var item in Model) {
+        
+       <a asp-controller="OrderEmployees" asp-action="Details" asp-route-id="@item.Id" data-id="@item.Id" onclick="GetMessageId(this)"> 
+        <div class="col" style="text-align: left;">
+            <div><img style="width: 60px; height: 50px; float: left;  margin-right: 20px;" class="img-container m-b-md" src="../@item.Asset.ImagePath" /></div>
+            @if (@item.EmployeeFromId == null)
+            {
+                <span>Oт: </span><strong>Отпровитель неизвестен </strong> <span> - @item.Office.Title</span><br>
+            }else{
+
+                <span>Oт: </span><strong>@item.EmployeeFrom.Name </strong> <span> - @item.Office.Title</span><br>
+            }
+            <!-- <span>@item.Content</span> <br> -->
+            <small class="text-muted">@item.DateFrom</small>  <hr>
+        </div>
+       </a>
+}
+
+<script>
+    var idMessage;
+    function GetMessageId(event) {
+        idMessage = event.getAttribute('data-id');
+    
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatus", "OrderEmployees")',
+            data: {
+                idMessage: idMessage
+            },
+            success: function (data) {
+            }
+        });
+    }
+</script>

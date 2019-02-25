@@ -1,0 +1,38 @@
+@using inventory_accounting_system.ViewModel
+@model EmployeeOrderViewModel
+
+@foreach (var item in Model.SotringEmployeeOrderViewModel) {
+        
+       <a asp-controller="OrderEmployees" asp-action="ListOrderMsg" asp-route-id="@item.Id"> 
+        <div class="col" style="text-align: left;">
+            <img alt="image" class="img-circle" src="~/img/User.jpg">
+            @if (@item.Id == null)
+            {
+                <span>Oт: </span><strong>Отпровитель неизвестен </strong> 
+                <!-- <span> - @item.OfficesVM</span><br> -->
+            }else{
+
+                <span>Oт: </span><strong>@item.SendFromName  (@item.OrderCount) </strong> 
+                <!-- <span> - @item.OfficesVM</span><br> -->
+            }
+            <!-- <small class="text-muted">@item.DateFromVM</small>  <hr> -->
+        </div>
+       </a>
+}
+
+<script>
+    var idMessage;
+    function GetMessageId(event) {
+        idMessage = event.getAttribute('data-id');
+    
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("OrderStatus", "OrderEmployees")',
+            data: {
+                idMessage: idMessage
+            },
+            success: function (data) {
+            }
+        });
+    }
+</script>

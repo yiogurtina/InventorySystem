@@ -7,6 +7,7 @@ using Castle.Core.Internal;
 using inventory_accounting_system.Data;
 using inventory_accounting_system.Models;
 using inventory_accounting_system.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,8 +29,15 @@ namespace inventory_accounting_system.Controllers {
 
         #region Index
 
+        [Authorize]
         public async Task<IActionResult> Index (string officeId) {
 
+            var mainStorage = _context.Offices.FirstOrDefault (o => o.Title == "Главный склад");
+            if (mainStorage != null) {
+                ViewData["OfficesIdMain"] = mainStorage.Id;
+            }
+
+            ViewData["OfficeSelect"] = officeId;
             var userId = _userManager.GetUserId (User);
             var officeIdEmployee = _context.Offices;
 
@@ -52,7 +60,7 @@ namespace inventory_accounting_system.Controllers {
                                     .FirstOrDefault (o => o.Id == userOfficeId);
                                 officeId = defaultOffice.Id;
                             }
-                            
+
                             List<Employee> employeesUser = new List<Employee> ();
                             var userFromOffUserId = _context.Users.Where (u => u.IsDelete == false);
                             foreach (var item in userFromOffUserId) {
@@ -94,8 +102,10 @@ namespace inventory_accounting_system.Controllers {
             #region Search office Manager
 
             var userName = _userManager.GetUserName (User);
+            var toUserID = _userManager.GetUserId (User);
 
             ViewData["UserId"] = userName;
+            ViewData["ToUserID"] = toUserID;
 
             List<string> managers = new List<string> ();
             var userFromOff = _context.Users.Where (u => u.IsDelete == false);
@@ -137,6 +147,7 @@ namespace inventory_accounting_system.Controllers {
                         if (userOfficeId == office.Id) {
 
                             ViewData["OfficeNameUser"] = usr.Name.ToString ();
+                            ViewData["OfficeNameUserId"] = usr.Id;
 
                             var officesManager = _context.Offices.ToList ();
 
@@ -264,7 +275,7 @@ namespace inventory_accounting_system.Controllers {
             if (id == null) {
                 return NotFound ();
             }
-
+            ViewData["OfficeSelect"] = id;
             var office = await _context.Offices.SingleOrDefaultAsync (m => m.Id == id);
             if (office == null) {
                 return NotFound ();
@@ -304,10 +315,11 @@ namespace inventory_accounting_system.Controllers {
 
         // GET: Offices/Delete/5
         public async Task<IActionResult> Delete (string id) {
+
             if (id == null) {
                 return NotFound ();
             }
-
+            ViewData["OfficeSelect"] = id;
             var office = await _context.Offices
                 .SingleOrDefaultAsync (m => m.Id == id);
             if (office == null) {
@@ -322,9 +334,18 @@ namespace inventory_accounting_system.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed (string id) {
             var office = await _context.Offices.SingleOrDefaultAsync (m => m.Id == id);
-            _context.Offices.Remove (office);
-            await _context.SaveChangesAsync ();
-            return RedirectToAction (nameof (Index));
+            var storage = await _context.Storages.SingleOrDefaultAsync (s => s.OfficeId == id);
+
+            if (storage != null) {
+                _context.RemoveRange (storage, office);
+                await _context.SaveChangesAsync ();
+                return RedirectToAction (nameof (Index));
+            } else {
+                _context.Offices.Remove (office);
+                await _context.SaveChangesAsync ();
+                return RedirectToAction (nameof (Index));
+            }
+
         }
 
         #endregion       
@@ -339,10 +360,9 @@ namespace inventory_accounting_system.Controllers {
 
         #region AddOfficeManager
 
-        public async Task<IActionResult> SetManagerOffice(string officeId)
-        {
-            var currOffice = await _context.Offices.FindAsync(officeId);
-            return View();
+        public async Task<IActionResult> SetManagerOffice (string officeId) {
+            var currOffice = await _context.Offices.FindAsync (officeId);
+            return View ();
         }
 
         #endregion
