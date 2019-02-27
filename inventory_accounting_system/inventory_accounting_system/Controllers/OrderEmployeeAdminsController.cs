@@ -118,43 +118,49 @@ namespace inventory_accounting_system.Controllers {
 
         #region OrderSendAdminOrder
         //[Authorize(Roles = "User, Admin")]
-        public async Task<ActionResult> OrderSendAdminOrder (string[] checkedCheckBoxOrderOpen) {
+        public ActionResult OrderSendAdminOrder(string[] checkedCheckBoxOrderOpen)
+        {
 
-            foreach (var item in checkedCheckBoxOrderOpen) {
+            foreach (var item in checkedCheckBoxOrderOpen)
+            {
 
-                var msgEmployee = _context.OrderEmployees.Where (a => a.EmployeeFromId == item);
-                foreach (var msg in msgEmployee) {
+                var msgEmployee = _context.OrderEmployees.Where(a => a.EmployeeFromId == item);
+                foreach (var msg in msgEmployee)
+                {
 
-                    OrderStatusInprogress (msg.Id);
+                    // OrderStatusInprogress(msg.Id);
 
-                    var orderSendAdmin = new OrderEmployeeAdmin { // To в : From из
+                    var orderSendAdmin = new OrderEmployeeAdmin
+                    { // To в : From из
                         AssetId = msg.AssetId,
                         ContentAdmin = "Заявка не преобретение имущества",
-                        DateToAdmin = msg.DateTo,
+                        DateToAdmin = DateTime.Now,
                         EmployeeFromAdminId = msg.EmployeeToId,
                         OfficeAdminId = msg.OfficeId,
                     };
-                    _context.Add (orderSendAdmin);
-                    await _context.SaveChangesAsync ();
-                    return RedirectToAction (nameof (Index));
+                    _context.Add(orderSendAdmin);
+                    _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
             }
 
-            return RedirectToAction (nameof (Index));
+            return RedirectToAction(nameof(Index));
         }
 
-        public async Task<ActionResult> OrderStatusInprogress (string idMessageOpen) {
-            var messageId = _context.OrderEmployees.SingleOrDefault (m => m.Id == idMessageOpen);
-            if (messageId != null && messageId.Status == "Open") {
+        public ActionResult OrderStatusInprogress(string idMessageOpen)
+        {
+            var messageId = _context.OrderEmployees.SingleOrDefault(m => m.Id == idMessageOpen);
+            if (messageId != null && messageId.Status == "Open")
+            {
 
                 messageId.Status = "Inprogress";
                 messageId.DateTo = DateTime.Now;
 
-                _context.Update (messageId);
-                await _context.SaveChangesAsync ();
+                _context.Update(messageId);
+                _context.SaveChanges();
             }
 
-            return RedirectToAction (nameof (Index));
+            return RedirectToAction(nameof(Index));
         }
 
         #endregion
