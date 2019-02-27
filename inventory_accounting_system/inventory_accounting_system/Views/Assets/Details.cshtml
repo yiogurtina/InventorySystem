@@ -27,43 +27,42 @@ var offMId = @ViewBag.OfficeIdGetMethodDetails;
 
 <hr />
 
-<div class="col-md-6" style="margin-right: 50px;">
-
-    <div class="profile-image" style="width: 300px;">
-        <img style="margin:5px; width: 250px; height: 250px" class="img-container m-b-md"
-            src="../@Model.Asset.ImagePath" />
+<div style="width: 100%">
+    <div style="margin: auto; width: 50%">
+        <h1 class="no-margins" style="font-size: 35pt; color: #1ab394">
+            @Html.DisplayFor(model => model.Asset.Name)
+        </h1>
     </div>
-
-
-    <div class="profile-info">
-        <div class="">
-            <div style="margin-top: 7px;">
-                <h1 class="no-margins" style="font-size: 35pt; color: #1ab394">
-                    @Html.DisplayFor(model => model.Asset.Name)
-                </h1>
-                <h2> I/N: @Html.DisplayFor(model => model.Asset.InventNumber)</h2>
-                <small>
-                    <h4> @Html.DisplayFor(model => model.Asset.Date) </h4>
-                    <h4> Категория: @Html.DisplayFor(model => model.Asset.Category.Name) </h4>
-                    <h4> Поставщик: @Html.DisplayFor(model => model.Asset.Supplier.Name) </h4>
-                    <h2>Цена: @Html.DisplayFor(model => model.Asset.Price) </h2>
-                </small>
-                <small>
-                    @if (Model.Asset.SerialNum != null)
-                    {
-                    <h3> S/N: @Html.DisplayFor(model => model.Asset.SerialNum)</h3>
-                    }
-                </small>
+    <div style="display: flex">
+        <div style="width: 25%;">
+            <div class="profile-image" style="width: 300px;">
+                <img style="margin:5px; width: 320px; height: 250px" class="img-container m-b-md" src="../@Model.Asset.ImagePath" />
             </div>
+        </div>
+        <div style="width: 30%;">
+            <h2> I/N: @Html.DisplayFor(model => model.Asset.InventNumber)</h2>
+            <small>
+                <h4> @Html.DisplayFor(model => model.Asset.Date) </h4>
+                <h4> Категория: @Html.DisplayFor(model => model.Asset.Category.Name) </h4>
+                <h4> Поставщик: @Html.DisplayFor(model => model.Asset.Supplier.Name) </h4>
+                <h2>Цена: @Html.DisplayFor(model => model.Asset.Price) $</h2>
+            </small>
+            <small>
+                @if (Model.Asset.SerialNum != null)
+                {
+                <h3> S/N: @Html.DisplayFor(model => model.Asset.SerialNum)</h3>
+                }
+            </small>
+        </div>
+        <div>
+            <div id="printMe" style="/* margin-top: 35px; */padding-bottom: 20px;">
+                <img src="@String.Format(" data:image/png;base64,{0}", @Model.Barcode)" />
+            </div>
+            <button class="btn btn-w-m btn-primary" onclick="printDiv('printMe');" style="margin-left: 25.5px;">Печать
+            </button>
         </div>
     </div>
 </div>
-
-<div id="printMe" style="margin-top: 35px; padding-bottom: 20px;">
-    <img src="@String.Format(" data:image/png;base64,{0}", @Model.Barcode)" />
-</div>
-<button class="btn btn-w-m btn-primary" onclick="printDiv('printMe');" style="margin-left: 25.5px;">Печать</button>
-
 
 <div class="m-t-lg" style="margin-top: 170px; margin-right: 959px;">
     <div class="attachment">
