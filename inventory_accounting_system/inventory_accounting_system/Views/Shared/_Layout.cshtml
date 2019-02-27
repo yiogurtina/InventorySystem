@@ -126,8 +126,7 @@
                         <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                             <div class="navbar-header">
                                 @if (User.IsInRole("Admin") || User.IsInRole("Manager")){
-                                <a class="navbar-minimalize minimalize-styl-2" style="margin: 19.1px -5px  0 0; font-size: 15pt;" href="#"><i
-                                        class="fa fa-angle-right"></i> </a>
+                                <a class="navbar-minimalize minimalize-styl-2" style="margin: 19.1px -20px  0 0; font-size: 15pt;" href="#"></a>
                            
                                 @using (Html.BeginForm("InventNumberSearch", "Assets", FormMethod.Post, new{
                                 @role="search", @class="navbar-form-custom"}))

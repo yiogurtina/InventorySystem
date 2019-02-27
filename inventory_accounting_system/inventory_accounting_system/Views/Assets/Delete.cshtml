@@ -23,37 +23,37 @@
 </div>
 <hr/>
 
-<div class="col-md-6" style="margin-left: 0%;">
+<div style="width: 100%;">
+    <div style="margin: auto; width: 50%">
+        <h1 class="no-margins" style="font-size: 35pt; color: #1ab394">
+            @Html.DisplayFor(model => model.Name)
+        </h1>
+    </div>
+    <div style="display: flex;">
+        <div style="width: 25%;">
+            <div class="profile-image" style="width: 300px;">
+                <img style="margin:5px; width: 320px; height: 250px" class="img-container m-b-md" src="../@Model.ImagePath" />
+            </div>
+        </div>
+        <div style="width: 30%;">
+            <h2> I/N: @Html.DisplayFor(model => model.InventNumber)</h2>
+           <small>
+                <h4> @Html.DisplayFor(model => model.Date) </h4>
+                <h4> Категория: @Html.DisplayFor(model => model.Category.Name) </h4>
+                <h4> Поставщик: @Html.DisplayFor(model => model.Supplier.Name) </h4>
+                <h2>Цена: @Html.DisplayFor(model => model.Price) </h2>
+            </small>
+            <small>                                    
+                @if (Model.SerialNum != null)
+                    {
+                        <h3> S/N: @Html.DisplayFor(model => model.SerialNum)</h3>
+                    }
+            </small>
+        </div>
+       
+    </div>
+</div>
 
-                    <div class="profile-image" style="width: 300px;">
-                        <img style="margin:5px; width: 250px; height: 250px" class="img-circle circle-border m-b-md" src="../@Model.ImagePath"/>
-                    </div>
-                    
-
-                    <div class="profile-info">
-                        <div class="">
-                            <div style="margin-top: 7px;">
-                                <h1 class="no-margins" style="font-size: 35pt; color: #1ab394">
-                                     @Html.DisplayFor(model => model.Name)
-                                </h1>
-                                <h2> I/N: @Html.DisplayFor(model => model.InventNumber)</h2>
-                                <small>
-                                    <h4> @Html.DisplayFor(model => model.Date) </h4>
-                                    <h4> Категория: @Html.DisplayFor(model => model.Category.Name) </h4>
-                                    <h4> Поставщик: @Html.DisplayFor(model => model.Supplier.Name) </h4>
-                                    <h2>Цена: @Html.DisplayFor(model => model.Price) </h2>
-                                </small>
-                                <small>                                    
-                                    @if (Model.SerialNum != null)
-                                        {
-                                            <h3> S/N: @Html.DisplayFor(model => model.SerialNum)</h3>
-                                        }
-                                </small>
-                               
-                            </div>
-                            
-                        </div>
-                    </div>
                      <hr/>
                          <form asp-action="Delete">
                             <input type="hidden" asp-for="Id" />
