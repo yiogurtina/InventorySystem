@@ -106,7 +106,7 @@
                         {
                             <tr class="gradeX">
                                 <td>
-                                    <input type="checkbox" id="assetIdCheckBox" value="@item.Id" onchange="OnChangeCheckBoxFunc(this)" />
+                                    <input type="checkbox" id="assetIdCheckBox" value="@item.Id" data-name="@item.Name" onchange="OnChangeCheckBoxFunc(this)" />
                                 </td>
                                 <td onclick="window.location.href='/Assets/Details?id=@item.Id'; return false;">
                                    @item.Name
@@ -159,8 +159,13 @@
 
                 <div class="col" style="margin-top: 10px;">
                     <a class="btn btn-w-m btn-primary" style="margin-right: 10px;" onclick="modalShowHendler()">Закрепить</a>
+                    
+                    @if (User.IsInRole("Admin"))
+                    {
                     <a class="btn btn-w-m btn-primary" style="margin-right: 10px;" onclick="modalShowHendlerSale()">Продажа</a>
                     <a class="btn btn-w-m btn-info" asp-action="ReportOnStockChoice">Получить отчёт</a>
+                    <button id="CreateMethodAssetsWritten_off" type="submit" onclick="getCheckedCheckBoxesAssetsWritten_off()" class="btn btn-w-m btn-danger">Списать</button>
+                    }
                 </div>
             </div>
         </div>
@@ -250,15 +255,20 @@
 
                 <div class="modal-footer">
                     <div>
-                        <button id="CreateMethodSale" type="submit" onclick="getCheckedCheckBoxesSale()" class="btn btn-w-m btn-primary">Sold</button>
+                        <button id="CreateMethodSale" type="submit" onclick="getCheckedCheckBoxesSale()" class="btn btn-w-m btn-primary">Продать</button>
                     </div>
                 </div>
 
-
+                
             </form>
+            
         </div>
+        
     </div>
+    
 </div>
+
+
 
 
 @section scripts{
@@ -295,9 +305,11 @@
 
         checkedCheckBox = [];
         checkedCheckBoxSale = [];
+        var idName;
 
         function OnChangeCheckBoxFunc(e) {
             var assetId = e.value;
+           
             if (checkedCheckBox.indexOf(assetId) > -1) {
                 var elementIndex = checkedCheckBox.indexOf(assetId);
                 checkedCheckBox.splice(elementIndex, 1);
@@ -307,9 +319,6 @@
                 checkedCheckBoxSale.push(assetId);
             }
         }
-
-
-
 
         function OnChangeOfficeId(e) {
             officeId = e.value;
@@ -355,6 +364,32 @@
                 }
             });
         }
+
+        
+        function getCheckedCheckBoxesAssetsWritten_off() {
+            officeId = document.querySelector('#officeIdSelect').value;
+            employeeId = document.querySelector('#employeeIdSelect').value;
+            dateAction = document.querySelector('#dateAction').value;
+
+            debugger;
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AssetsWritten_off", "Assets")',
+                data: {
+                    officeId: officeId,
+                    assetId: checkedCheckBox,
+                    dateActionSaleNew: dateActionSaleNew,
+                    employeeId: employeeId,
+                    dateAction: dateAction,
+                    inIndex: 1
+                },
+                success: function (data) {
+                    alert("Актив успешно списан. Информация сохранена в историю");
+                    window.location.reload();
+                }
+            });
+        }
+
 
         function getCheckedCheckBoxesSale() {
 

@@ -207,7 +207,7 @@ namespace inventory_accounting_system.Controllers {
                 }
             }
 
-            var officesUser = _context.Offices.Where (o => o.Id == officeIdUserNow).Where(o => !o.IsMain).FirstOrDefault ();
+            var officesUser = _context.Offices.Where (o => o.Id == officeIdUserNow).Where (o => !o.IsMain).FirstOrDefault ();
             // var mainStorage = _context.Offices.FirstOrDefault (s => !s.IsMain);
             IQueryable<Asset> assets = _context.Assets
                 .Include (a => a.Category)
@@ -559,8 +559,7 @@ namespace inventory_accounting_system.Controllers {
                         _context.Add (inventoryNumberHistory);
                     }
 
-                    if (editAsset.Image != null)
-                    {
+                    if (editAsset.Image != null) {
                         asset.Image = editAsset.Image;
                         UploadPhoto (asset);
                     } else {
@@ -674,6 +673,7 @@ namespace inventory_accounting_system.Controllers {
                     .Include (t => t.OfficeFrom)
                     .Include (t => t.EmployeeTo)
                     .Include (t => t.OfficeTo)
+                    .Include (t => t.Asset)
             });
             //return View(asset);
         }
@@ -830,9 +830,9 @@ namespace inventory_accounting_system.Controllers {
                     };
 
                     if (assetIdFind.InStock == false) {
-                        assetsMoveStory.StatusMovinHistory = "transfer_in";
+                        assetsMoveStory.StatusMovinHistory = "передан в офис";
                     } else {
-                        assetsMoveStory.StatusMovinHistory = "transfer_out";
+                        assetsMoveStory.StatusMovinHistory = "передан из офиса на склад";
                     }
 
                     _context.Add (assetsMoveStory);
@@ -850,6 +850,59 @@ namespace inventory_accounting_system.Controllers {
             //
         }
 
+        #endregion
+
+        #region AssetsWritten_off
+        public ActionResult AssetsWritten_off (
+            string[] assetId,
+            string officeId,
+            string employeeId,
+            string dateAction,
+            int inIndex) {
+
+            foreach (var item in assetId) {
+                var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
+                if (assetIdFind != null) {
+                    string officeFromId = assetIdFind.OfficeId;
+                    string employeeFromId = assetIdFind.EmployeeId;
+                    string officeToId = officeId;
+                    string employeeToId = employeeId;
+
+                    assetIdFind.IsActive = false;
+
+                    assetIdFind.OfficeId = officeId;
+                    assetIdFind.EmployeeId = employeeId;
+                    _context.Update (assetIdFind);
+                    _context.SaveChanges ();
+
+                    DateTime dateStart = DateTime.Parse (dateAction);
+                    //DateTime dateStart = DateTime.Parse ("2019-01-18 0:00");
+                    DateTime dateEnd = DateTime.Parse ("2100-01-01 0:00");
+
+                    AssetsMoveStory assetsMoveStory = new AssetsMoveStory {
+                        AssetId = assetIdFind.Id,
+                        EmployeeFromId = employeeFromId,
+                        OfficeFromId = officeFromId,
+                        EmployeeToId = employeeToId,
+                        OfficeToId = officeToId,
+                        DateStart = dateStart,
+                        DateEnd = dateEnd,
+                        StatusMovinHistory = "Списан"
+                    };
+                    _context.Add (assetsMoveStory);
+                    _context.SaveChanges ();
+
+                }
+            }
+            if (inIndex == 1) {
+                return RedirectToAction (nameof (Index));
+            } else {
+                // return RedirectToAction("CategoryAssets", "Assets", new { officeId = officeId, categoryId =employeeId });
+                return RedirectToAction ("Index", "Offices");
+            }
+
+            //
+        }
         #endregion
 
         #region SaleAsste
@@ -950,7 +1003,8 @@ namespace inventory_accounting_system.Controllers {
                 .Include (a => a.Category)
                 .Include (a => a.Office)
                 .Include (a => a.Employee)
-                .Include (a => a.Supplier);
+                .Include (a => a.Supplier)
+                .Where (a => a.InStock == true);
 
             if (datefrom == null) {
                 return RedirectToAction (nameof (ReportOnStockChoice));
@@ -986,11 +1040,12 @@ namespace inventory_accounting_system.Controllers {
         [HttpPost]
         public IActionResult ReportOnStockShortFile (string datefrom, string dateto) {
 
-            IQueryable<Asset> assetsNew = _context.Assets
-                .Include (a => a.Category)
-                .Include (a => a.Office)
-                .Include (a => a.Employee)
-                .Include (a => a.Supplier);
+            IQueryable<AssetsMoveStory> assetsNew = _context.AssetsMoveStories
+                .Include (a => a.OfficeFrom)
+                .Include (a => a.OfficeTo)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Include (a => a.Asset);
 
             if (datefrom == null || dateto == null) {
                 return RedirectToAction (nameof (ReportOnStockChoice));
@@ -1000,7 +1055,7 @@ namespace inventory_accounting_system.Controllers {
 
             DateTime dtTo = DateTime.ParseExact (dateto, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            assetsNew = assetsNew.Where (a => a.StatusMovingAssets == "short_file");
+            assetsNew = assetsNew.Where (a => a.DateStart >= dtFrom && a.DateStart <= dtTo && a.StatusMovinHistory == "Списан");
 
             return View (assetsNew.ToList ());
         }
@@ -1147,5 +1202,21 @@ namespace inventory_accounting_system.Controllers {
         }
 
         #endregion
+
+        #region HistoryMoving
+
+        public IActionResult HistoryMoving () {
+
+            IQueryable<AssetsMoveStory> historyMovingList = _context.AssetsMoveStories
+                .Include (a => a.OfficeFrom)
+                .Include (a => a.OfficeTo)
+                .Include (a => a.EmployeeFrom)
+                .Include (a => a.EmployeeTo)
+                .Include (a => a.Asset);
+            return View (historyMovingList);
+        }
+
+        #endregion
+
     }
 }

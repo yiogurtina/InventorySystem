@@ -28,18 +28,18 @@ var offMId = @ViewBag.OfficeIdGetMethodDetails;
 <hr />
 
 <div style="width: 100%">
-    <div style="margin: auto; width: 50%">
+    <div style="margin: auto; width: 100%">
         <h1 class="no-margins" style="font-size: 35pt; color: #1ab394">
             @Html.DisplayFor(model => model.Asset.Name)
         </h1>
     </div>
     <div style="display: flex">
-        <div style="width: 25%;">
+        <div style="width: 100%;">
             <div class="profile-image" style="width: 300px;">
                 <img style="margin:5px; width: 320px; height: 250px" class="img-container m-b-md" src="../@Model.Asset.ImagePath" />
             </div>
         </div>
-        <div style="width: 30%;">
+        <div style="width: 100%;">
             <h2> I/N: @Html.DisplayFor(model => model.Asset.InventNumber)</h2>
             <small>
                 <h4> @Html.DisplayFor(model => model.Asset.Date) </h4>
