@@ -11,8 +11,8 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190222041111_ChangeSizeName")]
-    partial class ChangeSizeName
+    [Migration("20190301043559_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -369,6 +369,8 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AssetId");
+
                     b.Property<string>("ContentAdmin");
 
                     b.Property<string>("ContentUser");
@@ -390,6 +392,8 @@ namespace inventory_accounting_system.Migrations
                     b.Property<string>("TitleAdmin");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
 
                     b.HasIndex("EmployeeFromAdminId");
 
@@ -668,6 +672,10 @@ namespace inventory_accounting_system.Migrations
 
             modelBuilder.Entity("inventory_accounting_system.Models.OrderEmployeeAdmin", b =>
                 {
+                    b.HasOne("inventory_accounting_system.Models.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
                     b.HasOne("inventory_accounting_system.Models.Employee", "EmployeeFromAdmin")
                         .WithMany()
                         .HasForeignKey("EmployeeFromAdminId");

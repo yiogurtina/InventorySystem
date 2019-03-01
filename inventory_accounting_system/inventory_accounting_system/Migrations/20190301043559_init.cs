@@ -257,7 +257,7 @@ namespace inventory_accounting_system.Migrations
                     InventNumber = table.Column<string>(nullable: true),
                     InventPrefix = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
                     OfficeId = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
                     SerialNum = table.Column<string>(nullable: true),
@@ -508,6 +508,7 @@ namespace inventory_accounting_system.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
+                    AssetId = table.Column<string>(nullable: true),
                     ContentAdmin = table.Column<string>(nullable: true),
                     ContentUser = table.Column<string>(nullable: true),
                     DateFromAdmin = table.Column<DateTime>(nullable: false),
@@ -522,6 +523,12 @@ namespace inventory_accounting_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderEmployeeAdmins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderEmployeeAdmins_Assets_AssetId",
+                        column: x => x.AssetId,
+                        principalTable: "Assets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderEmployeeAdmins_AspNetUsers_EmployeeFromAdminId",
                         column: x => x.EmployeeFromAdminId,
@@ -676,6 +683,11 @@ namespace inventory_accounting_system.Migrations
                 name: "IX_Events_CategoryId",
                 table: "Events",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderEmployeeAdmins_AssetId",
+                table: "OrderEmployeeAdmins",
+                column: "AssetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderEmployeeAdmins_EmployeeFromAdminId",

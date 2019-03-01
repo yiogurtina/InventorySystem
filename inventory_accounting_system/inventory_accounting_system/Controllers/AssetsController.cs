@@ -559,7 +559,9 @@ namespace inventory_accounting_system.Controllers {
                         _context.Add (inventoryNumberHistory);
                     }
 
-                    if (asset.Image != null) {
+                    if (editAsset.Image != null)
+                    {
+                        asset.Image = editAsset.Image;
                         UploadPhoto (asset);
                     } else {
                         asset.ImagePath = editAsset.ImagePath;
