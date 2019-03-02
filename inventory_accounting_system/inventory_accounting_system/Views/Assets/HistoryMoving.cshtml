@@ -1,4 +1,5 @@
-@model IEnumerable<inventory_accounting_system.Models.AssetsMoveStory>
+@model AssetMovingVM
+@using inventory_accounting_system.ViewModel
 
 @{
     ViewData["Title"] = "ReportOnStockResult";
@@ -51,7 +52,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.AssetsMoveStories) {
         <tr>
             <td >
                 @Html.DisplayFor(modelItem => item.Asset.Name)
@@ -78,9 +79,31 @@
 }
     </tbody>
 </table>
+
+    <div>
+        @if (Model.PageVM.HasPreviousPage)
+            {
+                <a asp-action="HistoryMoving"
+                    asp-route-page="@(Model.PageVM.PageNumber - 1)"
+                    class="btn btn-w-m btn-info" style="margin-right: 10px;">
+                     <i class="fa fa-chevron-left"></i>
+                    Назад
+                </a>
+            }
+            @if (Model.PageVM.HasNextPage)
+            {
+                <a asp-action="HistoryMoving"
+                    asp-route-page="@(Model.PageVM.PageNumber + 1)"
+                    class="btn btn-w-m btn-info">
+                    Вперед
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            }
+    </div>
+
 </div>
 
-<a  class="btn btn-w-m btn-primary"  onclick="printDiv('printMe');">Печать</a>
+<a  class="btn btn-w-m btn-primary" style="margin-top: 15px;"  onclick="printDiv('printMe');">Печать</a>
 
 @section scripts{
     <script>

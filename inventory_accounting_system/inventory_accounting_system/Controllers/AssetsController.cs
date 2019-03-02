@@ -1205,7 +1205,9 @@ namespace inventory_accounting_system.Controllers {
 
         #region HistoryMoving
 
-        public IActionResult HistoryMoving () {
+        public async Task<IActionResult> HistoryMoving (int page = 1) {
+
+            int pageSizeA = 15;
 
             IQueryable<AssetsMoveStory> historyMovingList = _context.AssetsMoveStories
                 .Include (a => a.OfficeFrom)
@@ -1213,7 +1215,17 @@ namespace inventory_accounting_system.Controllers {
                 .Include (a => a.EmployeeFrom)
                 .Include (a => a.EmployeeTo)
                 .Include (a => a.Asset);
-            return View (historyMovingList);
+
+            var countA = await historyMovingList.CountAsync ();
+            var itemsA = await historyMovingList.Skip ((page - 1) * pageSizeA).Take (pageSizeA).ToListAsync ();
+
+            PageVM pageVMA = new PageVM (countA, page, pageSizeA);
+            AssetMovingVM viewModelA = new AssetMovingVM {
+                PageVM = pageVMA,
+                AssetsMoveStories = itemsA
+            };
+
+            return View (viewModelA);
         }
 
         #endregion

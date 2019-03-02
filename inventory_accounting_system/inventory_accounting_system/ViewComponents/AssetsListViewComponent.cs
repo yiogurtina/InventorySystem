@@ -86,6 +86,8 @@ namespace inventory_accounting_system.ViewComponents {
                 .Where (a => a.InStock)
                 .Where (a => a.OfficeId == mainStorage.Id);
 
+                
+
             return View (assets.ToList ());
 
             /* #endregion */
