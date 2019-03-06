@@ -84,9 +84,7 @@ namespace inventory_accounting_system.ViewComponents {
                 .Include (a => a.Office)
                 .Where (a => a.IsActive)
                 .Where (a => a.InStock)
-                .Where (a => a.OfficeId == mainStorage.Id);
-
-                
+                .Where (a => a.OfficeId == mainStorage.Id);                
 
             return View (assets.ToList ());
 

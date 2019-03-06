@@ -25,18 +25,3 @@
     </tbody>
 </table>
 <a class="btn btn-primary" style="margin-top: 15px" asp-action="GetExpiringEvents">Expiring events</a>
-
-@section Scripts {
-    <script>
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("GetExpiringEventsJson", "Account")',
-            success: function(result) {
-                var obj = JSON.parse(result);
-                for (i = 0; i < obj.length; i++) {
-                    alert("You have expiring event " + obj[i].Title);
-                }
-            }
-        });
-    </script>
-}

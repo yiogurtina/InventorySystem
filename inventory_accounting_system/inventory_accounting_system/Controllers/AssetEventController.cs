@@ -80,7 +80,9 @@ namespace inventory_accounting_system.Controllers
                 CreationDate = DateTime.Now,
                 DeadLine = DateTime.Now.AddDays(period),
                 AssetId = assetId,
-                EmployeeId = asset.EmployeeId
+                EmployeeId = asset.EmployeeId,
+                BeforeAlertDays = _event.BeforeAlertDays
+                
             };
             context.Add(assetEvent);
             context.SaveChanges();

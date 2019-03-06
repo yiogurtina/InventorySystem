@@ -188,7 +188,6 @@
                                             </li>
                                         </ul>
                                     </li>
-
                                     <li class="dropdown" id="notificationLi" onclick="openDropDownNotif()">
                                         <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
                                             href="#" id="areaTrueFalseNotif">
@@ -200,8 +199,7 @@
                                             <li>
                                                 <a href="mailbox.html">
                                                     <div>
-                                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                                        <i class="fa fa-envelope fa-fw"></i>
                                                     </div>
                                                 </a>
                                             </li>
@@ -210,7 +208,6 @@
                                                 <div class="text-center link-block">
                                                     <a href="notifications.html">
                                                         <strong>See All Alerts</strong>
-                                                        <i class="fa fa-angle-right"></i>
                                                     </a>
                                                 </div>
                                             </li>
@@ -252,15 +249,14 @@
                                         <a class="dropdown-toggle count-info" data-toggle="dropdown" aria-expanded="fales"
                                             href="#" id="areaTrueFalseNotif">
                                             <i class="fa fa-bell"></i> <span class="label label-primary">
-                                                @await Component.InvokeAsync("OrderEmployeeAdminVM")
+                                                @await Component.InvokeAsync("EventsCount", UserManager.GetUserId(User))
                                             </span>
                                         </a>
                                         <ul class="dropdown-menu dropdown-alerts">
                                             <li>
-                                                <a href="mailbox.html">
+                                                <a href="#">
                                                     <div>
-                                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                                        @await Component.InvokeAsync("Events", UserManager.GetUserId(User))
                                                     </div>
                                                 </a>
                                             </li>
@@ -268,7 +264,7 @@
                                             <li>
                                                 <div class="text-center link-block">
                                                     <a href="notifications.html">
-                                                        <strong>See All Alerts</strong>
+                                                        <a asp-controller="Account" asp-action="GetExpiringEvents">Все истекающие события</a>
                                                         <i class="fa fa-angle-right"></i>
                                                     </a>
                                                 </div>

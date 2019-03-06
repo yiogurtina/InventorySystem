@@ -11,7 +11,7 @@ using System;
 namespace inventory_accounting_system.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190301043559_init")]
+    [Migration("20190306130747_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

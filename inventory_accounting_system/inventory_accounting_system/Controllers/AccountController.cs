@@ -677,7 +677,7 @@ namespace inventory_accounting_system.Controllers {
             List<EventAsset> expiringEvents = new List<EventAsset> ();
             foreach (var ev in events) {
                 double diff = (ev.DeadLine - ev.CreationDate).TotalDays;
-                if (diff < 10) {
+                if (diff < ev.BeforeAlertDays) {
                     expiringEvents.Add (ev);
                 }
             }
