@@ -251,7 +251,7 @@ namespace inventory_accounting_system {
                     ImagePath = "images/TCL TAC-18CHSHS/HS/image/copy_gree_gwh09na_k3nnd2f_komfort_58b01d4426c8a_images_1868533376.jpg",
                     InStock = true, InventNumber = "842232992", InventPrefix = 0, IsActive = true,
                     Name = "TCL TAC-18CHS/HS", OfficeId = "3650a05e-449c-4853-b19d-0a5680173395",
-                    Price = 350, SerialNum = "2142287995", StatusMovingAssets = null, SupplierId = "eded7137-28d7-444b-8d61-a58322e2dff6"
+                    Price = 350, SerialNum = null, StatusMovingAssets = null, SupplierId = "eded7137-28d7-444b-8d61-a58322e2dff6"
                     },
 
                     new Asset {
@@ -260,7 +260,7 @@ namespace inventory_accounting_system {
                     ImagePath = "images/TCL TAC-18CHSHS/HS/image/copy_gree_gwh09na_k3nnd2f_komfort_58b01d4426c8a_images_1868533376.jpg",
                     InStock = true, InventNumber = "2747423109", InventPrefix = 0, IsActive = true,
                     Name = "TCL TAC-18CHS/HS", OfficeId = "3650a05e-449c-4853-b19d-0a5680173395",
-                    Price = 350, SerialNum = "82476851", StatusMovingAssets = null, SupplierId = "eded7137-28d7-444b-8d61-a58322e2dff6"
+                    Price = 350, SerialNum = null, StatusMovingAssets = null, SupplierId = "eded7137-28d7-444b-8d61-a58322e2dff6"
                     },
 
                     new Asset {
@@ -269,7 +269,7 @@ namespace inventory_accounting_system {
                     ImagePath = "images/TCL TAC-18CHSHS/HS/image/copy_gree_gwh09na_k3nnd2f_komfort_58b01d4426c8a_images_1868533376.jpg",
                     InStock = true, InventNumber = "3345524500", InventPrefix = 0, IsActive = true,
                     Name = "TCL TAC-18CHS/HS", OfficeId = "3650a05e-449c-4853-b19d-0a5680173395",
-                    Price = 350, SerialNum = "869326795", StatusMovingAssets = null, SupplierId = "eded7137-28d7-444b-8d61-a58322e2dff6"
+                    Price = 350, SerialNum = null, StatusMovingAssets = null, SupplierId = "eded7137-28d7-444b-8d61-a58322e2dff6"
                     },
 
                     new Asset {
@@ -278,7 +278,7 @@ namespace inventory_accounting_system {
                     ImagePath = "images/2012 Mercedes-Benz E-Class Sedan 4D E550/image/2012MEB005a_640_05.jpg",
                     InStock = true, InventNumber = "1729474494", InventPrefix = 0, IsActive = true,
                     Name = "Mercedes-Benz E-Class Sedan 4D E550", OfficeId = "3650a05e-449c-4853-b19d-0a5680173395",
-                    Price = 135000, SerialNum = "4268162160", StatusMovingAssets = null, SupplierId = "bcbec3e6-8a98-405c-ad5e-b5ed455a949b"
+                    Price = 135000, SerialNum = null, StatusMovingAssets = null, SupplierId = "bcbec3e6-8a98-405c-ad5e-b5ed455a949b"
                     },
 
                     new Asset {
@@ -288,7 +288,7 @@ namespace inventory_accounting_system {
                     ImagePath = "images/2012 Mercedes-Benz E-Class Sedan 4D E550/image/images.jpg",
                     InStock = true, InventNumber = "4242940117", InventPrefix = 0, IsActive = true,
                     Name = "Mercedes-Benz E-Class Sedan 4D E550", OfficeId = "3650a05e-449c-4853-b19d-0a5680173395",
-                    Price = 135000, SerialNum = "3810738204", StatusMovingAssets = null, SupplierId = "bcbec3e6-8a98-405c-ad5e-b5ed455a949b"
+                    Price = 135000, SerialNum = null, StatusMovingAssets = null, SupplierId = "bcbec3e6-8a98-405c-ad5e-b5ed455a949b"
                     },
 
                 };
@@ -307,7 +307,7 @@ namespace inventory_accounting_system {
                         EmployeeToId = "a708b56f-1bbb-4011-a986-3a4ed54c27e4",
                         OfficeFromId = "3650a05e-449c-4853-b19d-0a5680173395",
                         OfficeToId = "952be3a3-1b20-4bc2-a6e2-a9738ddc771f",
-                        StatusMovinHistory = "transfer_in"
+                        StatusMovinHistory = "передан в офис"
                         },
                         new AssetsMoveStory {
                         Id = "2fa8cef3-07a5-4045-bc5c-433bb058f323",
@@ -319,7 +319,7 @@ namespace inventory_accounting_system {
                         EmployeeToId = "a708b56f-1bbb-4011-a986-3a4ed54c27e4",
                         OfficeFromId = "3650a05e-449c-4853-b19d-0a5680173395",
                         OfficeToId = "952be3a3-1b20-4bc2-a6e2-a9738ddc771f",
-                        StatusMovinHistory = "transfer_in"
+                        StatusMovinHistory = "передан в офис"
                         },
                     };
                     context.AddRange (move);

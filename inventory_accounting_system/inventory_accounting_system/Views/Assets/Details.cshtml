@@ -137,7 +137,13 @@ var offMId = @ViewBag.OfficeIdGetMethodDetails;
             @Story.OfficeFrom.Title
         </td>
         <td>
-            @Story.EmployeeTo.Login
+            @if (Story.EmployeeTo != null)
+            {
+               @Story.EmployeeTo.Login
+            }else{
+                 
+            }
+            
         </td>
         <td>
             @Story.OfficeTo.Title

@@ -32,6 +32,9 @@
                 Название актива
             </th>
             <th >
+                I\N
+            </th>
+            <th >
                 Дата перемещения
             </th>
             <th >
@@ -58,8 +61,11 @@
                 @Html.DisplayFor(modelItem => item.Asset.Name)
             </td>
             <td >
-                @Html.DisplayFor(modelItem => item.DateStart)
+                @Html.DisplayFor(modelItem => item.Asset.InventNumber)
             </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.DateStart)
+            </td>            
             <td >
                 @Html.DisplayFor(modelItem => item.OfficeFrom.Title)
             </td>

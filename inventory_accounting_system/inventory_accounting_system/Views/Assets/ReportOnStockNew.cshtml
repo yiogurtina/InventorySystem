@@ -4,7 +4,7 @@
     ViewData["Title"] = "ReportOnStockResult";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div id="printMe">
+<div id="printMe" style="margin-bottom: 15px;">
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>Отчёт о товаре на складе</h2>
@@ -78,7 +78,7 @@
 </div>
 
 
-<a  class="btn btn-w-m btn-primary" onclick="printDiv('printMe');">Печать</a>
+<a  class="btn btn-w-m btn-primary" onclick="printDiv('printMe');" style="margin-bottom: 15px;">Печать</a>
 
 @section scripts{
     <script>

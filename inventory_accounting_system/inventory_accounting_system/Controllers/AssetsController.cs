@@ -861,12 +861,13 @@ namespace inventory_accounting_system.Controllers {
             int inIndex) {
 
             foreach (var item in assetId) {
+
                 var assetIdFind = _context.Assets.FirstOrDefault (a => a.Id == item);
                 if (assetIdFind != null) {
                     string officeFromId = assetIdFind.OfficeId;
                     string employeeFromId = assetIdFind.EmployeeId;
                     string officeToId = officeId;
-                    string employeeToId = employeeId;
+                    string employeeToId = null;
 
                     assetIdFind.IsActive = false;
 
